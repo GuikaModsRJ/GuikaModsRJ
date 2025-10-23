@@ -24,8 +24,7 @@ nav a:hover,nav a.active{background:var(--panel);color:#fff;}
 .dropdown:hover .dropdown-content{display:block;}
 input{background:var(--panel);border:1px solid #333;border-radius:var(--radius);color:var(--text);padding:0.5rem;}
 .container.grid{display:grid;grid-template-columns:3fr 1fr;gap:1.2rem;column-gap:2rem;justify-content:center;align-items:flex-start;margin:0 auto;max-width:1250px;}
-#cards{display:flex;flex-direction:column;gap:1.5rem;margin:0 auto;align-items:center;position:relative;left:calc((25% + 2.5rem)/2);
-opacity:0;transition:opacity 0.4s ease-in-out;}
+#cards{display:flex;flex-direction:column;gap:1.5rem;margin:0 auto;align-items:center;position:relative;left:calc((25% + 2.5rem)/2);opacity:0;transition:opacity 0.4s ease-in-out;}
 #cards.show{opacity:1;}
 section[aria-labelledby="titulo-section"]{text-align:center;}
 #titulo-section{text-align:center;font-size:1.8rem;margin-top:1rem;margin-bottom:1rem;position:relative;left:calc((25% + 2.5rem)/2);}
@@ -50,30 +49,11 @@ aside .panel:first-of-type{margin-top:1.3rem;}
 .footer .list li a:hover{color:#fff;}
 .footer-bottom{display:flex;justify-content:center;align-items:center;}
 .footer-bottom small{color:var(--muted);font-size:0.8rem;}
-a{color:#ccc;}
-.list li a,.dropdown-content a,nav a,.footer .list li a,.panel a{position:relative;z-index:2;pointer-events:auto;}
-.mod-detalhe{max-width:1000px;margin:2rem auto;text-align:center;}
-.mod-detalhe-card{background:var(--panel);border-radius:var(--radius);width:85%;text-align:left;box-shadow:0 2px 6px rgba(0,0,0,0.4);overflow:hidden;margin:0 auto 1.5rem auto;position:relative;}
-.mod-detalhe-card img {width:100%;height:420px;object-fit:cover;aspect-ratio:16/9;display:block;}
-.mod-detalhe-card .card-content{padding:1.5rem;}
-.mod-detalhe-card h3{margin:0.5rem 0;font-size:1.1rem;color:#fff;}
-.mod-detalhe-card p{color:var(--muted);font-size:0.95rem;margin:0;}
-.mod-detalhe h2{font-size:1.8rem;margin:1rem 0 0.5rem;}
-.mod-detalhe p{color:var(--muted);margin:0.5rem 0;}
 .btn-voltar,.btn-download{background:#2b2b2b;color:#fff;border:none;border-radius:var(--radius);padding:0.7rem 1.4rem;cursor:pointer;font-weight:600;transition:background 0.2s;margin:0.5rem;display:inline-block;text-decoration:none;}
 .btn-voltar:hover,.btn-download:hover{background:#3a3a3a;}
-#search-button {
-  transition: background 0.25s ease, box-shadow 0.25s ease;
-}
-#search-button:hover {
-  background: #3a3a3a;
-  box-shadow: 0 0 6px rgba(255, 255, 255, 0.15);
-}
-#search-button:active {
-  background: #222;
-  box-shadow: 0 0 3px rgba(255, 255, 255, 0.1) inset;
-}
-aside {position: sticky; top: 1.3rem; align-self: flex-start; height: max-content;}
+#search-button:hover{background:#3a3a3a;box-shadow:0 0 6px rgba(255,255,255,0.15);}
+#search-button:active{background:#222;box-shadow:0 0 3px rgba(255,255,255,0.1) inset;}
+aside{position:sticky;top:1.3rem;align-self:flex-start;height:max-content;}
 </style>
 </head>
 <body>
@@ -101,6 +81,7 @@ aside {position: sticky; top: 1.3rem; align-self: flex-start; height: max-conten
 </form>
 </div>
 </header>
+
 <main>
 <div class="container grid">
 <section aria-labelledby="titulo-section">
@@ -134,6 +115,7 @@ aside {position: sticky; top: 1.3rem; align-self: flex-start; height: max-conten
 </aside>
 </div>
 </main>
+
 <footer class="footer">
 <div class="container footer-grid"><ul class="list">
 <li><a href="sobre.html">Sobre</a></li>
@@ -143,45 +125,51 @@ aside {position: sticky; top: 1.3rem; align-self: flex-start; height: max-conten
 </ul></div>
 <div class="container footer-bottom"><small>© 2025 Guika Mods RJ. Todos os direitos reservados.</small></div>
 </footer>
-<script>
-document.addEventListener("DOMContentLoaded",()=>{
-  const container=document.getElementById("cards");
-  const titulo=document.getElementById("titulo-section");
-  const listaCat=document.getElementById("lista-categorias");
-  const searchInput=document.getElementById("search-input");
-  const modsSalvos=JSON.parse(localStorage.getItem("modsSalvos"))||[];
-  const nomesCategorias={motos:"Motos",mapas:"Mods pro Mapa",pecas:"Peças Zmodler",personagens:"Mods de Personagem",outros:"Outros Mods",todos:"Todos os Mods"};
-  function fadeOutIn(callback){
-    container.classList.remove("show");
-    setTimeout(()=>{callback();container.classList.add("show");},300);
-  }
-  function renderMods(cat,query=""){
 
-    container.innerHTML="";
-    let lista=modsSalvos;
-    if(cat && cat!=="todos" && !cat.startsWith("mod")) lista=modsSalvos.filter(m=>m.categoria===cat);
-    if(query.trim()!==""){lista=lista.filter(m=>m.titulo.toLowerCase().includes(query.toLowerCase())||m.descricao.toLowerCase().includes(query.toLowerCase()));}
-    if(lista.length===0){container.innerHTML="<p>Nenhum mod encontrado.</p>";return;}
-    lista.forEach(mod=>{
-      const card=document.createElement("div");
-      card.className="card";
-      card.setAttribute("data-id",mod.id);
-      card.innerHTML=`<img src="${mod.img}" alt="${mod.titulo}">
-        <div class='card-content'><h3>${mod.titulo}</h3><p><strong>Categoria:</strong> ${mod.categoria}</p></div>`;
-      card.addEventListener("click",()=>{location.hash="mod-"+mod.id;});
-      container.appendChild(card);
-    });
-  
-    // --- PAGINAÇÃO ---
-    const itensPorPagina = 3;
-    let paginaAtual = 1;
-    const totalPaginas = Math.ceil(lista.length / itensPorPagina);
-    function exibirPagina(pagina){
-      container.innerHTML = "";
-      const inicio = (pagina - 1) * itensPorPagina;
-      const fim = inicio + itensPorPagina;
-      const paginaMods = lista.slice(inicio, fim);
-      paginaMods.forEach(mod => {
+<!-- 🔥 Firebase integrado -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+  import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDuh9sEO3aejr6RZGwWC84f0EvTulXbAdQ",
+    authDomain: "guikamodsrj.firebaseapp.com",
+    databaseURL: "https://guikamodsrj-default-rtdb.firebaseio.com",
+    projectId: "guikamodsrj",
+    storageBucket: "guikamodsrj.firebasestorage.app",
+    messagingSenderId: "810907224917",
+    appId: "1:810907224917:web:4ba5c07d52d37df06dbddc"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  // 🔄 Substitui o localStorage pelo Firebase
+  let modsSalvos = [];
+
+  get(ref(db, "mods")).then(snapshot => {
+    if (snapshot.exists()) modsSalvos = Object.values(snapshot.val());
+    else modsSalvos = [];
+
+    // executa o código original normalmente
+    iniciarSite(modsSalvos);
+  });
+
+  function iniciarSite(modsSalvos){
+    const container=document.getElementById("cards");
+    const titulo=document.getElementById("titulo-section");
+    const listaCat=document.getElementById("lista-categorias");
+    const searchInput=document.getElementById("search-input");
+    const nomesCategorias={motos:"Motos",mapas:"Mods pro Mapa",pecas:"Peças Zmodler",personagens:"Mods de Personagem",outros:"Outros Mods",todos:"Todos os Mods"};
+
+    function fadeOutIn(callback){container.classList.remove("show");setTimeout(()=>{callback();container.classList.add("show");},300);}
+    function renderMods(cat,query=""){
+      container.innerHTML="";
+      let lista=modsSalvos;
+      if(cat && cat!=="todos" && !cat.startsWith("mod")) lista=modsSalvos.filter(m=>m.categoria===cat);
+      if(query.trim()!==""){lista=lista.filter(m=>m.titulo.toLowerCase().includes(query.toLowerCase())||m.descricao.toLowerCase().includes(query.toLowerCase()));}
+      if(lista.length===0){container.innerHTML="<p>Nenhum mod encontrado.</p>";return;}
+      lista.forEach(mod=>{
         const card=document.createElement("div");
         card.className="card";
         card.setAttribute("data-id",mod.id);
@@ -190,117 +178,45 @@ document.addEventListener("DOMContentLoaded",()=>{
         card.addEventListener("click",()=>{location.hash="mod-"+mod.id;});
         container.appendChild(card);
       });
-      if(totalPaginas > 1){
-        const paginacao = document.createElement("div");
-        paginacao.style.textAlign = "center";
-        paginacao.style.margin = "2rem 0";
-
-        const btnPrev = document.createElement("button");
-        btnPrev.textContent = "← Página Anterior";
-        btnPrev.className = "btn-voltar";
-
-        const info = document.createElement("span");
-        info.style.margin = "0 1rem";
-
-        const btnNext = document.createElement("button");
-        btnNext.textContent = "Próxima Página →";
-        btnNext.className = "btn-download";
-
-        function atualizarBotoes(){
-          info.textContent = `Página ${paginaAtual} de ${totalPaginas}`;
-          btnPrev.style.display = paginaAtual === 1 ? "none" : "inline-block";
-          btnNext.style.display = paginaAtual === totalPaginas ? "none" : "inline-block";
-        }
-
-        btnPrev.onclick = ()=>{
-          if(paginaAtual>1){
-            paginaAtual--;
-            exibirPagina(paginaAtual);
-            atualizarBotoes();
-            window.scrollTo({top:0,behavior:'smooth'});
-          }
-        };
-
-        btnNext.onclick = ()=>{
-          if(paginaAtual<totalPaginas){
-            paginaAtual++;
-            exibirPagina(paginaAtual);
-            atualizarBotoes();
-            window.scrollTo({top:0,behavior:'smooth'});
-          }
-        };
-
-        paginacao.appendChild(btnPrev);
-        paginacao.appendChild(info);
-        paginacao.appendChild(btnNext);
-        container.appendChild(paginacao);
-        atualizarBotoes();
-      }
     }
-    exibirPagina(paginaAtual);
-  }
-  function mostrarDetalhe(id){
-    const mod=modsSalvos.find(m=>m.id===id);
-    if(!mod){inicializar();return;}
-    fadeOutIn(()=>{
-      const tituloTopo = mod.tituloTopo && mod.tituloTopo.trim() !== "" ? mod.tituloTopo : mod.titulo;
-      titulo.textContent=tituloTopo;
-      container.innerHTML=`<div class='mod-detalhe'>
-          <div class='mod-detalhe-card'>
-            <a href="${mod.img}" target="_blank">
-              <img src="${mod.img}" alt="${mod.titulo}">
-            </a>
-            <div class='card-content'>
-              <h3>${mod.titulo}</h3>
-              <p><strong>Categoria:</strong> ${mod.categoria}</p>
+
+    function mostrarDetalhe(id){
+      const mod=modsSalvos.find(m=>m.id===id);
+      if(!mod){inicializar();return;}
+      fadeOutIn(()=>{
+        const tituloTopo = mod.tituloTopo && mod.tituloTopo.trim() !== "" ? mod.tituloTopo : mod.titulo;
+        titulo.textContent=tituloTopo;
+        container.innerHTML=`<div class='mod-detalhe'>
+            <div class='mod-detalhe-card'>
+              <a href="${mod.img}" target="_blank">
+                <img src="${mod.img}" alt="${mod.titulo}">
+              </a>
+              <div class='card-content'>
+                <h3>${mod.titulo}</h3>
+                <p><strong>Categoria:</strong> ${mod.categoria}</p>
+              </div>
             </div>
-          </div>
-          <p><strong>Categoria:</strong> ${mod.categoria}</p>
-          <p>${mod.descricao}</p>
-          <a href="${mod.download}" target="_blank" class="btn-download">Baixar Mod</a>
-          <a href="#" class="btn-voltar">Voltar</a>
-        </div>`;
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      document.querySelector(".btn-voltar").addEventListener("click",(e)=>{
-        e.preventDefault();
-        history.back();
+            <p>${mod.descricao}</p>
+            <a href="${mod.download}" target="_blank" class="btn-download">Baixar Mod</a>
+            <a href="#" class="btn-voltar">Voltar</a>
+          </div>`;
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        document.querySelector(".btn-voltar").addEventListener("click",(e)=>{e.preventDefault();history.back();});
       });
-    });
+    }
+
+    function inicializar(){
+      const hash=location.hash.replace("#","");
+      const query=searchInput.value.trim();
+      if(hash.startsWith("mod-")){const id=hash.replace("mod-","");mostrarDetalhe(id);return;}
+      fadeOutIn(()=>{renderMods(hash,query);});
+    }
+
+    searchInput.addEventListener("input",()=>{const hash=location.hash.replace("#","");const query=searchInput.value.trim();fadeOutIn(()=>renderMods(hash,query));});
+    window.addEventListener("hashchange",inicializar);
+    inicializar();
+    setTimeout(()=>container.classList.add("show"),300);
   }
-  function atualizarContadores(){
-    const contadores={motos:0,mapas:0,pecas:0,personagens:0,outros:0};
-    modsSalvos.forEach(m=>{if(contadores[m.categoria]!=undefined) contadores[m.categoria]++;});
-    const total=modsSalvos.length;
-    listaCat.querySelectorAll("a[data-cat]").forEach(a=>{
-      const c=a.getAttribute("data-cat");
-      const num=c==="todos"?total:(contadores[c]||0);
-      const texto=a.textContent.replace(/\(\d+\)/,"");
-      a.textContent=texto.trim()+" ("+num+")";
-    });
-  }
-  function atualizarTitulo(cat){
-    if(!cat || cat==="inicio" || cat==="") titulo.textContent="Últimas Postagens";
-    else if(cat.startsWith("mod")) titulo.textContent="Detalhes do Mod";
-    else titulo.textContent=nomesCategorias[cat]||"Mods";
-  }
-  function inicializar(){
-    const hash=location.hash.replace("#","");
-    const query=searchInput.value.trim();
-    if(hash.startsWith("mod-")){const id=hash.replace("mod-","");mostrarDetalhe(id);return;}
-    fadeOutIn(()=>{atualizarTitulo(hash);renderMods(hash,query);atualizarContadores();});
-  }
-  listaCat.querySelectorAll("a[data-cat]").forEach(link=>{
-    link.addEventListener("click",e=>{e.preventDefault();const cat=e.target.getAttribute("data-cat");location.hash=cat;inicializar();window.scrollTo({top:0,behavior:"smooth"});});
-  });
-  searchInput.addEventListener("input",()=>{const hash=location.hash.replace("#","");const query=searchInput.value.trim();fadeOutIn(()=>renderMods(hash,query));});
-  window.addEventListener("hashchange",inicializar);
-  setTimeout(()=>{inicializar();setTimeout(()=>container.classList.add("show"),200);const hash=location.hash.replace("#","");if(hash.startsWith("mod-")){const id=hash.replace("mod-","");mostrarDetalhe(id);}},100);
-  const searchBtn=document.getElementById("search-button");
-  searchBtn.addEventListener("click",()=>{
-    const event=new Event("input");
-    searchInput.dispatchEvent(event);
-  });
-});
 </script>
 </body>
 </html>

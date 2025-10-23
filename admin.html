@@ -12,9 +12,7 @@ body {
   margin: 0;
   padding: 2rem;
 }
-h1 {
-  text-align: center;
-}
+h1 { text-align: center; }
 form {
   background: #1a1a1a;
   padding: 1rem;
@@ -38,30 +36,7 @@ button {
   cursor: pointer;
   font-weight: bold;
 }
-button:hover {
-  background: #3a3a3a;
-}
-.preview {
-  text-align: center;
-  margin-top: 0.5rem;
-}
-.preview img {
-  max-width: 100%;
-  border-radius: 8px;
-  margin-top: 0.5rem;
-}
-.preview a {
-  display: inline-block;
-  margin-top: 0.5rem;
-  background: #2b2b2b;
-  color: #fff;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  text-decoration: none;
-}
-.preview a:hover {
-  background: #3a3a3a;
-}
+button:hover { background: #3a3a3a; }
 table {
   width: 100%;
   max-width: 1000px;
@@ -73,9 +48,7 @@ th, td {
   padding: 0.5rem;
   text-align: left;
 }
-th {
-  background: #222;
-}
+th { background: #222; }
 .actions button {
   margin-right: 0.5rem;
   padding: 0.4rem 0.7rem;
@@ -90,9 +63,7 @@ th {
   <input type="text" id="titulo" placeholder="Título do mod" required>
   <input type="text" id="tituloTopo" placeholder="Título que aparece em cima do mod">
   <input type="url" id="img" placeholder="URL da imagem" required>
-  <div id="imgPreview" class="preview"></div>
   <input type="url" id="download" placeholder="Link de download do mod" required>
-  <div id="downloadPreview" class="preview"></div>
   <textarea id="descricao" placeholder="Descrição do mod" rows="4" required></textarea>
   <input type="date" id="data" required>
   <select id="categoria" required>
@@ -103,7 +74,6 @@ th {
     <option value="personagens">Mods de Personagem</option>
     <option value="outros">Outros Mods</option>
   </select>
-  <input type="hidden" id="editIndex">
   <button type="submit">Adicionar Mod</button>
 </form>
 
@@ -120,117 +90,80 @@ th {
   <tbody id="listaMods"></tbody>
 </table>
 
-<script>
-const form = document.getElementById('modForm');
-const titulo = document.getElementById('titulo');
-const tituloTopo = document.getElementById('tituloTopo');
-const img = document.getElementById('img');
-const descricao = document.getElementById('descricao');
-const data = document.getElementById('data');
-const categoria = document.getElementById('categoria');
-const download = document.getElementById('download');
-const listaMods = document.getElementById('listaMods');
-const editIndex = document.getElementById('editIndex');
-const imgPreview = document.getElementById('imgPreview');
-const downloadPreview = document.getElementById('downloadPreview');
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+  import { getDatabase, ref, push, set, get, remove } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
 
-let mods = JSON.parse(localStorage.getItem('modsSalvos')) || [];
-
-// Atualiza preview da imagem
-img.addEventListener('input', () => {
-  const url = img.value.trim();
-  if (url) {
-    imgPreview.innerHTML = `<img src="${url}" alt="Preview da imagem">`;
-  } else {
-    imgPreview.innerHTML = '';
-  }
-});
-
-// Atualiza preview do link de download
-download.addEventListener('input', () => {
-  const url = download.value.trim();
-  if (url) {
-    downloadPreview.innerHTML = `<a href="${url}" target="_blank">Testar Download</a>`;
-  } else {
-    downloadPreview.innerHTML = '';
-  }
-});
-
-function salvarMods() {
-  localStorage.setItem('modsSalvos', JSON.stringify(mods));
-}
-
-function mostrarMods() {
-  listaMods.innerHTML = '';
-  mods.forEach((mod, i) => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td>${mod.titulo}</td>
-      <td>${mod.categoria}</td>
-      <td>${mod.data}</td>
-      <td class="actions">
-        <button onclick="editarMod(${i})">Editar</button>
-        <button onclick="excluirMod(${i})">Excluir</button>
-      </td>
-    `;
-    listaMods.appendChild(tr);
-  });
-}
-
-form.addEventListener('submit', e => {
-  e.preventDefault();
-  const novoMod = {
-    tituloTopo: tituloTopo.value,
-    id: 'mod-' + Date.now(),
-    titulo: titulo.value,
-    img: img.value,
-    descricao: descricao.value,
-    data: data.value,
-    categoria: categoria.value,
-    download: download.value
+  // Config do seu Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyDuh9sEO3aejr6RZGwWC84f0EvTulXbAdQ",
+    authDomain: "guikamodsrj.firebaseapp.com",
+    databaseURL: "https://guikamodsrj-default-rtdb.firebaseio.com",
+    projectId: "guikamodsrj",
+    storageBucket: "guikamodsrj.firebasestorage.app",
+    messagingSenderId: "810907224917",
+    appId: "1:810907224917:web:4ba5c07d52d37df06dbddc"
   };
 
-  if (editIndex.value === '') {
-    mods.push(novoMod);
-  } else {
-    mods[editIndex.value] = novoMod;
-    editIndex.value = '';
-    form.querySelector('button[type="submit"]').textContent = 'Adicionar Mod';
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+  const modsRef = ref(db, "mods");
+
+  const form = document.getElementById("modForm");
+  const listaMods = document.getElementById("listaMods");
+
+  // Exibir mods
+  function mostrarMods() {
+    get(modsRef).then(snapshot => {
+      listaMods.innerHTML = "";
+      if (snapshot.exists()) {
+        const mods = snapshot.val();
+        Object.entries(mods).forEach(([id, mod]) => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${mod.titulo}</td>
+            <td>${mod.categoria}</td>
+            <td>${mod.data}</td>
+            <td class="actions">
+              <button onclick="excluirMod('${id}')">Excluir</button>
+            </td>
+          `;
+          listaMods.appendChild(tr);
+        });
+      }
+    });
   }
 
-  salvarMods();
+  // Excluir mod
+  window.excluirMod = function(id) {
+    remove(ref(db, "mods/" + id)).then(() => {
+      alert("Mod excluído!");
+      mostrarMods();
+    });
+  };
+
+  // Adicionar mod
+  form.addEventListener("submit", e => {
+    e.preventDefault();
+    const mod = {
+      id: "mod-" + Date.now(),
+      titulo: titulo.value,
+      tituloTopo: tituloTopo.value,
+      img: img.value,
+      descricao: descricao.value,
+      data: data.value,
+      categoria: categoria.value,
+      download: download.value
+    };
+    const novo = push(modsRef);
+    set(novo, mod).then(() => {
+      alert("Mod adicionado!");
+      form.reset();
+      mostrarMods();
+    });
+  });
+
   mostrarMods();
-  console.log("Mods atualizados:", mods);
-  form.reset();
-  tituloTopo.value = '';
-  imgPreview.innerHTML = '';
-  downloadPreview.innerHTML = '';
-});
-
-function editarMod(i) {
-  const mod = mods[i];
-  titulo.value = mod.titulo;
-  tituloTopo.value = mod.tituloTopo || '';
-  img.value = mod.img;
-  descricao.value = mod.descricao;
-  data.value = mod.data;
-  categoria.value = mod.categoria;
-  download.value = mod.download;
-  editIndex.value = i;
-  form.querySelector('button[type="submit"]').textContent = 'Salvar Alterações';
-  imgPreview.innerHTML = mod.img ? `<img src="${mod.img}" alt="Preview da imagem">` : '';
-  downloadPreview.innerHTML = mod.download ? `<a href="${mod.download}" target="_blank">Testar Download</a>` : '';
-}
-
-function excluirMod(i) {
-  if (confirm('Tem certeza que deseja excluir este mod?')) {
-    mods.splice(i, 1);
-    salvarMods();
-    mostrarMods();
-  }
-}
-
-mostrarMods();
 </script>
 </body>
 </html>
