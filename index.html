@@ -70,7 +70,6 @@ aside{position:sticky;top:1.3rem;align-self:flex-start;height:max-content;}
 <a href="#pecas" data-cat="pecas">Peças Zmodler</a>
 <a href="#personagens" data-cat="personagens">Mods de Personagem</a>
 <a href="#outros" data-cat="outros">Outros Mods</a>
-<a href="#todos" data-cat="todos">Todos os Mods</a>
 </div></li>
 <li><a href="#reviews">Reviews</a></li>
 <li><a href="#tutoriais">Tutoriais</a></li>
@@ -95,7 +94,6 @@ aside{position:sticky;top:1.3rem;align-self:flex-start;height:max-content;}
 <li><a href="#pecas" data-cat="pecas">Peças Zmodler (0)</a></li>
 <li><a href="#personagens" data-cat="personagens">Personagens (0)</a></li>
 <li><a href="#outros" data-cat="outros">Outros Mods (0)</a></li>
-<li><a href="#todos" data-cat="todos">Todos (0)</a></li>
 </ul></div>
 <div class="panel"><h3>Blogs Parceiros</h3>
 <ul class="list">
@@ -126,7 +124,6 @@ aside{position:sticky;top:1.3rem;align-self:flex-start;height:max-content;}
 <div class="container footer-bottom"><small>© 2025 Guika Mods RJ. Todos os direitos reservados.</small></div>
 </footer>
 
-<!-- 🔥 Firebase integrado -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
   import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
@@ -144,14 +141,11 @@ aside{position:sticky;top:1.3rem;align-self:flex-start;height:max-content;}
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
 
-  // 🔄 Substitui o localStorage pelo Firebase
   let modsSalvos = [];
 
   get(ref(db, "mods")).then(snapshot => {
     if (snapshot.exists()) modsSalvos = Object.values(snapshot.val());
     else modsSalvos = [];
-
-    // executa o código original normalmente
     iniciarSite(modsSalvos);
   });
 
@@ -160,21 +154,31 @@ aside{position:sticky;top:1.3rem;align-self:flex-start;height:max-content;}
     const titulo=document.getElementById("titulo-section");
     const listaCat=document.getElementById("lista-categorias");
     const searchInput=document.getElementById("search-input");
-    const nomesCategorias={motos:"Motos",mapas:"Mods pro Mapa",pecas:"Peças Zmodler",personagens:"Mods de Personagem",outros:"Outros Mods",todos:"Todos os Mods"};
 
-    function fadeOutIn(callback){container.classList.remove("show");setTimeout(()=>{callback();container.classList.add("show");},300);}
+    // Contagem automática
+    const contagem={motos:0,mapas:0,pecas:0,personagens:0,outros:0};
+    modsSalvos.forEach(mod=>{
+      if(contagem[mod.categoria]!==undefined)contagem[mod.categoria]++;
+    });
+    const nomes={motos:"Motos",mapas:"Mods pro Mapa",pecas:"Peças Zmodler",personagens:"Mods de Personagem",outros:"Outros Mods"};
+    listaCat.querySelectorAll("a").forEach(a=>{
+      const cat=a.dataset.cat;
+      if(contagem[cat]!==undefined)a.textContent=`${nomes[cat]} (${contagem[cat]})`;
+    });
+
+    function fadeOutIn(cb){container.classList.remove("show");setTimeout(()=>{cb();container.classList.add("show");},300);}
     function renderMods(cat,query=""){
       container.innerHTML="";
       let lista=modsSalvos;
-      if(cat && cat!=="todos" && !cat.startsWith("mod")) lista=modsSalvos.filter(m=>m.categoria===cat);
-      if(query.trim()!==""){lista=lista.filter(m=>m.titulo.toLowerCase().includes(query.toLowerCase())||m.descricao.toLowerCase().includes(query.toLowerCase()));}
+      if(cat&&cat!=="todos"&&!cat.startsWith("mod"))lista=modsSalvos.filter(m=>m.categoria===cat);
+      if(query.trim()!=="")lista=lista.filter(m=>m.titulo.toLowerCase().includes(query.toLowerCase())||m.descricao.toLowerCase().includes(query.toLowerCase()));
       if(lista.length===0){container.innerHTML="<p>Nenhum mod encontrado.</p>";return;}
       lista.forEach(mod=>{
         const card=document.createElement("div");
         card.className="card";
         card.setAttribute("data-id",mod.id);
         card.innerHTML=`<img src="${mod.img}" alt="${mod.titulo}">
-          <div class='card-content'><h3>${mod.titulo}</h3><p><strong>Categoria:</strong> ${mod.categoria}</p></div>`;
+        <div class='card-content'><h3>${mod.titulo}</h3><p><strong>Categoria:</strong> ${mod.categoria}</p></div>`;
         card.addEventListener("click",()=>{location.hash="mod-"+mod.id;});
         container.appendChild(card);
       });
@@ -184,24 +188,19 @@ aside{position:sticky;top:1.3rem;align-self:flex-start;height:max-content;}
       const mod=modsSalvos.find(m=>m.id===id);
       if(!mod){inicializar();return;}
       fadeOutIn(()=>{
-        const tituloTopo = mod.tituloTopo && mod.tituloTopo.trim() !== "" ? mod.tituloTopo : mod.titulo;
-        titulo.textContent=tituloTopo;
+        const tTopo=mod.tituloTopo&&mod.tituloTopo.trim()!==""?mod.tituloTopo:mod.titulo;
+        titulo.textContent=tTopo;
         container.innerHTML=`<div class='mod-detalhe'>
-            <div class='mod-detalhe-card'>
-              <a href="${mod.img}" target="_blank">
-                <img src="${mod.img}" alt="${mod.titulo}">
-              </a>
-              <div class='card-content'>
-                <h3>${mod.titulo}</h3>
-                <p><strong>Categoria:</strong> ${mod.categoria}</p>
-              </div>
-            </div>
-            <p>${mod.descricao}</p>
-            <a href="${mod.download}" target="_blank" class="btn-download">Baixar Mod</a>
-            <a href="#" class="btn-voltar">Voltar</a>
-          </div>`;
-        window.scrollTo({ top: 0, behavior: "smooth" });
-        document.querySelector(".btn-voltar").addEventListener("click",(e)=>{e.preventDefault();history.back();});
+          <div class='mod-detalhe-card'>
+            <a href="${mod.img}" target="_blank"><img src="${mod.img}" alt="${mod.titulo}"></a>
+            <div class='card-content'><h3>${mod.titulo}</h3><p><strong>Categoria:</strong> ${mod.categoria}</p></div>
+          </div>
+          <p>${mod.descricao}</p>
+          <a href="${mod.download}" target="_blank" class="btn-download">Baixar Mod</a>
+          <a href="#" class="btn-voltar">Voltar</a>
+        </div>`;
+        window.scrollTo({top:0,behavior:"smooth"});
+        document.querySelector(".btn-voltar").addEventListener("click",e=>{e.preventDefault();history.back();});
       });
     }
 
@@ -209,10 +208,14 @@ aside{position:sticky;top:1.3rem;align-self:flex-start;height:max-content;}
       const hash=location.hash.replace("#","");
       const query=searchInput.value.trim();
       if(hash.startsWith("mod-")){const id=hash.replace("mod-","");mostrarDetalhe(id);return;}
-      fadeOutIn(()=>{renderMods(hash,query);});
+      fadeOutIn(()=>{
+        renderMods(hash,query);
+        if(hash&&nomes[hash])titulo.textContent=nomes[hash];
+        else titulo.textContent="Últimas Postagens";
+      });
     }
 
-    searchInput.addEventListener("input",()=>{const hash=location.hash.replace("#","");const query=searchInput.value.trim();fadeOutIn(()=>renderMods(hash,query));});
+    searchInput.addEventListener("input",()=>{const hash=location.hash.replace("#","");const q=searchInput.value.trim();fadeOutIn(()=>renderMods(hash,q));});
     window.addEventListener("hashchange",inicializar);
     inicializar();
     setTimeout(()=>container.classList.add("show"),300);
