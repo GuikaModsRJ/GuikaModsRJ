@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contato — Guika Mods RJ</title>
+  <style>
+    :root { --bg:#0e0e0e; --panel:#1a1a1a; --text:#e6e6e6; --muted:#aaa; --radius:10px; }
+    body { margin:0; font-family:system-ui,sans-serif; background:var(--bg); color:var(--text); line-height:1.6; }
+    header, footer { background:#121212; padding:1rem 0; box-shadow:0 2px 6px rgba(0,0,0,0.4); }
+    .container { max-width:900px; margin:0 auto; padding:1rem; }
+    form { background:var(--panel); padding:1.5rem; border-radius:var(--radius); margin-top:1rem; }
+    label { display:block; margin-top:1rem; }
+    input, textarea { width:100%; padding:0.5rem; border:none; border-radius:var(--radius); background:#2b2b2b; color:var(--text); margin-top:0.5rem; }
+    button { margin-top:1rem; background:#2b2b2b; color:#fff; padding:0.6rem 1.2rem; border:none; border-radius:var(--radius); cursor:pointer; font-weight:600; }
+    button:hover { background:#3a3a3a; }
+    .back { display:inline-block; margin-top:1rem; color:#aaa; text-decoration:none; }
+    .back:hover { color:#fff; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>Contato</h1>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <p>Use o formulário abaixo para entrar em contato conosco. Respondemos normalmente em até 24 horas.</p>
+
+      <form action="https://formsubmit.co/mutanoyt18@gmail.com" method="POST">
+        <!-- Nome -->
+        <label>Nome:
+          <input type="text" name="name" placeholder="Seu nome" required>
+        </label>
+
+        <!-- E-mail -->
+        <label>E-mail:
+          <input type="email" name="email" placeholder="seu@email.com" required>
+        </label>
+
+        <!-- Mensagem -->
+        <label>Mensagem:
+          <textarea name="message" rows="5" placeholder="Digite sua mensagem..." required></textarea>
+        </label>
+
+        <!-- Configurações extras -->
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_next" value="obrigado.html">
+
+        <button type="submit">Enviar</button>
+      </form>
+
+      <a href="index.html" class="back">← Voltar ao site</a>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <small>© 2025 Guika Mods RJ — Todos os direitos reservados.</small>
+    </div>
+  </footer>
+</body>
+</html>

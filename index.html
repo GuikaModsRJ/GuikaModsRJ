@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta name="description" content="Guika Mods RJ — Mods, tutoriais e conteúdo sobre GTA SA RJ."/>
+<title>Guika Mods RJ — Blog de Mods GTA SA</title>
+<style>
+:root {--bg:#0e0e0e;--panel:#1a1a1a;--text:#e6e6e6;--muted:#aaa;--radius:10px;}
+body{margin:0;font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;}
+header{background:#121212;position:sticky;top:0;z-index:100;box-shadow:0 2px 6px rgba(0,0,0,0.5);}
+.container{max-width:1200px;margin:0 auto;padding:0 1rem;}
+.header-inner{display:flex;align-items:center;justify-content:space-between;padding:1rem 0;}
+.logo{color:var(--text);text-decoration:none;font-weight:600;font-size:1.3rem;display:flex;align-items:center;gap:0.4rem;}
+nav ul{list-style:none;display:flex;gap:1rem;margin:0;padding:0;align-items:center;}
+nav a{text-decoration:none;color:var(--text);padding:0.4rem 0.8rem;border-radius:var(--radius);transition:background 0.2s;}
+nav a:hover,nav a.active{background:var(--panel);color:#fff;}
+.dropdown{position:relative;}
+.dropdown>a::after{content:" ▼";font-size:0.7em;}
+.dropdown-content{display:none;position:absolute;top:100%;left:0;background-color:var(--panel);min-width:200px;border-radius:var(--radius);box-shadow:0 4px 12px rgba(0,0,0,0.4);padding:0.5rem 0;z-index:200;}
+.dropdown-content a{display:block;padding:0.6rem 1rem;color:var(--text);text-decoration:none;transition:background 0.2s;}
+.dropdown-content a:hover{background:#2b2b2b;}
+.dropdown:hover .dropdown-content{display:block;}
+input{background:var(--panel);border:1px solid #333;border-radius:var(--radius);color:var(--text);padding:0.5rem;}
+.container.grid{display:grid;grid-template-columns:3fr 1fr;gap:1.2rem;column-gap:2rem;justify-content:center;align-items:flex-start;margin:0 auto;max-width:1250px;}
+#cards{display:flex;flex-direction:column;gap:1.5rem;margin:0 auto;align-items:center;position:relative;left:calc((25% + 2.5rem)/2);
+opacity:0;transition:opacity 0.4s ease-in-out;}
+#cards.show{opacity:1;}
+section[aria-labelledby="titulo-section"]{text-align:center;}
+#titulo-section{text-align:center;font-size:1.8rem;margin-top:1rem;margin-bottom:1rem;position:relative;left:calc((25% + 2.5rem)/2);}
+.card{background:var(--panel);border-radius:var(--radius);width:63.75%;text-align:left;box-shadow:0 2px 6px rgba(0,0,0,0.4);overflow:hidden;transition:transform 0.2s;cursor:pointer;}
+.card:hover{transform:translateY(-4px);}
+.card img{width:100%;height:340px;object-fit:cover;display:block;}
+.card-content{padding:1.5rem;}
+.card-content h3{margin:0.5rem 0;font-size:1.1rem;color:#fff;}
+.card-content p{color:var(--muted);font-size:0.95rem;margin:0;}
+.panel{background:var(--panel);padding:1rem;border-radius:var(--radius);margin-bottom:1rem;}
+aside .panel:first-of-type{margin-top:1.3rem;}
+.list{list-style:none;padding:0;}
+.list li a{color:var(--text);text-decoration:none;display:block;padding:0.3rem 0;border-radius:var(--radius);transition:background 0.2s;}
+.list li a:hover{background:#2b2b2b;}
+.recent-item{margin-bottom:1rem;}
+.recent-item img{width:100%;border-radius:var(--radius);margin-bottom:0.5rem;}
+.recent-item p{font-size:0.9rem;color:var(--muted);margin:0;}
+.footer{background:#121212;padding:0.5rem 0;border-top:1px solid #222;margin-top:3rem;text-align:center;}
+.footer-grid{display:flex;justify-content:center;align-items:center;gap:1.5rem;flex-wrap:wrap;margin-bottom:0.4rem;}
+.footer .list{display:flex;gap:1.2rem;list-style:none;padding:0;margin:0;position:relative;left:-1.8rem;}
+.footer .list li a{text-decoration:none;color:var(--text);font-size:0.9rem;transition:color 0.2s;}
+.footer .list li a:hover{color:#fff;}
+.footer-bottom{display:flex;justify-content:center;align-items:center;}
+.footer-bottom small{color:var(--muted);font-size:0.8rem;}
+a{color:#ccc;}
+.list li a,.dropdown-content a,nav a,.footer .list li a,.panel a{position:relative;z-index:2;pointer-events:auto;}
+.mod-detalhe{max-width:1000px;margin:2rem auto;text-align:center;}
+.mod-detalhe-card{background:var(--panel);border-radius:var(--radius);width:85%;text-align:left;box-shadow:0 2px 6px rgba(0,0,0,0.4);overflow:hidden;margin:0 auto 1.5rem auto;position:relative;}
+.mod-detalhe-card img {width:100%;height:420px;object-fit:cover;aspect-ratio:16/9;display:block;}
+.mod-detalhe-card .card-content{padding:1.5rem;}
+.mod-detalhe-card h3{margin:0.5rem 0;font-size:1.1rem;color:#fff;}
+.mod-detalhe-card p{color:var(--muted);font-size:0.95rem;margin:0;}
+.mod-detalhe h2{font-size:1.8rem;margin:1rem 0 0.5rem;}
+.mod-detalhe p{color:var(--muted);margin:0.5rem 0;}
+.btn-voltar,.btn-download{background:#2b2b2b;color:#fff;border:none;border-radius:var(--radius);padding:0.7rem 1.4rem;cursor:pointer;font-weight:600;transition:background 0.2s;margin:0.5rem;display:inline-block;text-decoration:none;}
+.btn-voltar:hover,.btn-download:hover{background:#3a3a3a;}
+#search-button {
+  transition: background 0.25s ease, box-shadow 0.25s ease;
+}
+#search-button:hover {
+  background: #3a3a3a;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.15);
+}
+#search-button:active {
+  background: #222;
+  box-shadow: 0 0 3px rgba(255, 255, 255, 0.1) inset;
+}
+aside {position: sticky; top: 1.3rem; align-self: flex-start; height: max-content;}
+</style>
+</head>
+<body>
+<header class="header">
+<div class="container header-inner">
+<a aria-label="Página inicial" class="logo" href="index.html">Guika Mods RJ</a>
+<nav aria-label="Principal" class="nav">
+<ul>
+<li><a class="active" href="index.html">Início</a></li>
+<li class="dropdown"><a href="#mods">Menu dos Mods</a>
+<div class="dropdown-content">
+<a href="#motos" data-cat="motos">Mods de Moto</a>
+<a href="#mapas" data-cat="mapas">Mods pro Mapa</a>
+<a href="#pecas" data-cat="pecas">Peças Zmodler</a>
+<a href="#personagens" data-cat="personagens">Mods de Personagem</a>
+<a href="#outros" data-cat="outros">Outros Mods</a>
+<a href="#todos" data-cat="todos">Todos os Mods</a>
+</div></li>
+<li><a href="#reviews">Reviews</a></li>
+<li><a href="#tutoriais">Tutoriais</a></li>
+</ul></nav>
+<form class="search" id="search-form" role="search" onsubmit="return false;" style="display:flex;align-items:center;">
+  <input id="search-input" name="q" placeholder="Pesquisar..."/>
+  <button id="search-button" type="button" style="background:#2b2b2b;color:#fff;border:none;border-radius:10px;padding:0.5rem 1rem;margin-left:0.5rem;cursor:pointer;font-weight:600;">Buscar</button>
+</form>
+</div>
+</header>
+<main>
+<div class="container grid">
+<section aria-labelledby="titulo-section">
+<h2 id="titulo-section">Últimas Postagens</h2>
+<div id="cards"></div>
+</section>
+<aside>
+<div class="panel"><h3>Categorias</h3><ul class="list" id="lista-categorias">
+<li><a href="#motos" data-cat="motos">Motos (0)</a></li>
+<li><a href="#mapas" data-cat="mapas">Mods pro Mapa (0)</a></li>
+<li><a href="#pecas" data-cat="pecas">Peças Zmodler (0)</a></li>
+<li><a href="#personagens" data-cat="personagens">Personagens (0)</a></li>
+<li><a href="#outros" data-cat="outros">Outros Mods (0)</a></li>
+<li><a href="#todos" data-cat="todos">Todos (0)</a></li>
+</ul></div>
+<div class="panel"><h3>Blogs Parceiros</h3>
+<ul class="list">
+<li><a href="https://adventuresog.netlify.app/" target="_blank" rel="noopener">Roblox Adventures</a></li>
+</ul></div>
+<div class="panel"><h3>Populares</h3>
+<ul class="list">
+<li><a href="#">Top 5 Mods de Moto</a></li>
+<li><a href="#">Melhores Peças Zmodler</a></li>
+<li><a href="#">Mods de Mapa Atualizados</a></li>
+</ul></div>
+<div class="panel"><h3>Mais Recentes</h3>
+<div class="recent-item"><img src="https://placehold.co/400x200?text=Novo+Mod+Moto" alt="Thumb 1"><p>Nova moto Honda personalizada com textura metálica e desempenho ajustado.</p></div>
+<div class="recent-item"><img src="https://placehold.co/400x200?text=Novo+Mapa" alt="Thumb 2"><p>Mapa atualizado com novas rotas e clima dinâmico — vídeo completo disponível!</p></div>
+<div class="recent-item"><img src="https://placehold.co/400x200?text=Novo+Personagem" alt="Thumb 3"><p>Personagem com novo uniforme e animações exclusivas — assista ao vídeo!</p></div>
+</div>
+</aside>
+</div>
+</main>
+<footer class="footer">
+<div class="container footer-grid"><ul class="list">
+<li><a href="sobre.html">Sobre</a></li>
+<li><a href="contato.html">Contato</a></li>
+<li><a href="privacidade.html">Política de Privacidade</a></li>
+<li><a href="termos.html">Termos de Uso</a></li>
+</ul></div>
+<div class="container footer-bottom"><small>© 2025 Guika Mods RJ. Todos os direitos reservados.</small></div>
+</footer>
+<script>
+document.addEventListener("DOMContentLoaded",()=>{
+  const container=document.getElementById("cards");
+  const titulo=document.getElementById("titulo-section");
+  const listaCat=document.getElementById("lista-categorias");
+  const searchInput=document.getElementById("search-input");
+  const modsSalvos=JSON.parse(localStorage.getItem("modsSalvos"))||[];
+  const nomesCategorias={motos:"Motos",mapas:"Mods pro Mapa",pecas:"Peças Zmodler",personagens:"Mods de Personagem",outros:"Outros Mods",todos:"Todos os Mods"};
+  function fadeOutIn(callback){
+    container.classList.remove("show");
+    setTimeout(()=>{callback();container.classList.add("show");},300);
+  }
+  function renderMods(cat,query=""){
+
+    container.innerHTML="";
+    let lista=modsSalvos;
+    if(cat && cat!=="todos" && !cat.startsWith("mod")) lista=modsSalvos.filter(m=>m.categoria===cat);
+    if(query.trim()!==""){lista=lista.filter(m=>m.titulo.toLowerCase().includes(query.toLowerCase())||m.descricao.toLowerCase().includes(query.toLowerCase()));}
+    if(lista.length===0){container.innerHTML="<p>Nenhum mod encontrado.</p>";return;}
+    lista.forEach(mod=>{
+      const card=document.createElement("div");
+      card.className="card";
+      card.setAttribute("data-id",mod.id);
+      card.innerHTML=`<img src="${mod.img}" alt="${mod.titulo}">
+        <div class='card-content'><h3>${mod.titulo}</h3><p><strong>Categoria:</strong> ${mod.categoria}</p></div>`;
+      card.addEventListener("click",()=>{location.hash="mod-"+mod.id;});
+      container.appendChild(card);
+    });
+  
+    // --- PAGINAÇÃO ---
+    const itensPorPagina = 3;
+    let paginaAtual = 1;
+    const totalPaginas = Math.ceil(lista.length / itensPorPagina);
+    function exibirPagina(pagina){
+      container.innerHTML = "";
+      const inicio = (pagina - 1) * itensPorPagina;
+      const fim = inicio + itensPorPagina;
+      const paginaMods = lista.slice(inicio, fim);
+      paginaMods.forEach(mod => {
+        const card=document.createElement("div");
+        card.className="card";
+        card.setAttribute("data-id",mod.id);
+        card.innerHTML=`<img src="${mod.img}" alt="${mod.titulo}">
+          <div class='card-content'><h3>${mod.titulo}</h3><p><strong>Categoria:</strong> ${mod.categoria}</p></div>`;
+        card.addEventListener("click",()=>{location.hash="mod-"+mod.id;});
+        container.appendChild(card);
+      });
+      if(totalPaginas > 1){
+        const paginacao = document.createElement("div");
+        paginacao.style.textAlign = "center";
+        paginacao.style.margin = "2rem 0";
+
+        const btnPrev = document.createElement("button");
+        btnPrev.textContent = "← Página Anterior";
+        btnPrev.className = "btn-voltar";
+
+        const info = document.createElement("span");
+        info.style.margin = "0 1rem";
+
+        const btnNext = document.createElement("button");
+        btnNext.textContent = "Próxima Página →";
+        btnNext.className = "btn-download";
+
+        function atualizarBotoes(){
+          info.textContent = `Página ${paginaAtual} de ${totalPaginas}`;
+          btnPrev.style.display = paginaAtual === 1 ? "none" : "inline-block";
+          btnNext.style.display = paginaAtual === totalPaginas ? "none" : "inline-block";
+        }
+
+        btnPrev.onclick = ()=>{
+          if(paginaAtual>1){
+            paginaAtual--;
+            exibirPagina(paginaAtual);
+            atualizarBotoes();
+            window.scrollTo({top:0,behavior:'smooth'});
+          }
+        };
+
+        btnNext.onclick = ()=>{
+          if(paginaAtual<totalPaginas){
+            paginaAtual++;
+            exibirPagina(paginaAtual);
+            atualizarBotoes();
+            window.scrollTo({top:0,behavior:'smooth'});
+          }
+        };
+
+        paginacao.appendChild(btnPrev);
+        paginacao.appendChild(info);
+        paginacao.appendChild(btnNext);
+        container.appendChild(paginacao);
+        atualizarBotoes();
+      }
+    }
+    exibirPagina(paginaAtual);
+  }
+  function mostrarDetalhe(id){
+    const mod=modsSalvos.find(m=>m.id===id);
+    if(!mod){inicializar();return;}
+    fadeOutIn(()=>{
+      const tituloTopo = mod.tituloTopo && mod.tituloTopo.trim() !== "" ? mod.tituloTopo : mod.titulo;
+      titulo.textContent=tituloTopo;
+      container.innerHTML=`<div class='mod-detalhe'>
+          <div class='mod-detalhe-card'>
+            <a href="${mod.img}" target="_blank">
+              <img src="${mod.img}" alt="${mod.titulo}">
+            </a>
+            <div class='card-content'>
+              <h3>${mod.titulo}</h3>
+              <p><strong>Categoria:</strong> ${mod.categoria}</p>
+            </div>
+          </div>
+          <p><strong>Categoria:</strong> ${mod.categoria}</p>
+          <p>${mod.descricao}</p>
+          <a href="${mod.download}" target="_blank" class="btn-download">Baixar Mod</a>
+          <a href="#" class="btn-voltar">Voltar</a>
+        </div>`;
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      document.querySelector(".btn-voltar").addEventListener("click",(e)=>{
+        e.preventDefault();
+        history.back();
+      });
+    });
+  }
+  function atualizarContadores(){
+    const contadores={motos:0,mapas:0,pecas:0,personagens:0,outros:0};
+    modsSalvos.forEach(m=>{if(contadores[m.categoria]!=undefined) contadores[m.categoria]++;});
+    const total=modsSalvos.length;
+    listaCat.querySelectorAll("a[data-cat]").forEach(a=>{
+      const c=a.getAttribute("data-cat");
+      const num=c==="todos"?total:(contadores[c]||0);
+      const texto=a.textContent.replace(/\(\d+\)/,"");
+      a.textContent=texto.trim()+" ("+num+")";
+    });
+  }
+  function atualizarTitulo(cat){
+    if(!cat || cat==="inicio" || cat==="") titulo.textContent="Últimas Postagens";
+    else if(cat.startsWith("mod")) titulo.textContent="Detalhes do Mod";
+    else titulo.textContent=nomesCategorias[cat]||"Mods";
+  }
+  function inicializar(){
+    const hash=location.hash.replace("#","");
+    const query=searchInput.value.trim();
+    if(hash.startsWith("mod-")){const id=hash.replace("mod-","");mostrarDetalhe(id);return;}
+    fadeOutIn(()=>{atualizarTitulo(hash);renderMods(hash,query);atualizarContadores();});
+  }
+  listaCat.querySelectorAll("a[data-cat]").forEach(link=>{
+    link.addEventListener("click",e=>{e.preventDefault();const cat=e.target.getAttribute("data-cat");location.hash=cat;inicializar();window.scrollTo({top:0,behavior:"smooth"});});
+  });
+  searchInput.addEventListener("input",()=>{const hash=location.hash.replace("#","");const query=searchInput.value.trim();fadeOutIn(()=>renderMods(hash,query));});
+  window.addEventListener("hashchange",inicializar);
+  setTimeout(()=>{inicializar();setTimeout(()=>container.classList.add("show"),200);const hash=location.hash.replace("#","");if(hash.startsWith("mod-")){const id=hash.replace("mod-","");mostrarDetalhe(id);}},100);
+  const searchBtn=document.getElementById("search-button");
+  searchBtn.addEventListener("click",()=>{
+    const event=new Event("input");
+    searchInput.dispatchEvent(event);
+  });
+});
+</script>
+</body>
+</html>
