@@ -54,6 +54,31 @@ aside .panel:first-of-type{margin-top:1.3rem;}
 #search-button:hover{background:#3a3a3a;box-shadow:0 0 6px rgba(255,255,255,0.15);}
 #search-button:active{background:#222;box-shadow:0 0 3px rgba(255,255,255,0.1) inset;}
 aside{position:sticky;top:1.3rem;align-self:flex-start;height:max-content;}
+
+/* --- Detalhe do mod com imagem igual à da listagem --- */
+.mod-detalhe {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: left;
+  width: 100%;
+  margin: 0 auto;
+}
+.mod-detalhe-card {
+  width: 63.75%;
+  margin: 0 auto;
+  background: var(--panel);
+  border-radius: var(--radius);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  overflow: hidden;
+}
+.mod-detalhe-card img {
+  width: 100%;
+  height: 340px;
+  object-fit: cover;
+  border-radius: var(--radius);
+  display: block;
+}
 </style>
 </head>
 <body>
@@ -141,11 +166,8 @@ aside{position:sticky;top:1.3rem;align-self:flex-start;height:max-content;}
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
 
-  let modsSalvos = [];
-
   get(ref(db, "mods")).then(snapshot => {
-    if (snapshot.exists()) modsSalvos = Object.values(snapshot.val());
-    else modsSalvos = [];
+    const modsSalvos = snapshot.exists() ? Object.values(snapshot.val()) : [];
     iniciarSite(modsSalvos);
   });
 
@@ -155,48 +177,45 @@ aside{position:sticky;top:1.3rem;align-self:flex-start;height:max-content;}
     const listaCat=document.getElementById("lista-categorias");
     const searchInput=document.getElementById("search-input");
 
-    // Contagem automática
     const contagem={motos:0,mapas:0,pecas:0,personagens:0,outros:0};
-    modsSalvos.forEach(mod=>{
-      if(contagem[mod.categoria]!==undefined)contagem[mod.categoria]++;
-    });
+    modsSalvos.forEach(m=>{if(contagem[m.categoria]!==undefined)contagem[m.categoria]++;});
     const nomes={motos:"Motos",mapas:"Mods pro Mapa",pecas:"Peças Zmodler",personagens:"Mods de Personagem",outros:"Outros Mods"};
     listaCat.querySelectorAll("a").forEach(a=>{
       const cat=a.dataset.cat;
       if(contagem[cat]!==undefined)a.textContent=`${nomes[cat]} (${contagem[cat]})`;
     });
 
-    function fadeOutIn(cb){container.classList.remove("show");setTimeout(()=>{cb();container.classList.add("show");},300);}
-    function renderMods(cat,query=""){
+    function fade(cb){container.classList.remove("show");setTimeout(()=>{cb();container.classList.add("show");},300);}
+    function render(cat,q=""){
       container.innerHTML="";
       let lista=modsSalvos;
       if(cat&&cat!=="todos"&&!cat.startsWith("mod"))lista=modsSalvos.filter(m=>m.categoria===cat);
-      if(query.trim()!=="")lista=lista.filter(m=>m.titulo.toLowerCase().includes(query.toLowerCase())||m.descricao.toLowerCase().includes(query.toLowerCase()));
+      if(q.trim()!=="")lista=lista.filter(m=>m.titulo.toLowerCase().includes(q.toLowerCase())||m.descricao.toLowerCase().includes(q.toLowerCase()));
       if(lista.length===0){container.innerHTML="<p>Nenhum mod encontrado.</p>";return;}
-      lista.forEach(mod=>{
-        const card=document.createElement("div");
-        card.className="card";
-        card.setAttribute("data-id",mod.id);
-        card.innerHTML=`<img src="${mod.img}" alt="${mod.titulo}">
-        <div class='card-content'><h3>${mod.titulo}</h3><p><strong>Categoria:</strong> ${mod.categoria}</p></div>`;
-        card.addEventListener("click",()=>{location.hash="mod-"+mod.id;});
-        container.appendChild(card);
+      lista.forEach(m=>{
+        const c=document.createElement("div");
+        c.className="card";
+        c.setAttribute("data-id",m.id);
+        c.innerHTML=`<img src="${m.img}" alt="${m.titulo}">
+          <div class='card-content'><h3>${m.titulo}</h3><p><strong>Categoria:</strong> ${m.categoria}</p></div>`;
+        c.addEventListener("click",()=>{location.hash="mod-"+m.id;});
+        container.appendChild(c);
       });
     }
 
-    function mostrarDetalhe(id){
-      const mod=modsSalvos.find(m=>m.id===id);
-      if(!mod){inicializar();return;}
-      fadeOutIn(()=>{
-        const tTopo=mod.tituloTopo&&mod.tituloTopo.trim()!==""?mod.tituloTopo:mod.titulo;
+    function detalhe(id){
+      const m=modsSalvos.find(x=>x.id===id);
+      if(!m){init();return;}
+      fade(()=>{
+        const tTopo=m.tituloTopo&&m.tituloTopo.trim()!==""?m.tituloTopo:m.titulo;
         titulo.textContent=tTopo;
         container.innerHTML=`<div class='mod-detalhe'>
           <div class='mod-detalhe-card'>
-            <a href="${mod.img}" target="_blank"><img src="${mod.img}" alt="${mod.titulo}"></a>
-            <div class='card-content'><h3>${mod.titulo}</h3><p><strong>Categoria:</strong> ${mod.categoria}</p></div>
+            <a href="${m.img}" target="_blank"><img src="${m.img}" alt="${m.titulo}"></a>
+            <div class='card-content'><h3>${m.titulo}</h3><p><strong>Categoria:</strong> ${m.categoria}</p></div>
           </div>
-          <p>${mod.descricao}</p>
-          <a href="${mod.download}" target="_blank" class="btn-download">Baixar Mod</a>
+          <p>${m.descricao}</p>
+          <a href="${m.download}" target="_blank" class="btn-download">Baixar Mod</a>
           <a href="#" class="btn-voltar">Voltar</a>
         </div>`;
         window.scrollTo({top:0,behavior:"smooth"});
@@ -204,20 +223,16 @@ aside{position:sticky;top:1.3rem;align-self:flex-start;height:max-content;}
       });
     }
 
-    function inicializar(){
+    function init(){
       const hash=location.hash.replace("#","");
-      const query=searchInput.value.trim();
-      if(hash.startsWith("mod-")){const id=hash.replace("mod-","");mostrarDetalhe(id);return;}
-      fadeOutIn(()=>{
-        renderMods(hash,query);
-        if(hash&&nomes[hash])titulo.textContent=nomes[hash];
-        else titulo.textContent="Últimas Postagens";
-      });
+      const q=searchInput.value.trim();
+      if(hash.startsWith("mod-")){const id=hash.replace("mod-","");detalhe(id);return;}
+      fade(()=>{render(hash,q);titulo.textContent=nomes[hash]||"Últimas Postagens";});
     }
 
-    searchInput.addEventListener("input",()=>{const hash=location.hash.replace("#","");const q=searchInput.value.trim();fadeOutIn(()=>renderMods(hash,q));});
-    window.addEventListener("hashchange",inicializar);
-    inicializar();
+    searchInput.addEventListener("input",()=>{const h=location.hash.replace("#","");const q=searchInput.value.trim();fade(()=>render(h,q));});
+    window.addEventListener("hashchange",init);
+    init();
     setTimeout(()=>container.classList.add("show"),300);
   }
 </script>
