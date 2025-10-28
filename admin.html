@@ -37,6 +37,25 @@ button {
   font-weight: bold;
 }
 button:hover { background: #3a3a3a; }
+.preview {
+  text-align: center;
+  margin-top: 0.5rem;
+}
+.preview img {
+  max-width: 100%;
+  border-radius: 8px;
+  margin-top: 0.5rem;
+}
+.preview a {
+  display: inline-block;
+  margin-top: 0.5rem;
+  background: #2b2b2b;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  text-decoration: none;
+}
+.preview a:hover { background: #3a3a3a; }
 table {
   width: 100%;
   max-width: 1000px;
@@ -53,48 +72,96 @@ th { background: #222; }
   margin-right: 0.5rem;
   padding: 0.4rem 0.7rem;
 }
+
+/* Tela de login */
+#login {
+  text-align: center;
+  background: #1a1a1a;
+  padding: 2rem;
+  border-radius: 10px;
+  max-width: 400px;
+  margin: 5rem auto;
+}
+#login input {
+  display: block;
+  width: 100%;
+  margin: 1rem 0;
+}
 </style>
 </head>
 <body>
 
-<h1>Painel Admin — Guika Mods RJ</h1>
+<!-- Tela de login -->
+<div id="login">
+  <h2>Área Restrita</h2>
+  <p>Digite a senha para acessar o painel:</p>
+  <input type="password" id="senha" placeholder="Senha">
+  <button id="entrar">Entrar</button>
+  <p id="erro" style="color:red;display:none;">Senha incorreta!</p>
+</div>
 
-<form id="modForm">
-  <input type="text" id="titulo" placeholder="Título do mod" required>
-  <input type="text" id="tituloTopo" placeholder="Título que aparece em cima do mod">
-  <input type="url" id="img" placeholder="URL da imagem" required>
-  <input type="url" id="download" placeholder="Link de download do mod" required>
-  <textarea id="descricao" placeholder="Descrição do mod" rows="4" required></textarea>
-  <input type="date" id="data" required>
-  <select id="categoria" required>
-    <option value="">Selecione a categoria</option>
-    <option value="motos">Motos</option>
-    <option value="mapas">Mods pro Mapa</option>
-    <option value="pecas">Peças Zmodler</option>
-    <option value="personagens">Mods de Personagem</option>
-    <option value="outros">Outros Mods</option>
-  </select>
-  <button type="submit">Adicionar Mod</button>
-</form>
+<!-- Painel Admin -->
+<div id="admin" style="display:none;">
+  <h1>Painel Admin — Guika Mods RJ</h1>
 
-<h2 style="text-align:center;">Mods Salvos</h2>
-<table>
-  <thead>
-    <tr>
-      <th>Título</th>
-      <th>Categoria</th>
-      <th>Data</th>
-      <th>Ações</th>
-    </tr>
-  </thead>
-  <tbody id="listaMods"></tbody>
-</table>
+  <form id="modForm">
+    <input type="text" id="titulo" placeholder="Título do mod" required>
+    <input type="text" id="tituloTopo" placeholder="Título que aparece em cima do mod">
+    
+    <input type="url" id="img" placeholder="URL da imagem" required>
+    <div id="imgPreview" class="preview"></div>
+    
+    <input type="url" id="download" placeholder="Link de download do mod" required>
+    <div id="downloadPreview" class="preview"></div>
+
+    <textarea id="descricao" placeholder="Descrição do mod" rows="4" required></textarea>
+    <input type="date" id="data" required>
+    <select id="categoria" required>
+      <option value="">Selecione a categoria</option>
+      <option value="motos">Motos</option>
+      <option value="mapas">Mods pro Mapa</option>
+      <option value="pecas">Peças Zmodler</option>
+      <option value="personagens">Mods de Personagem</option>
+      <option value="outros">Outros Mods</option>
+    </select>
+    <button type="submit">Adicionar Mod</button>
+  </form>
+
+  <h2 style="text-align:center;">Mods Salvos</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Título</th>
+        <th>Categoria</th>
+        <th>Data</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody id="listaMods"></tbody>
+  </table>
+</div>
 
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-  import { getDatabase, ref, push, set, get, remove } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+  // 🔐 Senha simples de acesso
+  const SENHA_CORRETA = "gigigui"; // << troque aqui se quiser
+  const loginDiv = document.getElementById("login");
+  const adminDiv = document.getElementById("admin");
+  const senhaInput = document.getElementById("senha");
+  const erroMsg = document.getElementById("erro");
 
-  // Config do seu Firebase
+  document.getElementById("entrar").addEventListener("click", () => {
+    if (senhaInput.value === SENHA_CORRETA) {
+      loginDiv.style.display = "none";
+      adminDiv.style.display = "block";
+    } else {
+      erroMsg.style.display = "block";
+    }
+  });
+
+  // 🔥 Firebase
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+  import { getDatabase, ref, push, set, get, remove, update } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+
   const firebaseConfig = {
     apiKey: "AIzaSyDuh9sEO3aejr6RZGwWC84f0EvTulXbAdQ",
     authDomain: "guikamodsrj.firebaseapp.com",
@@ -109,60 +176,155 @@ th { background: #222; }
   const db = getDatabase(app);
   const modsRef = ref(db, "mods");
 
+  // 🌱 DOM
   const form = document.getElementById("modForm");
   const listaMods = document.getElementById("listaMods");
 
-  // Exibir mods
+  const titulo = document.getElementById("titulo");
+  const tituloTopo = document.getElementById("tituloTopo");
+  const imgInput = document.getElementById("img");
+  const downloadInput = document.getElementById("download");
+  const descricao = document.getElementById("descricao");
+  const dataInput = document.getElementById("data");
+  const categoria = document.getElementById("categoria");
+
+  const imgPreview = document.getElementById("imgPreview");
+  const downloadPreview = document.getElementById("downloadPreview");
+
+  // 🖊️ Estado de edição
+  let editingId = null;
+  const submitBtn = form.querySelector('button[type="submit"]');
+  const cancelBtn = document.createElement('button');
+  cancelBtn.type = "button";
+  cancelBtn.textContent = "Cancelar edição";
+  cancelBtn.style.display = "none";
+  cancelBtn.addEventListener("click", cancelarEdicao);
+  form.appendChild(cancelBtn);
+
+  function cancelarEdicao() {
+    editingId = null;
+    form.reset();
+    imgPreview.innerHTML = "";
+    downloadPreview.innerHTML = "";
+    submitBtn.textContent = "Adicionar Mod";
+    cancelBtn.style.display = "none";
+  }
+
+  // 🖼️ Preview automático da imagem
+  imgInput.addEventListener("input", () => {
+    const url = imgInput.value.trim();
+    imgPreview.innerHTML = url ? `<img src="${url}" alt="Preview da imagem">` : "";
+  });
+
+  // 🔗 Preview do link de download
+  downloadInput.addEventListener("input", () => {
+    const url = downloadInput.value.trim();
+    downloadPreview.innerHTML = url ? `<a href="${url}" target="_blank">Testar Download</a>` : "";
+  });
+
+  // 📋 Listar mods
   function mostrarMods() {
     get(modsRef).then(snapshot => {
       listaMods.innerHTML = "";
-      if (snapshot.exists()) {
-        const mods = snapshot.val();
-        Object.entries(mods).forEach(([id, mod]) => {
-          const tr = document.createElement("tr");
-          tr.innerHTML = `
-            <td>${mod.titulo}</td>
-            <td>${mod.categoria}</td>
-            <td>${mod.data}</td>
-            <td class="actions">
-              <button onclick="excluirMod('${id}')">Excluir</button>
-            </td>
-          `;
-          listaMods.appendChild(tr);
-        });
-      }
+      if (!snapshot.exists()) return;
+
+      const mods = snapshot.val();
+      Object.entries(mods).forEach(([id, mod]) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${mod.titulo || ""}</td>
+          <td>${mod.categoria || ""}</td>
+          <td>${mod.data || ""}</td>
+          <td class="actions">
+            <button onclick="editarMod('${id}')">Editar</button>
+            <button onclick="excluirMod('${id}')">Excluir</button>
+          </td>
+        `;
+        listaMods.appendChild(tr);
+      });
     });
   }
 
-  // Excluir mod
+  // 🗑️ Excluir mod
   window.excluirMod = function(id) {
     remove(ref(db, "mods/" + id)).then(() => {
       alert("Mod excluído!");
       mostrarMods();
+      cancelarEdicao();
     });
   };
 
-  // Adicionar mod
+  // ✏️ Editar mod
+  window.editarMod = function(id) {
+    get(ref(db, "mods/" + id)).then(snap => {
+      if (!snap.exists()) {
+        alert("Mod não encontrado.");
+        return;
+      }
+      const m = snap.val();
+
+      // Preenche campos
+      titulo.value = m.titulo || "";
+      tituloTopo.value = m.tituloTopo || "";
+      imgInput.value = m.img || "";
+      imgPreview.innerHTML = m.img ? `<img src="${m.img}" alt="Preview da imagem">` : "";
+      downloadInput.value = m.download || "";
+      downloadPreview.innerHTML = m.download ? `<a href="${m.download}" target="_blank">Testar Download</a>` : "";
+      descricao.value = m.descricao || "";
+      dataInput.value = m.data || "";
+      categoria.value = m.categoria || "";
+
+      // Modo edição
+      editingId = id;
+      submitBtn.textContent = "Salvar alterações";
+      cancelBtn.style.display = "inline-block";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  };
+
+  // ➕ Adicionar / 💾 Atualizar
   form.addEventListener("submit", e => {
     e.preventDefault();
+
+    if (editingId) {
+      const updateData = {
+        titulo: titulo.value,
+        tituloTopo: tituloTopo.value,
+        img: imgInput.value,
+        descricao: descricao.value,
+        data: dataInput.value,
+        categoria: categoria.value,
+        download: downloadInput.value
+      };
+      update(ref(db, "mods/" + editingId), updateData).then(() => {
+        alert("Mod atualizado!");
+        cancelarEdicao();
+        mostrarMods();
+      });
+      return;
+    }
+
     const mod = {
       id: "mod-" + Date.now(),
       titulo: titulo.value,
       tituloTopo: tituloTopo.value,
-      img: img.value,
+      img: imgInput.value,
       descricao: descricao.value,
-      data: data.value,
+      data: dataInput.value,
       categoria: categoria.value,
-      download: download.value
+      download: downloadInput.value
     };
     const novo = push(modsRef);
     set(novo, mod).then(() => {
       alert("Mod adicionado!");
       form.reset();
+      imgPreview.innerHTML = "";
+      downloadPreview.innerHTML = "";
       mostrarMods();
     });
   });
 
+  // Inicial
   mostrarMods();
 </script>
 </body>
