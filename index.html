@@ -62,126 +62,139 @@ a{color:#ccc;}
 .mod-detalhe p{color:var(--muted);margin:0.5rem 0;}
 .btn-voltar,.btn-download{background:#2b2b2b;color:#fff;border:none;border-radius:var(--radius);padding:0.7rem 1.4rem;cursor:pointer;font-weight:600;transition:background 0.2s;margin:0.5rem;display:inline-block;text-decoration:none;}
 .btn-voltar:hover,.btn-download:hover{background:#3a3a3a;}
-#search-button {
-  transition: background 0.25s ease, box-shadow 0.25s ease;
-}
-#search-button:hover {
-  background: #3a3a3a;
-  box-shadow: 0 0 6px rgba(255, 255, 255, 0.15);
-}
-#search-button:active {
-  background: #222;
-  box-shadow: 0 0 3px rgba(255, 255, 255, 0.1) inset;
-}
+#search-button {transition: background 0.25s ease, box-shadow 0.25s ease;}
+#search-button:hover {background:#3a3a3a;box-shadow:0 0 6px rgba(255, 255, 255, 0.15);}
+#search-button:active {background:#222;box-shadow:0 0 3px rgba(255, 255, 255, 0.1) inset;}
 aside {position: sticky; top: 1.3rem; align-self: flex-start; height: max-content;}
 </style>
 </head>
 <body>
 <header class="header">
-<div class="container header-inner">
-<a aria-label="Página inicial" class="logo" href="index.html">Guika Mods RJ</a>
-<nav aria-label="Principal" class="nav">
-<ul>
-<li><a class="active" href="index.html">Início</a></li>
-<li class="dropdown"><a href="#mods">Menu dos Mods</a>
-<div class="dropdown-content">
-<a href="#motos" data-cat="motos">Mods de Moto</a>
-<a href="#mapas" data-cat="mapas">Mods pro Mapa</a>
-<a href="#pecas" data-cat="pecas">Peças Zmodler</a>
-<a href="#personagens" data-cat="personagens">Mods de Personagem</a>
-<a href="#outros" data-cat="outros">Outros Mods</a>
-<a href="#todos" data-cat="todos">Todos os Mods</a>
-</div></li>
-<li><a href="#reviews">Reviews</a></li>
-<li><a href="#tutoriais">Tutoriais</a></li>
-</ul></nav>
-<form class="search" id="search-form" role="search" onsubmit="return false;" style="display:flex;align-items:center;">
-  <input id="search-input" name="q" placeholder="Pesquisar..."/>
-  <button id="search-button" type="button" style="background:#2b2b2b;color:#fff;border:none;border-radius:10px;padding:0.5rem 1rem;margin-left:0.5rem;cursor:pointer;font-weight:600;">Buscar</button>
-</form>
-</div>
+  <div class="container header-inner">
+    <a aria-label="Página inicial" class="logo" href="index.html">Guika Mods RJ</a>
+    <nav aria-label="Principal" class="nav">
+      <ul>
+        <li><a class="active" href="index.html">Início</a></li>
+        <li class="dropdown"><a href="#mods">Menu dos Mods</a>
+          <div class="dropdown-content">
+            <a href="#motos" data-cat="motos">Mods de Moto</a>
+            <a href="#mapas" data-cat="mapas">Mods pro Mapa</a>
+            <a href="#pecas" data-cat="pecas">Peças Zmodler</a>
+            <a href="#personagens" data-cat="personagens">Mods de Personagem</a>
+            <a href="#outros" data-cat="outros">Outros Mods</a>
+            <a href="#todos" data-cat="todos">Todos os Mods</a>
+          </div>
+        </li>
+        <li><a href="#reviews">Reviews</a></li>
+        <li><a href="#tutoriais">Tutoriais</a></li>
+      </ul>
+    </nav>
+    <form class="search" id="search-form" role="search" onsubmit="return false;" style="display:flex;align-items:center;">
+      <input id="search-input" name="q" placeholder="Pesquisar..."/>
+      <button id="search-button" type="button" style="background:#2b2b2b;color:#fff;border:none;border-radius:10px;padding:0.5rem 1rem;margin-left:0.5rem;cursor:pointer;font-weight:600;">Buscar</button>
+    </form>
+  </div>
 </header>
+
 <main>
-<div class="container grid">
-<section aria-labelledby="titulo-section">
-<h2 id="titulo-section">Últimas Postagens</h2>
-<div id="cards"></div>
-</section>
-<aside>
-<div class="panel"><h3>Categorias</h3><ul class="list" id="lista-categorias">
-<li><a href="#motos" data-cat="motos">Motos (0)</a></li>
-<li><a href="#mapas" data-cat="mapas">Mods pro Mapa (0)</a></li>
-<li><a href="#pecas" data-cat="pecas">Peças Zmodler (0)</a></li>
-<li><a href="#personagens" data-cat="personagens">Personagens (0)</a></li>
-<li><a href="#outros" data-cat="outros">Outros Mods (0)</a></li>
-<li><a href="#todos" data-cat="todos">Todos (0)</a></li>
-</ul></div>
-<div class="panel"><h3>Blogs Parceiros</h3>
-<ul class="list">
-<li><a href="https://adventuresog.netlify.app/" target="_blank" rel="noopener">Roblox Adventures</a></li>
-</ul></div>
-<div class="panel"><h3>Populares</h3>
-<ul class="list">
-<li><a href="#">Top 5 Mods de Moto</a></li>
-<li><a href="#">Melhores Peças Zmodler</a></li>
-<li><a href="#">Mods de Mapa Atualizados</a></li>
-</ul></div>
-<div class="panel"><h3>Mais Recentes</h3>
-<div class="recent-item"><img src="https://placehold.co/400x200?text=Novo+Mod+Moto" alt="Thumb 1"><p>Nova moto Honda personalizada com textura metálica e desempenho ajustado.</p></div>
-<div class="recent-item"><img src="https://placehold.co/400x200?text=Novo+Mapa" alt="Thumb 2"><p>Mapa atualizado com novas rotas e clima dinâmico — vídeo completo disponível!</p></div>
-<div class="recent-item"><img src="https://placehold.co/400x200?text=Novo+Personagem" alt="Thumb 3"><p>Personagem com novo uniforme e animações exclusivas — assista ao vídeo!</p></div>
-</div>
-</aside>
-</div>
+  <div class="container grid">
+    <section aria-labelledby="titulo-section">
+      <h2 id="titulo-section">Últimas Postagens</h2>
+      <div id="cards"></div>
+    </section>
+    <aside>
+      <div class="panel"><h3>Categorias</h3><ul class="list" id="lista-categorias">
+        <li><a href="#motos" data-cat="motos">Motos (0)</a></li>
+        <li><a href="#mapas" data-cat="mapas">Mods pro Mapa (0)</a></li>
+        <li><a href="#pecas" data-cat="pecas">Peças Zmodler (0)</a></li>
+        <li><a href="#personagens" data-cat="personagens">Personagens (0)</a></li>
+        <li><a href="#outros" data-cat="outros">Outros Mods (0)</a></li>
+        <li><a href="#todos" data-cat="todos">Todos (0)</a></li>
+      </ul></div>
+      <div class="panel"><h3>Blogs Parceiros</h3>
+        <ul class="list">
+          <li><a href="https://adventuresog.netlify.app/" target="_blank" rel="noopener">Roblox Adventures</a></li>
+        </ul>
+      </div>
+      <div class="panel"><h3>Populares</h3>
+        <ul class="list">
+          <li><a href="#">Top 5 Mods de Moto</a></li>
+          <li><a href="#">Melhores Peças Zmodler</a></li>
+          <li><a href="#">Mods de Mapa Atualizados</a></li>
+        </ul>
+      </div>
+      <div class="panel"><h3>Mais Recentes</h3>
+        <div class="recent-item"><img src="https://placehold.co/400x200?text=Novo+Mod+Moto" alt="Thumb 1"><p>Nova moto Honda personalizada com textura metálica e desempenho ajustado.</p></div>
+        <div class="recent-item"><img src="https://placehold.co/400x200?text=Novo+Mapa" alt="Thumb 2"><p>Mapa atualizado com novas rotas e clima dinâmico — vídeo completo disponível!</p></div>
+        <div class="recent-item"><img src="https://placehold.co/400x200?text=Novo+Personagem" alt="Thumb 3"><p>Personagem com novo uniforme e animações exclusivas — assista ao vídeo!</p></div>
+      </div>
+    </aside>
+  </div>
 </main>
+
 <footer class="footer">
-<div class="container footer-grid"><ul class="list">
-<li><a href="sobre.html">Sobre</a></li>
-<li><a href="contato.html">Contato</a></li>
-<li><a href="privacidade.html">Política de Privacidade</a></li>
-<li><a href="termos.html">Termos de Uso</a></li>
-</ul></div>
-<div class="container footer-bottom"><small>© 2025 Guika Mods RJ. Todos os direitos reservados.</small></div>
+  <div class="container footer-grid">
+    <ul class="list">
+      <li><a href="sobre.html">Sobre</a></li>
+      <li><a href="contato.html">Contato</a></li>
+      <li><a href="privacidade.html">Política de Privacidade</a></li>
+      <li><a href="termos.html">Termos de Uso</a></li>
+    </ul>
+  </div>
+  <div class="container footer-bottom"><small>© 2025 Guika Mods RJ. Todos os direitos reservados.</small></div>
 </footer>
+
 <script>
 document.addEventListener("DOMContentLoaded",()=>{
   const container=document.getElementById("cards");
   const titulo=document.getElementById("titulo-section");
   const listaCat=document.getElementById("lista-categorias");
   const searchInput=document.getElementById("search-input");
+
+  // Estado local
   const modsSalvos=JSON.parse(localStorage.getItem("modsSalvos"))||[];
-  const nomesCategorias={motos:"Motos",mapas:"Mods pro Mapa",pecas:"Peças Zmodler",personagens:"Mods de Personagem",outros:"Outros Mods",todos:"Todos os Mods"};
+  let LOADED = false; // evita "Nenhum mod" antes do 1º fetch
+
+  const nomesCategorias={
+    motos:"Motos",mapas:"Mods pro Mapa",pecas:"Peças Zmodler",
+    personagens:"Mods de Personagem",outros:"Outros Mods",todos:"Todos os Mods"
+  };
+
   function fadeOutIn(callback){
     container.classList.remove("show");
     setTimeout(()=>{callback();container.classList.add("show");},300);
   }
-  function renderMods(cat,query=""){
 
+  function renderMods(cat,query=""){
     container.innerHTML="";
+    if(!LOADED){
+      container.innerHTML = "<p>Carregando mods…</p>";
+      return;
+    }
+
     let lista=modsSalvos;
     if(cat && cat!=="todos" && !cat.startsWith("mod")) lista=modsSalvos.filter(m=>m.categoria===cat);
-    if(query.trim()!==""){lista=lista.filter(m=>m.titulo.toLowerCase().includes(query.toLowerCase())||m.descricao.toLowerCase().includes(query.toLowerCase()));}
+    if(query.trim()!==""){
+      const q = query.toLowerCase();
+      lista = lista.filter(m =>
+        (m.titulo||"").toLowerCase().includes(q) ||
+        (m.descricao||"").toLowerCase().includes(q)
+      );
+    }
     if(lista.length===0){container.innerHTML="<p>Nenhum mod encontrado.</p>";return;}
-    lista.forEach(mod=>{
-      const card=document.createElement("div");
-      card.className="card";
-      card.setAttribute("data-id",mod.id);
-      card.innerHTML=`<img src="${mod.img}" alt="${mod.titulo}">
-        <div class='card-content'><h3>${mod.titulo}</h3><p><strong>Categoria:</strong> ${mod.categoria}</p></div>`;
-      card.addEventListener("click",()=>{location.hash="mod-"+mod.id;});
-      container.appendChild(card);
-    });
-  
+
     // --- PAGINAÇÃO ---
     const itensPorPagina = 3;
     let paginaAtual = 1;
     const totalPaginas = Math.ceil(lista.length / itensPorPagina);
+
     function exibirPagina(pagina){
       container.innerHTML = "";
       const inicio = (pagina - 1) * itensPorPagina;
       const fim = inicio + itensPorPagina;
       const paginaMods = lista.slice(inicio, fim);
-      paginaMods.forEach(mod => {
+
+      paginaMods.forEach(mod=>{
         const card=document.createElement("div");
         card.className="card";
         card.setAttribute("data-id",mod.id);
@@ -190,6 +203,7 @@ document.addEventListener("DOMContentLoaded",()=>{
         card.addEventListener("click",()=>{location.hash="mod-"+mod.id;});
         container.appendChild(card);
       });
+
       if(totalPaginas > 1){
         const paginacao = document.createElement("div");
         paginacao.style.textAlign = "center";
@@ -237,8 +251,10 @@ document.addEventListener("DOMContentLoaded",()=>{
         atualizarBotoes();
       }
     }
+
     exibirPagina(paginaAtual);
   }
+
   function mostrarDetalhe(id){
     const mod=modsSalvos.find(m=>m.id===id);
     if(!mod){inicializar();return;}
@@ -256,7 +272,7 @@ document.addEventListener("DOMContentLoaded",()=>{
             </div>
           </div>
           <p><strong>Categoria:</strong> ${mod.categoria}</p>
-          <p>${mod.descricao}</p>
+          <p>${mod.descricao||""}</p>
           <a href="${mod.download}" target="_blank" class="btn-download">Baixar Mod</a>
           <a href="#" class="btn-voltar">Voltar</a>
         </div>`;
@@ -267,6 +283,7 @@ document.addEventListener("DOMContentLoaded",()=>{
       });
     });
   }
+
   function atualizarContadores(){
     const contadores={motos:0,mapas:0,pecas:0,personagens:0,outros:0};
     modsSalvos.forEach(m=>{if(contadores[m.categoria]!=undefined) contadores[m.categoria]++;});
@@ -278,23 +295,45 @@ document.addEventListener("DOMContentLoaded",()=>{
       a.textContent=texto.trim()+" ("+num+")";
     });
   }
+
   function atualizarTitulo(cat){
     if(!cat || cat==="inicio" || cat==="") titulo.textContent="Últimas Postagens";
     else if(cat.startsWith("mod")) titulo.textContent="Detalhes do Mod";
     else titulo.textContent=nomesCategorias[cat]||"Mods";
   }
+
   function inicializar(){
     const hash=location.hash.replace("#","");
     const query=searchInput.value.trim();
     if(hash.startsWith("mod-")){const id=hash.replace("mod-","");mostrarDetalhe(id);return;}
     fadeOutIn(()=>{atualizarTitulo(hash);renderMods(hash,query);atualizarContadores();});
   }
+
   listaCat.querySelectorAll("a[data-cat]").forEach(link=>{
-    link.addEventListener("click",e=>{e.preventDefault();const cat=e.target.getAttribute("data-cat");location.hash=cat;inicializar();window.scrollTo({top:0,behavior:"smooth"});});
+    link.addEventListener("click",e=>{
+      e.preventDefault();
+      const cat=e.target.getAttribute("data-cat");
+      location.hash=cat;
+      inicializar();
+      window.scrollTo({top:0,behavior:"smooth"});
+    });
   });
-  searchInput.addEventListener("input",()=>{const hash=location.hash.replace("#","");const query=searchInput.value.trim();fadeOutIn(()=>renderMods(hash,query));});
+
+  searchInput.addEventListener("input",()=>{
+    const hash=location.hash.replace("#","");
+    const query=searchInput.value.trim();
+    fadeOutIn(()=>renderMods(hash,query));
+  });
+
   window.addEventListener("hashchange",inicializar);
-  setTimeout(()=>{inicializar();setTimeout(()=>container.classList.add("show"),200);const hash=location.hash.replace("#","");if(hash.startsWith("mod-")){const id=hash.replace("mod-","");mostrarDetalhe(id);}},100);
+
+  setTimeout(()=>{
+    inicializar();
+    setTimeout(()=>container.classList.add("show"),200);
+    const hash=location.hash.replace("#","");
+    if(hash.startsWith("mod-")){mostrarDetalhe(hash.replace("mod-",""));}
+  },100);
+
   const searchBtn=document.getElementById("search-button");
   searchBtn.addEventListener("click",()=>{
     const event=new Event("input");
@@ -302,17 +341,14 @@ document.addEventListener("DOMContentLoaded",()=>{
   });
 
   /* =======================
-     SINCRONIZAÇÃO COM FIREBASE (ACRESCENTADO, SEM ALTERAR O RESTO)
-     -----------------------
-     - Lê os mods de https://guikamodsrj-default-rtdb.firebaseio.com
-     - Tenta /mods e /modsSalvos
-     - Atualiza o array existente 'modsSalvos' **sem** reatribuir (mantém const)
-     - Re-renderiza chamando inicializar()
-     - Tempo real via EventSource (REST streaming). Fallback: polling a cada 15s.
+     SINCRONIZAÇÃO COM FIREBASE
+     - Lê de /modsSalvos (suas regras bloqueiam /mods)
+     - Mostra "Carregando…" até o 1º fetch concluir
+     - Stream resiliente (não zera tudo em null)
   ======================= */
   (function(){
     const DB_BASE = "https://guikamodsrj-default-rtdb.firebaseio.com";
-    const PATHS = ["/mods", "/modsSalvos"];
+    const PATHS = ["/modsSalvos"]; // <<< único caminho
     let streamStarted = false;
     const seenStreams = new Set();
 
@@ -320,9 +356,7 @@ document.addEventListener("DOMContentLoaded",()=>{
       const arr=[];
       if(!val) return arr;
       if(Array.isArray(val)){
-        val.forEach((v,i)=>{
-          if(v){ arr.push(buildMod(v, v.id || String(i))); }
-        });
+        val.forEach((v,i)=>{ if(v){ arr.push(buildMod(v, v.id || String(i))); } });
       } else if(typeof val === "object"){
         Object.keys(val).forEach(key=>{
           const v = val[key];
@@ -333,6 +367,7 @@ document.addEventListener("DOMContentLoaded",()=>{
       }
       return dedupe(arr);
     }
+
     function buildMod(v, key){
       const m = Object.assign({}, v);
       if(!m.id) m.id = key;
@@ -344,6 +379,7 @@ document.addEventListener("DOMContentLoaded",()=>{
       if(!m.tituloTopo) m.tituloTopo = m.titulo;
       return m;
     }
+
     function dedupe(list){
       const map=new Map();
       list.forEach(m=>{
@@ -352,6 +388,7 @@ document.addEventListener("DOMContentLoaded",()=>{
       });
       return Array.from(map.values());
     }
+
     function mergeMods(list){
       const byId = new Map(modsSalvos.map(m=>[m.id,m]));
       let changed = false;
@@ -373,6 +410,7 @@ document.addEventListener("DOMContentLoaded",()=>{
       }
       return changed;
     }
+
     function replaceAll(list){
       let changed = false;
       if(list.length!==modsSalvos.length) changed = true;
@@ -387,6 +425,7 @@ document.addEventListener("DOMContentLoaded",()=>{
       }
       return changed;
     }
+
     function removeById(id){
       const idx = modsSalvos.findIndex(m=>m.id===id);
       if(idx>-1){
@@ -396,24 +435,36 @@ document.addEventListener("DOMContentLoaded",()=>{
       }
       return false;
     }
+
     function refreshUI(){
       try{ inicializar(); }catch(_){}
     }
+
     function fetchAllOnce(){
-      return Promise.all(PATHS.map(p => fetch(DB_BASE + p + ".json").then(r=>r.ok?r.json():null).catch(()=>null)))
-        .then(values=>{
-          const arr = dedupe(values.flatMap(v=>normalizeMods(v)));
-          if(arr.length>0){
-            if(replaceAll(arr)) refreshUI();
-          }
-        }).catch(()=>{});
+      return Promise.all(
+        PATHS.map(p =>
+          fetch(DB_BASE + p + ".json").then(r=>r.ok?r.json():null).catch(()=>null)
+        )
+      ).then(values=>{
+        const arr = dedupe(values.flatMap(v=>normalizeMods(v)));
+        if(arr.length>0){
+          if(replaceAll(arr)) refreshUI();
+        }
+        LOADED = true;       // libera a renderização
+        refreshUI();
+      }).catch(()=>{
+        LOADED = true;
+        refreshUI();
+      });
     }
+
     function startStream(path){
       if(seenStreams.has(path)) return;
       seenStreams.add(path);
       try{
         const es = new EventSource(DB_BASE + path + ".json");
         streamStarted = true;
+
         es.addEventListener("put", ev=>{
           try{
             const msg = JSON.parse(ev.data); // {path, data}
@@ -433,28 +484,32 @@ document.addEventListener("DOMContentLoaded",()=>{
         streamStarted = false;
       }
     }
+
     function applyChange(relPath, data){
+      // Evento no root: não zera tudo quando for null
       if(relPath === "/" || relPath === "" || relPath === null){
         const arr = normalizeMods(data);
         if(arr.length>0){
           if(replaceAll(arr)) refreshUI();
-        } else {
-          if(replaceAll([])) refreshUI();
         }
         return;
       }
       const parts = relPath.split("/").filter(Boolean);
       const id = parts[0];
       if(!id) return;
-      if(parts.length === 1){
-        const mod = buildMod(data || {}, id);
-        if(mergeMods([mod])) refreshUI();
-      } else {
-        const exist = modsSalvos.find(m=>m.id===id) || {id};
-        setDeep(exist, parts.slice(1), data);
-        if(mergeMods([exist])) refreshUI();
+
+      // deleção do mod inteiro
+      if(parts.length === 1 && data === null){
+        if(removeById(id)) refreshUI();
+        return;
       }
+
+      // atualização parcial
+      const exist = modsSalvos.find(m=>m.id===id) || {id};
+      setDeep(exist, parts.slice(1), data);
+      if(mergeMods([exist])) refreshUI();
     }
+
     function setDeep(obj, pathArr, value){
       let cur = obj;
       for(let i=0;i<pathArr.length;i++){
