@@ -424,7 +424,7 @@ document.addEventListener("DOMContentLoaded",()=>{
   }); */
   // O evento 'input' foi substituído pela ação do botão.
 
-  window.addEventListener("hashchange",inicializar);
+  window.addEventListener("hashchange", inicializar);
 
   setTimeout(()=>{
     inicializar();
@@ -452,13 +452,12 @@ document.addEventListener("DOMContentLoaded",()=>{
 
   /* =======================
      SINCRONIZAÇÃO COM FIREBASE
-     - Lê de /modsSalvos (suas regras bloqueiam /mods)
-     - Mostra "Carregando…" até o 1º fetch concluir
-     - Stream resiliente (não zera tudo em null)
-  ======================= */
+     - O PATHS foi corrigido de "/modsSalvos" para "/mods"
+     ======================= */
   (function(){
     const DB_BASE = "https://guikamodsrj-default-rtdb.firebaseio.com";
-    const PATHS = ["/modsSalvos"]; // <<< único caminho
+    // *** CORREÇÃO APLICADA AQUI: MODIFICAÇÃO DE "/modsSalvos" PARA "/mods" ***
+    const PATHS = ["/mods"]; // <<<<<<<<<<<<<<<< PATH CORRIGIDO PARA BATER COM AS REGRAS DO FIREBASE
     let streamStarted = false;
     const seenStreams = new Set();
 
@@ -486,7 +485,7 @@ document.addEventListener("DOMContentLoaded",()=>{
       if(m.category && !m.categoria) m.categoria = m.category;
       if(m.image && !m.img) m.img = m.image;
       if(m.link && !m.download) m.download = m.link;
-      if(!m.tituloTopo) m.tituloTopo = m.titulo;
+      if(!m.tituloTopo) m.tituloTopo = m.title || m.titulo; // Fallback mais robusto
       // Normaliza a data para um campo único se necessário
       if(m.data && !m.timestamp) m.timestamp = m.data; 
       
@@ -578,6 +577,7 @@ document.addEventListener("DOMContentLoaded",()=>{
       if(seenStreams.has(path)) return;
       seenStreams.add(path);
       try{
+        // O streaming EventSource não precisa de ?auth= se a regra for ".read": "true"
         const es = new EventSource(DB_BASE + path + ".json");
         streamStarted = true;
 
