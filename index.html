@@ -124,9 +124,9 @@ aside {position: sticky; top: 1.3rem; align-self: flex-start; height: max-conten
         </ul>
       </div>
       <div class="panel"><h3>Mais Recentes</h3>
-        <div class="recent-item"><img src="https://placehold.co/400x200?text=Novo+Mod+Moto" alt="Thumb 1"><p>Nova moto Honda personalizada com textura metálica e desempenho ajustado.</p></div>
-        <div class="recent-item"><img src="https://placehold.co/400x200?text=Novo+Mapa" alt="Thumb 2"><p>Mapa atualizado com novas rotas e clima dinâmico — vídeo completo disponível!</p></div>
-        <div class="recent-item"><img src="https://placehold.co/400x200?text=Novo+Personagem" alt="Thumb 3"><p>Personagem com novo uniforme e animações exclusivas — assista ao vídeo!</p></div>
+        <div id="lista-recentes">
+          <p style='font-size:0.9rem; color:var(--muted);'>Carregando...</p>
+        </div>
       </div>
     </aside>
   </div>
@@ -150,6 +150,7 @@ document.addEventListener("DOMContentLoaded",()=>{
   const titulo=document.getElementById("titulo-section");
   const listaCat=document.getElementById("lista-categorias");
   const searchInput=document.getElementById("search-input");
+  const searchBtn=document.getElementById("search-button"); // Adicionado
 
   // Estado local
   const modsSalvos=JSON.parse(localStorage.getItem("modsSalvos"))||[];
@@ -163,6 +164,18 @@ document.addEventListener("DOMContentLoaded",()=>{
   function fadeOutIn(callback){
     container.classList.remove("show");
     setTimeout(()=>{callback();container.classList.add("show");},300);
+  }
+  
+  // Função auxiliar para formatar a data
+  function formatarData(dataValor) {
+      const data = dataValor ? new Date(dataValor) : null;
+      if (!data || isNaN(data.getTime())) {
+          return "Data Desconhecida";
+      }
+      const dia = String(data.getDate()).padStart(2, '0');
+      const mes = String(data.getMonth() + 1).padStart(2, '0');
+      const ano = data.getFullYear();
+      return `${dia}/${mes}/${ano}`;
   }
 
   function renderMods(cat,query=""){
@@ -195,11 +208,20 @@ document.addEventListener("DOMContentLoaded",()=>{
       const paginaMods = lista.slice(inicio, fim);
 
       paginaMods.forEach(mod=>{
+        // Obtém e formata a data para exibição
+        const dataLancamento = formatarData(mod.timestamp || mod.data);
+        
         const card=document.createElement("div");
         card.className="card";
         card.setAttribute("data-id",mod.id);
+        
+        // Inclui a data de lançamento no card-content
         card.innerHTML=`<img src="${mod.img}" alt="${mod.titulo}">
-          <div class='card-content'><h3>${mod.titulo}</h3><p><strong>Categoria:</strong> ${mod.categoria}</p></div>`;
+          <div class='card-content'>
+            <h3>${mod.titulo}</h3>
+            <p style='margin-bottom: 0.5rem;'><strong>Categoria:</strong> ${mod.categoria}</p>
+            <p><strong>Lançamento:</strong> ${dataLancamento}</p>
+          </div>`;
         card.addEventListener("click",()=>{location.hash="mod-"+mod.id;});
         container.appendChild(card);
       });
@@ -258,6 +280,10 @@ document.addEventListener("DOMContentLoaded",()=>{
   function mostrarDetalhe(id){
     const mod=modsSalvos.find(m=>m.id===id);
     if(!mod){inicializar();return;}
+
+    // Obtém e formata a data de lançamento para a página de detalhes
+    const dataLancamento = formatarData(mod.timestamp || mod.data);
+    
     fadeOutIn(()=>{
       const tituloTopo = mod.tituloTopo && mod.tituloTopo.trim() !== "" ? mod.tituloTopo : mod.titulo;
       titulo.textContent=tituloTopo;
@@ -269,9 +295,11 @@ document.addEventListener("DOMContentLoaded",()=>{
             <div class='card-content'>
               <h3>${mod.titulo}</h3>
               <p><strong>Categoria:</strong> ${mod.categoria}</p>
+              <p><strong>Lançamento:</strong> ${dataLancamento}</p>
             </div>
           </div>
           <p><strong>Categoria:</strong> ${mod.categoria}</p>
+          <p><strong>Lançamento:</strong> ${dataLancamento}</p>
           <p>${mod.descricao||""}</p>
           <a href="${mod.download}" target="_blank" class="btn-download">Baixar Mod</a>
           <a href="#" class="btn-voltar">Voltar</a>
@@ -296,6 +324,75 @@ document.addEventListener("DOMContentLoaded",()=>{
     });
   }
 
+  // FUNÇÃO PARA RENDERIZAR OS MAIS RECENTES (mantida do pedido anterior)
+  function renderMaisRecentes(limite = 3) {
+    const container = document.getElementById("lista-recentes");
+    if (!container) return;
+    
+    if(!LOADED) {
+      container.innerHTML = "<p style='font-size:0.9rem; color:var(--muted);'>Carregando...</p>";
+      return;
+    }
+
+    // 1. Ordena os mods pela data.
+    const modsOrdenados = [...modsSalvos].sort((a, b) => {
+      // Tenta usar 'timestamp' ou 'data' como a propriedade de data
+      const dataA = a.timestamp || a.data || 0;
+      const dataB = b.timestamp || b.data || 0;
+      
+      const dateA_ms = new Date(dataA).getTime() || 0;
+      const dateB_ms = new Date(dataB).getTime() || 0;
+
+      // Fallback: se datas inválidas, tenta ordenar por ID (útil para chaves geradas pelo Firebase)
+      if (dateA_ms === 0 && dateB_ms === 0) {
+          return String(b.id).localeCompare(String(a.id));
+      }
+
+      return dateB_ms - dateA_ms; // Mais novo primeiro
+    });
+
+    // 2. Pega os 'limite' primeiros (os mais novos)
+    const recentes = modsOrdenados.slice(0, limite);
+    
+    // 3. Limpa o container e renderiza os itens
+    container.innerHTML = ""; 
+
+    if (recentes.length === 0) {
+      container.innerHTML = "<p style='font-size:0.9rem; color:var(--muted);'>Nenhum mod recente.</p>";
+      return;
+    }
+
+    recentes.forEach(mod => {
+      const item = document.createElement("div");
+      item.className = "recent-item";
+      
+      const dataRecente = formatarData(mod.timestamp || mod.data); // Formata a data aqui também
+
+      // Cria um "snippet" da descrição
+      let snippet = mod.descricao || "Sem descrição.";
+      if (snippet.length > 80) {
+        snippet = snippet.substring(0, 80) + "...";
+      }
+
+      // Cria o HTML do item recente
+      item.innerHTML = `
+        <a href="#mod-${mod.id}">
+            <img src="${mod.img || 'https://placehold.co/400x200?text=Mod'}" alt="${mod.titulo}">
+        </a>
+        <p style="font-weight: 600; margin-bottom: 0.2rem; margin-top: 0.5rem;">
+            <a href="#mod-${mod.id}" style="color: var(--text); text-decoration: none;">${mod.titulo}</a>
+        </p>
+        <p><strong>Lançamento:</strong> ${dataRecente}</p>
+      `; // Mudança na descrição para mostrar a data
+      item.querySelector('a').addEventListener("click", (e) => {
+          e.preventDefault();
+          location.hash = "mod-" + mod.id;
+      });
+      container.appendChild(item);
+    });
+  }
+  // FIM DA FUNÇÃO DE MAIS RECENTES
+
   function atualizarTitulo(cat){
     if(!cat || cat==="inicio" || cat==="") titulo.textContent="Últimas Postagens";
     else if(cat.startsWith("mod")) titulo.textContent="Detalhes do Mod";
@@ -319,11 +416,13 @@ document.addEventListener("DOMContentLoaded",()=>{
     });
   });
 
-  searchInput.addEventListener("input",()=>{
+  // REMOVIDO: O evento 'input' que fazia a busca automática foi removido daqui.
+  /* searchInput.addEventListener("input",()=>{
     const hash=location.hash.replace("#","");
     const query=searchInput.value.trim();
     fadeOutIn(()=>renderMods(hash,query));
-  });
+  }); */
+  // O evento 'input' foi substituído pela ação do botão.
 
   window.addEventListener("hashchange",inicializar);
 
@@ -332,13 +431,24 @@ document.addEventListener("DOMContentLoaded",()=>{
     setTimeout(()=>container.classList.add("show"),200);
     const hash=location.hash.replace("#","");
     if(hash.startsWith("mod-")){mostrarDetalhe(hash.replace("mod-",""));}
+    renderMaisRecentes(); // Chama a função na inicialização
   },100);
 
-  const searchBtn=document.getElementById("search-button");
-  searchBtn.addEventListener("click",()=>{
-    const event=new Event("input");
-    searchInput.dispatchEvent(event);
+  // NOVO: Adicionado um listener de evento para o botão de busca (click) e para a tecla Enter (keyup)
+  function handleSearch(){
+    const hash=location.hash.replace("#","");
+    const query=searchInput.value.trim();
+    fadeOutIn(()=>renderMods(hash,query));
+  }
+
+  searchBtn.addEventListener("click", handleSearch);
+
+  searchInput.addEventListener("keyup", (e) => {
+      if (e.key === "Enter") {
+          handleSearch();
+      }
   });
+
 
   /* =======================
      SINCRONIZAÇÃO COM FIREBASE
@@ -377,6 +487,9 @@ document.addEventListener("DOMContentLoaded",()=>{
       if(m.image && !m.img) m.img = m.image;
       if(m.link && !m.download) m.download = m.link;
       if(!m.tituloTopo) m.tituloTopo = m.titulo;
+      // Normaliza a data para um campo único se necessário
+      if(m.data && !m.timestamp) m.timestamp = m.data; 
+      
       return m;
     }
 
@@ -437,7 +550,10 @@ document.addEventListener("DOMContentLoaded",()=>{
     }
 
     function refreshUI(){
-      try{ inicializar(); }catch(_){}
+      try{ 
+        inicializar(); 
+        renderMaisRecentes(); 
+      }catch(_){}
     }
 
     function fetchAllOnce(){
