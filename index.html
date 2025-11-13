@@ -85,7 +85,7 @@ aside {position: sticky; top: 1.3rem; align-self: flex-start; height: max-conten
             <a href="#todos" data-cat="todos">Todos os Mods</a>
           </div>
         </li>
-        <li><a href="#reviews">Reviews</a></li>
+        <li><a href="https://www.youtube.com/@GuikaModsRJ" target="_blank" rel="noopener">YouTube</a></li>
         <li><a href="#tutoriais">Tutoriais</a></li>
       </ul>
     </nav>
@@ -281,7 +281,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     const mod=modsSalvos.find(m=>m.id===id);
     if(!mod){inicializar();return;}
 
-    // Obtém e formata a data de lançamento para a página de detalhes
+    // Obtém e format a data de lançamento para a página de detalhes
     const dataLancamento = formatarData(mod.timestamp || mod.data);
     
     fadeOutIn(()=>{
