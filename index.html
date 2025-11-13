@@ -71,10 +71,10 @@ aside {position: sticky; top: 1.3rem; align-self: flex-start; height: max-conten
 <body>
 <header class="header">
   <div class="container header-inner">
-    <a aria-label="Página inicial" class="logo" href="./">Guika Mods RJ</a>
+    <a aria-label="Página inicial" class="logo" href="#">Guika Mods RJ</a>
     <nav aria-label="Principal" class="nav">
       <ul>
-        <li><a class="active" href="./">Início</a></li>
+        <li><a class="active" href="#">Início</a></li>
         <li class="dropdown"><a href="#mods">Menu dos Mods</a>
           <div class="dropdown-content">
             <a href="#motos" data-cat="motos">Mods de Moto</a>
@@ -456,8 +456,8 @@ document.addEventListener("DOMContentLoaded",()=>{
      ======================= */
   (function(){
     const DB_BASE = "https://guikamodsrj-default-rtdb.firebaseio.com";
-    // *** CORREÇÃO APLICADA AQUI: O PATHS DEVE SER "/mods" PARA BATER COM AS REGRAS ***
-    const PATHS = ["/mods"]; // <<<<<<<<<<<<<<<< PATH CORRIGIDO PARA BATER COM AS REGRAS DO FIREBASE
+    // *** PATH CORRIGIDO PARA BATER COM AS REGRAS DO FIREBASE ***
+    const PATHS = ["/mods"];
     let streamStarted = false;
     const seenStreams = new Set();
 
