@@ -4,150 +4,274 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Painel Admin - Guika Mods RJ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
-body {
-  background-color: #111;
-  color: #eee;
-  font-family: system-ui, sans-serif;
-  margin: 0;
-  padding: 2rem;
-}
-h1 { text-align: center; }
-form {
-  background: #1a1a1a;
-  padding: 1rem;
-  border-radius: 10px;
-  max-width: 600px;
-  margin: 0 auto 2rem auto;
-  display: flex;
-  flex-direction: column;
-  gap: 0.7rem;
-}
-input, select, textarea, button {
-  background: #222;
-  border: 1px solid #333;
-  border-radius: 6px;
-  color: #eee;
-  padding: 0.6rem;
-  font-size: 1rem;
-}
-button {
-  background: #2b2b2b;
-  cursor: pointer;
-  font-weight: bold;
-}
-button:hover { background: #3a3a3a; }
-.preview {
-  text-align: center;
-  margin-top: 0.5rem;
-}
-.preview img {
-  max-width: 100%;
-  border-radius: 8px;
-  margin-top: 0.5rem;
-}
-.preview a {
-  display: inline-block;
-  margin-top: 0.5rem;
-  background: #2b2b2b;
-  color: #fff;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  text-decoration: none;
-}
-.preview a:hover { background: #3a3a3a; }
-table {
-  width: 100%;
-  max-width: 1000px;
-  margin: 0 auto;
-  border-collapse: collapse;
-}
-th, td {
-  border-bottom: 1px solid #333;
-  padding: 0.5rem;
-  text-align: left;
-}
-th { background: #222; }
-.actions button {
-  margin-right: 0.5rem;
-  padding: 0.4rem 0.7rem;
+/* --- CONFIGURAÇÃO VISUAL --- */
+:root {
+  --bg: #09090b;
+  --panel: #18181b;
+  --panel-hover: #27272a;
+  --text: #e4e4e7;
+  --muted: #a1a1aa;
+  --border: 1px solid rgba(255, 255, 255, 0.1);
+  --primary: #fff;
+  --danger: #ef4444;
+  --edit: #3b82f6;
+  --radius: 12px;
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+  
+  /* Cores dos Botões de Download */
+  --color-mediafire: #007bff;
+  --color-mega: #d92424;
+  --color-drive: #ffffff;
 }
 
-/* Tela de login */
-#login {
-  text-align: center;
-  background: #1a1a1a;
-  padding: 2rem;
-  border-radius: 10px;
-  max-width: 400px;
-  margin: 5rem auto;
-}
-#login input {
-  display: block;
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
   width: 100%;
-  margin: 1rem 0;
+  max-width: 100vw;
+  overflow-x: hidden;
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--bg);
+  background-image: radial-gradient(circle at 50% 0%, #1c1c1c 0%, var(--bg) 70%);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
 }
+
+h1, h2 { color: #fff; font-weight: 700; text-align: center; margin-bottom: 1.5rem; }
+h1 { font-size: 1.8rem; text-shadow: 0 0 20px rgba(255,255,255,0.1); }
+h2 { font-size: 1.4rem; margin-top: 3rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 1rem; }
+
+/* --- CONTAINERS --- */
+.admin-container {
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2rem 1rem; 
+}
+
+.card {
+  background: var(--panel);
+  border: var(--border);
+  border-radius: var(--radius);
+  padding: 2rem;
+  box-shadow: var(--shadow);
+  margin-bottom: 2rem;
+  width: 100%;
+}
+
+/* --- FORMULÁRIO --- */
+form { display: flex; flex-direction: column; gap: 1rem; }
+label { font-size: 0.9rem; color: var(--muted); margin-bottom: -0.5rem; margin-left: 0.2rem; }
+
+input, select, textarea {
+  background: rgba(0,0,0,0.3);
+  border: var(--border);
+  border-radius: 8px;
+  color: #fff;
+  padding: 0.8rem 1rem;
+  font-family: inherit;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+  width: 100%;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: rgba(255,255,255,0.3);
+  background: rgba(0,0,0,0.5);
+}
+
+/* Grid para os links de download */
+.download-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+}
+
+@media (max-width: 768px) {
+    .download-grid { grid-template-columns: 1fr; }
+}
+
+.checkbox-wrapper {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 1rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.checkbox-wrapper:hover { background: rgba(255, 255, 255, 0.08); }
+.checkbox-wrapper input { width: 20px; height: 20px; accent-color: #fff; cursor: pointer; }
+
+/* --- BOTÕES --- */
+button {
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.1s, opacity 0.2s;
+}
+button:active { transform: scale(0.98); }
+
+.btn-submit { background: #fff; color: #000; margin-top: 1rem; width: 100%; font-size: 1.1rem; }
+.btn-submit:hover { background: #e4e4e7; }
+
+.btn-cancel { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: var(--muted); width: 100%; }
+
+.btn-edit { background: rgba(59, 130, 246, 0.2); color: #60a5fa; padding: 0.4rem 0.8rem; font-size: 0.85rem; margin-right: 0.5rem; }
+.btn-delete { background: rgba(239, 68, 68, 0.2); color: #f87171; padding: 0.4rem 0.8rem; font-size: 0.85rem; }
+
+.btn-login { background: #fff; color: #000; width: 100%; }
+
+/* --- BARRA DE FERRAMENTAS --- */
+.toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; gap: 1rem; flex-wrap: wrap; }
+.search-container { flex: 1; position: relative; min-width: 250px; }
+.search-container input { padding-left: 2.5rem; background: var(--panel); }
+.search-icon { position: absolute; left: 0.8rem; top: 50%; transform: translateY(-50%); opacity: 0.5; }
+
+/* --- TABELA --- */
+.table-container { width: 100%; overflow-x: auto; border-radius: 8px; border: var(--border); background: rgba(0,0,0,0.2); margin-bottom: 1rem; }
+table { width: 100%; border-collapse: collapse; white-space: nowrap; min-width: 600px; }
+th { background: rgba(255,255,255,0.05); text-align: left; padding: 1rem; font-size: 0.85rem; text-transform: uppercase; color: var(--muted); }
+td { padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.95rem; }
+
+/* --- PAGINAÇÃO --- */
+.pagination { display: flex; justify-content: center; align-items: center; gap: 1rem; margin-top: 1rem; }
+.btn-page { background: var(--panel); border: var(--border); color: var(--text); padding: 0.5rem 1rem; }
+
+/* --- PREVIEWS --- */
+.preview { margin-top: 0.5rem; padding: 0.5rem; background: rgba(0,0,0,0.2); border-radius: 6px; text-align: center; display: none; }
+.preview:not(:empty) { display: block; }
+.preview img { max-width: 100%; max-height: 200px; border-radius: 6px; }
+
+#login { max-width: 400px; margin: 10vh auto; text-align: center; padding: 2rem; }
 </style>
 </head>
 <body>
 
-<!-- Tela de login -->
-<div id="login">
-  <h2>Área Restrita</h2>
-  <p>Digite a senha para acessar o painel:</p>
-  <input type="password" id="senha" placeholder="Senha">
-  <button id="entrar">Entrar</button>
-  <p id="erro" style="color:red;display:none;">Senha incorreta!</p>
+<div id="login" class="card">
+  <h2 style="margin-top:0; border:none;">🔐 Área Restrita</h2>
+  <p style="color:var(--muted); margin-bottom:1.5rem;">Digite a senha para gerenciar os mods.</p>
+  <input type="password" id="senha" placeholder="Senha de acesso" style="margin-bottom: 1rem;">
+  <button id="entrar" class="btn-login">Acessar Painel</button>
+  <p id="erro" style="color:var(--danger); display:none; margin-top:1rem; font-size:0.9rem;">Senha incorreta!</p>
 </div>
 
-<!-- Painel Admin -->
-<div id="admin" style="display:none;">
+<div id="admin" class="admin-container" style="display:none;">
   <h1>Painel Admin — Guika Mods RJ</h1>
 
-  <form id="modForm">
-    <input type="text" id="titulo" placeholder="Título do mod" required>
-    <input type="text" id="tituloTopo" placeholder="Título que aparece em cima do mod">
-    
-    <input type="url" id="img" placeholder="URL da imagem" required>
-    <div id="imgPreview" class="preview"></div>
-    
-    <input type="url" id="download" placeholder="Link de download do mod" required>
-    <div id="downloadPreview" class="preview"></div>
+  <div class="card">
+    <form id="modForm">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div>
+            <label>Título do Mod</label>
+            <input type="text" id="titulo" placeholder="Ex: Honda XRE 300" required>
+          </div>
+          <div>
+            <label>Título Topo (Opcional)</label>
+            <input type="text" id="tituloTopo" placeholder="Ex: Detalhes do Mod">
+          </div>
+      </div>
 
-    <textarea id="descricao" placeholder="Descrição do mod" rows="4" required></textarea>
-    <input type="date" id="data" required>
-    <select id="categoria" required>
-      <option value="">Selecione a categoria</option>
-      <option value="motos">Motos</option>
-      <option value="mapas">Mods pro Mapa</option>
-      <option value="pecas">Peças Zmodler</option>
-      <option value="personagens">Mods de Personagem</option>
-      <option value="outros">Outros Mods</option>
-    </select>
-    <button type="submit">Adicionar Mod</button>
-  </form>
+      <label>URL da Imagem</label>
+      <input type="url" id="img" placeholder="https://..." required>
+      <div id="imgPreview" class="preview"></div>
+      
+      <label>Links de Download</label>
+      <div class="download-grid">
+          <div>
+              <input type="url" id="downloadMediafire" placeholder="Link Mediafire (Azul)">
+          </div>
+          <div>
+              <input type="url" id="downloadMega" placeholder="Link Mega (Vermelho)">
+          </div>
+          <div>
+              <input type="url" id="downloadDrive" placeholder="Link Google Drive (Branco)">
+          </div>
+      </div>
 
-  <h2 style="text-align:center;">Mods Salvos</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Título</th>
-        <th>Categoria</th>
-        <th>Data</th>
-        <th>Ações</th>
-      </tr>
-    </thead>
-    <tbody id="listaMods"></tbody>
-  </table>
+      <label>Descrição</label>
+      <textarea id="descricao" placeholder="Descreva os detalhes do mod..." rows="5" required></textarea>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div>
+            <label>Data de Lançamento</label>
+            <input type="date" id="data" required>
+          </div>
+          <div>
+            <label>Categoria</label>
+            <select id="categoria" required>
+              <option value="">Selecione...</option>
+              <option value="motos">Motos</option>
+              <option value="mapas">Mods pro Mapa</option>
+              <option value="pecas">Peças Zmodler</option>
+              <option value="personagens">Mods de Personagem</option>
+              <option value="outros">Outros Mods</option>
+            </select>
+          </div>
+      </div>
+
+      <div class="checkbox-wrapper" onclick="document.getElementById('destaque').click()">
+          <input type="checkbox" id="destaque" onclick="event.stopPropagation()">
+          <label for="destaque">🔥 Marcar como POPULAR (Destaque na Home)</label>
+      </div>
+
+      <button type="submit" class="btn-submit">Adicionar Mod</button>
+    </form>
+  </div>
+
+  <h2>Gerenciar Mods Salvos</h2>
+  
+  <div class="toolbar">
+    <div class="search-container">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchTable" placeholder="Pesquisar mod por nome...">
+    </div>
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Título</th>
+          <th>Categoria</th>
+          <th>Data</th>
+          <th style="text-align: right;">Ações</th>
+        </tr>
+      </thead>
+      <tbody id="listaMods"></tbody>
+    </table>
+  </div>
+  
+  <div class="pagination" id="paginacaoControls" style="display:none;">
+    <button class="btn-page" id="btnPrev">← Anterior</button>
+    <span id="pageInfo" style="color: var(--muted); font-size: 0.9rem;"></span>
+    <button class="btn-page" id="btnNext">Próximo →</button>
+  </div>
 </div>
 
 <script type="module">
-  // 🔐 Senha simples de acesso
-  const SENHA_CORRETA = "gigigui"; // << troque aqui se quiser
+  // 🔐 Senha
+  const SENHA_CORRETA = "~~~~"; 
   const loginDiv = document.getElementById("login");
   const adminDiv = document.getElementById("admin");
   const senhaInput = document.getElementById("senha");
   const erroMsg = document.getElementById("erro");
+
+  senhaInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") { document.getElementById("entrar").click(); }
+  });
 
   document.getElementById("entrar").addEventListener("click", () => {
     if (senhaInput.value === SENHA_CORRETA) {
@@ -155,177 +279,216 @@ th { background: #222; }
       adminDiv.style.display = "block";
     } else {
       erroMsg.style.display = "block";
+      senhaInput.style.borderColor = "var(--danger)";
     }
   });
 
-  // 🔥 Firebase
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-  import { getDatabase, ref, push, set, get, remove, update } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+  // 🔥 Supabase Setup
+  import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3/+esm";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyDuh9sEO3aejr6RZGwWC84f0EvTulXbAdQ",
-    authDomain: "guikamodsrj.firebaseapp.com",
-    databaseURL: "https://guikamodsrj-default-rtdb.firebaseio.com",
-    projectId: "guikamodsrj",
-    storageBucket: "guikamodsrj.firebasestorage.app",
-    messagingSenderId: "810907224917",
-    appId: "1:810907224917:web:4ba5c07d52d37df06dbddc"
-  };
+  const supabaseUrl = "https://uczpomdhzbarenmxysfc.supabase.co";
+  const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVjenBvbWRoemJhcmVubXh5c2ZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI2NzA3OTIsImV4cCI6MjA4ODI0Njc5Mn0.oKwFayvnBPPxOjHGFcHLxG44eH3C_NTgDQMUqUKa7vo";
+  const supabase = createClient(supabaseUrl, supabaseKey);
 
-  const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
-  const modsRef = ref(db, "mods");
-
-  // 🌱 DOM
   const form = document.getElementById("modForm");
   const listaMods = document.getElementById("listaMods");
+  const paginacaoControls = document.getElementById("paginacaoControls");
+  const btnPrev = document.getElementById("btnPrev");
+  const btnNext = document.getElementById("btnNext");
+  const pageInfo = document.getElementById("pageInfo");
+  const searchInput = document.getElementById("searchTable");
 
-  const titulo = document.getElementById("titulo");
-  const tituloTopo = document.getElementById("tituloTopo");
-  const imgInput = document.getElementById("img");
-  const downloadInput = document.getElementById("download");
-  const descricao = document.getElementById("descricao");
-  const dataInput = document.getElementById("data");
-  const categoria = document.getElementById("categoria");
+  const inputs = {
+    titulo: document.getElementById("titulo"),
+    tituloTopo: document.getElementById("tituloTopo"),
+    img: document.getElementById("img"),
+    downloadMediafire: document.getElementById("downloadMediafire"),
+    downloadMega: document.getElementById("downloadMega"),
+    downloadDrive: document.getElementById("downloadDrive"),
+    descricao: document.getElementById("descricao"),
+    data: document.getElementById("data"),
+    categoria: document.getElementById("categoria"),
+    destaque: document.getElementById("destaque")
+  };
 
   const imgPreview = document.getElementById("imgPreview");
-  const downloadPreview = document.getElementById("downloadPreview");
 
-  // 🖊️ Estado de edição
+  let allMods = [];
+  let filteredMods = [];
+  let currentPage = 1;
+  const itemsPerPage = 8; 
+
   let editingId = null;
   const submitBtn = form.querySelector('button[type="submit"]');
   const cancelBtn = document.createElement('button');
   cancelBtn.type = "button";
   cancelBtn.textContent = "Cancelar edição";
+  cancelBtn.className = "btn-cancel";
   cancelBtn.style.display = "none";
+  cancelBtn.style.marginTop = "0.5rem";
   cancelBtn.addEventListener("click", cancelarEdicao);
-  form.appendChild(cancelBtn);
+  form.insertBefore(cancelBtn, submitBtn.nextSibling); 
 
   function cancelarEdicao() {
     editingId = null;
     form.reset();
     imgPreview.innerHTML = "";
-    downloadPreview.innerHTML = "";
+    inputs.destaque.checked = false; 
     submitBtn.textContent = "Adicionar Mod";
     cancelBtn.style.display = "none";
   }
 
-  // 🖼️ Preview automático da imagem
-  imgInput.addEventListener("input", () => {
-    const url = imgInput.value.trim();
-    imgPreview.innerHTML = url ? `<img src="${url}" alt="Preview da imagem">` : "";
+  inputs.img.addEventListener("input", () => {
+    const url = inputs.img.value.trim();
+    imgPreview.innerHTML = url ? `<img src="${url}" alt="Preview">` : "";
   });
 
-  // 🔗 Preview do link de download
-  downloadInput.addEventListener("input", () => {
-    const url = downloadInput.value.trim();
-    downloadPreview.innerHTML = url ? `<a href="${url}" target="_blank">Testar Download</a>` : "";
+  searchInput.addEventListener("input", (e) => {
+    const term = e.target.value.toLowerCase();
+    filteredMods = allMods.filter(([id, mod]) => {
+      const titulo = (mod.titulo || "").toLowerCase();
+      const categoria = (mod.categoria || "").toLowerCase();
+      return titulo.includes(term) || categoria.includes(term);
+    });
+    currentPage = 1;
+    renderTable();
   });
 
-  // 📋 Listar mods
-  function mostrarMods() {
-    get(modsRef).then(snapshot => {
-      listaMods.innerHTML = "";
-      if (!snapshot.exists()) return;
+  async function carregarMods() {
+    const { data, error } = await supabase.from('mods').select('*').order('data', { ascending: false });
+    
+    if (error || !data || data.length === 0) {
+      listaMods.innerHTML = "<tr><td colspan='4' style='text-align:center; padding:2rem; color:var(--muted);'>Nenhum mod encontrado.</td></tr>";
+      paginacaoControls.style.display = "none";
+      return;
+    }
+    
+    // Converte de array de objetos para array de [id, mod] como estava antes
+    allMods = data.map(mod => [mod.id, mod]);
+    filteredMods = [...allMods];
+    currentPage = 1;
+    renderTable();
+  }
 
-      const mods = snapshot.val();
-      Object.entries(mods).forEach(([id, mod]) => {
+  function renderTable() {
+    listaMods.innerHTML = "";
+    const totalPages = Math.ceil(filteredMods.length / itemsPerPage);
+    if (filteredMods.length === 0) {
+        listaMods.innerHTML = "<tr><td colspan='4' style='text-align:center; padding:2rem; color:var(--muted);'>Nenhum mod encontrado.</td></tr>";
+        paginacaoControls.style.display = "none";
+        return;
+    }
+    const start = (currentPage - 1) * itemsPerPage;
+    const pageItems = filteredMods.slice(start, start + itemsPerPage);
+
+    pageItems.forEach(([id, mod]) => {
         const tr = document.createElement("tr");
         tr.innerHTML = `
-          <td>${mod.titulo || ""}</td>
-          <td>${mod.categoria || ""}</td>
-          <td>${mod.data || ""}</td>
-          <td class="actions">
-            <button onclick="editarMod('${id}')">Editar</button>
-            <button onclick="excluirMod('${id}')">Excluir</button>
+          <td><strong style="color:#fff;">${mod.destaque ? "⭐ " : ""}${mod.titulo || "Sem título"}</strong></td>
+          <td><span style="background:rgba(255,255,255,0.1); padding:2px 8px; border-radius:4px; font-size:0.8rem;">${mod.categoria || "?"}</span></td>
+          <td style="color:var(--muted); font-size:0.85rem;">${mod.data || "--"}</td>
+          <td style="text-align: right;">
+            <button class="btn-edit" onclick="editarMod('${id}')">Editar</button>
+            <button class="btn-delete" onclick="excluirMod('${id}')">Excluir</button>
           </td>
         `;
         listaMods.appendChild(tr);
-      });
     });
+
+    if (totalPages > 1) {
+        paginacaoControls.style.display = "flex";
+        pageInfo.textContent = `Página ${currentPage} de ${totalPages}`;
+        btnPrev.disabled = currentPage === 1;
+        btnNext.disabled = currentPage === totalPages;
+    } else {
+        paginacaoControls.style.display = "none";
+    }
   }
 
-  // 🗑️ Excluir mod
-  window.excluirMod = function(id) {
-    remove(ref(db, "mods/" + id)).then(() => {
-      alert("Mod excluído!");
-      mostrarMods();
-      cancelarEdicao();
-    });
-  };
-
-  // ✏️ Editar mod
-  window.editarMod = function(id) {
-    get(ref(db, "mods/" + id)).then(snap => {
-      if (!snap.exists()) {
-        alert("Mod não encontrado.");
-        return;
-      }
-      const m = snap.val();
-
-      // Preenche campos
-      titulo.value = m.titulo || "";
-      tituloTopo.value = m.tituloTopo || "";
-      imgInput.value = m.img || "";
-      imgPreview.innerHTML = m.img ? `<img src="${m.img}" alt="Preview da imagem">` : "";
-      downloadInput.value = m.download || "";
-      downloadPreview.innerHTML = m.download ? `<a href="${m.download}" target="_blank">Testar Download</a>` : "";
-      descricao.value = m.descricao || "";
-      dataInput.value = m.data || "";
-      categoria.value = m.categoria || "";
-
-      // Modo edição
-      editingId = id;
-      submitBtn.textContent = "Salvar alterações";
-      cancelBtn.style.display = "inline-block";
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    });
-  };
-
-  // ➕ Adicionar / 💾 Atualizar
-  form.addEventListener("submit", e => {
-    e.preventDefault();
-
-    if (editingId) {
-      const updateData = {
-        titulo: titulo.value,
-        tituloTopo: tituloTopo.value,
-        img: imgInput.value,
-        descricao: descricao.value,
-        data: dataInput.value,
-        categoria: categoria.value,
-        download: downloadInput.value
-      };
-      update(ref(db, "mods/" + editingId), updateData).then(() => {
-        alert("Mod atualizado!");
-        cancelarEdicao();
-        mostrarMods();
-      });
-      return;
-    }
-
-    const mod = {
-      id: "mod-" + Date.now(),
-      titulo: titulo.value,
-      tituloTopo: tituloTopo.value,
-      img: imgInput.value,
-      descricao: descricao.value,
-      data: dataInput.value,
-      categoria: categoria.value,
-      download: downloadInput.value
-    };
-    const novo = push(modsRef);
-    set(novo, mod).then(() => {
-      alert("Mod adicionado!");
-      form.reset();
-      imgPreview.innerHTML = "";
-      downloadPreview.innerHTML = "";
-      mostrarMods();
-    });
+  btnPrev.addEventListener("click", () => { if (currentPage > 1) { currentPage--; renderTable(); } });
+  btnNext.addEventListener("click", () => { 
+    const totalPages = Math.ceil(filteredMods.length / itemsPerPage);
+    if (currentPage < totalPages) { currentPage++; renderTable(); } 
   });
 
-  // Inicial
-  mostrarMods();
+  window.excluirMod = async function(id) {
+    if(confirm("Tem certeza que deseja excluir este mod?")) {
+        const { error } = await supabase.from('mods').delete().eq('id', id);
+        if(!error) carregarMods();
+        else alert("Erro ao excluir: " + error.message);
+    }
+  };
+
+  window.editarMod = function(id) {
+    const item = allMods.find(m => m[0] === id);
+    if (!item) return;
+    const m = item[1];
+
+    inputs.titulo.value = m.titulo || "";
+    inputs.tituloTopo.value = m.tituloTopo || "";
+    inputs.img.value = m.img || "";
+    imgPreview.innerHTML = m.img ? `<img src="${m.img}" alt="Preview">` : "";
+    
+    inputs.downloadMediafire.value = m.downloadMediafire || "";
+    inputs.downloadMega.value = m.downloadMega || "";
+    inputs.downloadDrive.value = m.downloadDrive || "";
+    
+    inputs.descricao.value = m.descricao || "";
+    inputs.data.value = m.data || "";
+    inputs.categoria.value = m.categoria || "";
+    inputs.destaque.checked = m.destaque === true;
+
+    editingId = id;
+    submitBtn.textContent = "Salvar Alterações";
+    cancelBtn.style.display = "block";
+    document.querySelector('.admin-container').scrollIntoView({ behavior: 'smooth' });
+  };
+
+  form.addEventListener("submit", async e => {
+    e.preventDefault();
+    submitBtn.textContent = "Salvando...";
+
+    const dados = {
+      titulo: inputs.titulo.value,
+      tituloTopo: inputs.tituloTopo.value,
+      img: inputs.img.value,
+      descricao: inputs.descricao.value,
+      data: inputs.data.value,
+      categoria: inputs.categoria.value,
+      downloadMediafire: inputs.downloadMediafire.value,
+      downloadMega: inputs.downloadMega.value,
+      downloadDrive: inputs.downloadDrive.value,
+      destaque: inputs.destaque.checked
+    };
+
+    if (editingId) {
+      const { error } = await supabase.from('mods').update(dados).eq('id', editingId);
+      if (!error) {
+        alert("✅ Mod atualizado!");
+        cancelarEdicao();
+        carregarMods();
+      } else {
+        alert("Erro ao atualizar: " + error.message);
+        submitBtn.textContent = "Salvar Alterações";
+      }
+    } else {
+      // Como o Supabase precisa de uma chave primária se não formos retornar uma id gerada pelo banco,
+      // usaremos uma ID gerada localmente, simulando exatamente como o push() do Firebase funcionava
+      dados.id = crypto.randomUUID(); 
+      
+      const { error } = await supabase.from('mods').insert([dados]);
+      if (!error) {
+        alert("✅ Mod adicionado!");
+        cancelarEdicao();
+        carregarMods();
+      } else {
+        alert("Erro ao adicionar: " + error.message);
+        submitBtn.textContent = "Adicionar Mod";
+      }
+    }
+  });
+
+  carregarMods();
 </script>
 </body>
 </html>

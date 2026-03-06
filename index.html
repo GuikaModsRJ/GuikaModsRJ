@@ -2,70 +2,272 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta name="description" content="Guika Mods RJ — Mods, tutoriais e conteúdo sobre GTA SA RJ."/>
 <title>Guika Mods RJ — Blog de Mods GTA SA</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
-:root {--bg:#0e0e0e;--panel:#1a1a1a;--text:#e6e6e6;--muted:#aaa;--radius:10px;}
-body{margin:0;font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;}
-header{background:#121212;position:sticky;top:0;z-index:100;box-shadow:0 2px 6px rgba(0,0,0,0.5);}
-.container{max-width:1200px;margin:0 auto;padding:0 1rem;}
-.header-inner{display:flex;align-items:center;justify-content:space-between;padding:1rem 0;}
-.logo{color:var(--text);text-decoration:none;font-weight:600;font-size:1.3rem;display:flex;align-items:center;gap:0.4rem;}
-nav ul{list-style:none;display:flex;gap:1rem;margin:0;padding:0;align-items:center;}
-nav a{text-decoration:none;color:var(--text);padding:0.4rem 0.8rem;border-radius:var(--radius);transition:background 0.2s;}
-nav a:hover,nav a.active{background:var(--panel);color:#fff;}
-.dropdown{position:relative;}
-.dropdown>a::after{content:" ▼";font-size:0.7em;}
-.dropdown-content{display:none;position:absolute;top:100%;left:0;background-color:var(--panel);min-width:200px;border-radius:var(--radius);box-shadow:0 4px 12px rgba(0,0,0,0.4);padding:0.5rem 0;z-index:200;}
-.dropdown-content a{display:block;padding:0.6rem 1rem;color:var(--text);text-decoration:none;transition:background 0.2s;}
-.dropdown-content a:hover{background:#2b2b2b;}
-.dropdown:hover .dropdown-content{display:block;}
-input{background:var(--panel);border:1px solid #333;border-radius:var(--radius);color:var(--text);padding:0.5rem;}
-.container.grid{display:grid;grid-template-columns:3fr 1fr;gap:1.2rem;column-gap:2rem;justify-content:center;align-items:flex-start;margin:0 auto;max-width:1250px;}
-#cards{display:flex;flex-direction:column;gap:1.5rem;margin:0 auto;align-items:center;position:relative;left:calc((25% + 2.5rem)/2);
-opacity:0;transition:opacity 0.4s ease-in-out;}
-#cards.show{opacity:1;}
-section[aria-labelledby="titulo-section"]{text-align:center;}
-#titulo-section{text-align:center;font-size:1.8rem;margin-top:1rem;margin-bottom:1rem;position:relative;left:calc((25% + 2.5rem)/2);}
-.card{background:var(--panel);border-radius:var(--radius);width:63.75%;text-align:left;box-shadow:0 2px 6px rgba(0,0,0,0.4);overflow:hidden;transition:transform 0.2s;cursor:pointer;}
-.card:hover{transform:translateY(-4px);}
-.card img{width:100%;height:340px;object-fit:cover;display:block;}
-.card-content{padding:1.5rem;}
-.card-content h3{margin:0.5rem 0;font-size:1.1rem;color:#fff;}
-.card-content p{color:var(--muted);font-size:0.95rem;margin:0;}
-.panel{background:var(--panel);padding:1rem;border-radius:var(--radius);margin-bottom:1rem;}
-aside .panel:first-of-type{margin-top:1.3rem;}
-.list{list-style:none;padding:0;}
-.list li a{color:var(--text);text-decoration:none;display:block;padding:0.3rem 0;border-radius:var(--radius);transition:background 0.2s;}
-.list li a:hover{background:#2b2b2b;}
-.recent-item{margin-bottom:1rem;}
-.recent-item img{width:100%;border-radius:var(--radius);margin-bottom:0.5rem;}
-.recent-item p{font-size:0.9rem;color:var(--muted);margin:0;}
-.footer{background:#121212;padding:0.5rem 0;border-top:1px solid #222;margin-top:3rem;text-align:center;}
-.footer-grid{display:flex;justify-content:center;align-items:center;gap:1.5rem;flex-wrap:wrap;margin-bottom:0.4rem;}
-.footer .list{display:flex;gap:1.2rem;list-style:none;padding:0;margin:0;position:relative;left:-1.8rem;}
-.footer .list li a{text-decoration:none;color:var(--text);font-size:0.9rem;transition:color 0.2s;}
-.footer .list li a:hover{color:#fff;}
-.footer-bottom{display:flex;justify-content:center;align-items:center;}
-.footer-bottom small{color:var(--muted);font-size:0.8rem;}
-a{color:#ccc;}
-.list li a,.dropdown-content a,nav a,.footer .list li a,.panel a{position:relative;z-index:2;pointer-events:auto;}
-.mod-detalhe{max-width:1000px;margin:2rem auto;text-align:center;}
-.mod-detalhe-card{background:var(--panel);border-radius:var(--radius);width:85%;text-align:left;box-shadow:0 2px 6px rgba(0,0,0,0.4);overflow:hidden;margin:0 auto 1.5rem auto;position:relative;}
-.mod-detalhe-card img {width:100%;height:420px;object-fit:cover;aspect-ratio:16/9;display:block;}
-.mod-detalhe-card .card-content{padding:1.5rem;}
-.mod-detalhe-card h3{margin:0.5rem 0;font-size:1.1rem;color:#fff;}
-.mod-detalhe-card p{color:var(--muted);font-size:0.95rem;margin:0;}
-.mod-detalhe h2{font-size:1.8rem;margin:1rem 0 0.5rem;}
-.mod-detalhe p{color:var(--muted);margin:0.5rem 0;}
-.btn-voltar,.btn-download{background:#2b2b2b;color:#fff;border:none;border-radius:var(--radius);padding:0.7rem 1.4rem;cursor:pointer;font-weight:600;transition:background 0.2s;margin:0.5rem;display:inline-block;text-decoration:none;}
-.btn-voltar:hover,.btn-download:hover{background:#3a3a3a;}
-#search-button {transition: background 0.25s ease, box-shadow 0.25s ease;}
-#search-button:hover {background:#3a3a3a;box-shadow:0 0 6px rgba(255, 255, 255, 0.15);}
-#search-button:active {background:#222;box-shadow:0 0 3px rgba(255, 255, 255, 0.1) inset;}
+/* --- CONFIGURAÇÃO VISUAL (PREMIUM) --- */
+:root {
+  --bg: #09090b;
+  --panel: #18181b;
+  --panel-hover: #27272a;
+  --text: #e4e4e7;
+  --muted: #a1a1aa;
+  --accent: #ffffff;
+  --border: 1px solid rgba(255, 255, 255, 0.1);
+  --radius: 12px;
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+  --glow: 0 0 15px rgba(255, 255, 255, 0.05);
+}
+
+@keyframes fadeInPage { 0% { opacity: 0; } 100% { opacity: 1; } }
+
+html { overflow-y: scroll; scroll-behavior: smooth; }
+
+body {
+  margin: 0; font-family: 'Inter', system-ui, sans-serif;
+  background: var(--bg);
+  background-image: radial-gradient(circle at 50% 0%, #1c1c1c 0%, var(--bg) 70%);
+  color: var(--text); line-height: 1.6; overflow-x: hidden; width: 100%;
+  animation: fadeInPage 0.6s ease-out forwards;
+}
+
+main { min-height: 100vh; }
+
+/* --- HEADER --- */
+header {
+  background: rgba(18, 18, 18, 0.85); backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 100;
+  border-bottom: var(--border); will-change: transform;
+}
+
+.container {max-width:1200px; margin:0 auto; padding:0 1rem;}
+.header-inner {display:flex; align-items:center; justify-content:space-between; padding:1rem 0;}
+
+.logo {
+  color: var(--text); text-decoration: none; font-weight: 700; font-size: 1.3rem;
+  display: flex; align-items: center; gap: 0.4rem; text-shadow: 0 0 10px rgba(255,255,255,0.1);
+}
+
+/* --- NAVEGAÇÃO --- */
+nav ul {list-style:none; display:flex; gap:1rem; margin:0; padding:0; align-items:center;}
+nav a, nav span.interativo {
+  text-decoration: none; color: var(--muted); padding: 0.5rem 0.9rem;
+  border-radius: var(--radius); transition: all 0.2s ease; font-weight: 500; cursor: pointer;
+}
+nav a:hover, nav a.active, nav span.interativo:hover {
+  background: rgba(255,255,255,0.1); color: #fff;
+}
+
+.dropdown {position:relative;}
+.dropdown>a::after {content:" ▼"; font-size:0.7em; opacity: 0.7;}
+.dropdown-content {
+  display: none; position: absolute; top: 100%; left: 0;
+  background-color: var(--panel); min-width: 200px; border-radius: var(--radius);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.7); border: var(--border); padding: 0.5rem 0; z-index: 200;
+}
+.dropdown-content a, .dropdown-content span.interativo {
+    display:block; padding:0.6rem 1rem; color:var(--text); text-decoration:none; 
+    transition:background 0.2s; cursor: pointer;
+}
+.dropdown-content a:hover, .dropdown-content span.interativo:hover {
+    background: var(--panel-hover); color: #fff;
+}
+.dropdown:hover .dropdown-content {display:block;}
+
+/* --- BUSCA --- */
+input {
+  background: rgba(0,0,0,0.3); border: var(--border); border-radius: var(--radius);
+  color: var(--text); padding: 0.5rem 0.8rem; transition: border-color 0.2s;
+}
+input:focus { outline:none; border-color: #666; }
+#search-button { transition: all 0.25s ease; border: var(--border) !important; }
+#search-button:hover { background: #3a3a3a !important; box-shadow: 0 0 8px rgba(255, 255, 255, 0.2); }
+
+/* --- GRID --- */
+.container.grid {
+  display: grid; grid-template-columns: 3fr 1fr; gap: 1.2rem; column-gap: 2rem;
+  justify-content: center; align-items: flex-start; margin: 0 auto; max-width: 1250px;
+}
+
+#cards {
+  display: flex; flex-direction: column; gap: 1.5rem; margin: 0 auto;
+  align-items: center; position: relative; left: calc((25% + 2.5rem)/2); width: 100%; opacity: 1; 
+}
+
+section[aria-labelledby="titulo-section"] {text-align:center;}
+#titulo-section {
+  text-align: center; font-size: 2rem; margin-top: 1rem; margin-bottom: 1.5rem;
+  font-weight: 700; color: #fff; position: relative; left: calc((25% + 2.5rem)/2);
+}
+
+.card {
+  background: var(--panel); border: var(--border); border-radius: var(--radius);
+  width: 63.75%; text-align: left; box-shadow: var(--shadow); overflow: hidden;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s;
+  cursor: pointer; min-height: 100px; 
+}
+.card:hover {
+  transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.4), var(--glow);
+  border-color: rgba(255,255,255,0.2);
+}
+
+.card img {width:100%; height:340px; object-fit:cover; display:block; border-bottom: 1px solid rgba(255,255,255,0.05); background: #111;}
+.card-content {padding:1.5rem;}
+.card-content h3 {margin:0.5rem 0; font-size:1.2rem; color:#fff;}
+.card-content p {color:var(--muted); font-size:0.95rem; margin:0;}
+
+/* --- SIDEBAR --- */
 aside {position: sticky; top: 1.3rem; align-self: flex-start; height: max-content;}
+.panel {
+  background: var(--panel); padding: 1.2rem; border-radius: var(--radius);
+  margin-bottom: 1rem; border: var(--border); box-shadow: var(--shadow);
+}
+.panel h3 {
+  margin-top: 0; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.5rem; 
+  margin-bottom: 0.8rem; font-size: 1.1rem;
+}
+aside .panel:first-of-type {margin-top:1.3rem;}
+
+.list {list-style:none; padding:0;}
+.list li a, .list li span.interativo {
+  color: var(--muted); text-decoration: none; display: block; padding: 0.4rem 0.5rem;
+  border-radius: 6px; transition: all 0.2s; cursor: pointer;
+}
+.list li a:hover, .list li span.interativo:hover {
+  background: var(--panel-hover); color: #fff; padding-left: 0.8rem; 
+}
+
+.recent-item {
+  margin-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 1rem;
+}
+.recent-item:last-child {border:none; padding-bottom:0;}
+.recent-item img {
+  width: 100%; border-radius: 6px; margin-bottom: 0.5rem; border: var(--border); background: #111;
+}
+.recent-item p {font-size:0.9rem; color:var(--muted); margin:0;}
+
+/* --- DETALHES --- */
+.mod-detalhe {
+    width: 70%; margin: 2rem 0; text-align: center; display: flex; flex-direction: column; align-items: center;
+}
+.mod-detalhe-card {
+  background: var(--panel); border-radius: var(--radius); border: var(--border);
+  width: 100%; text-align: left; box-shadow: 0 15px 35px rgba(0,0,0,0.5); 
+  overflow: hidden; margin: 0 0 1.5rem 0; position: relative;
+}
+.mod-detalhe-card img {width:100%; height:420px; object-fit:cover; aspect-ratio:16/9; display:block; background: #111;}
+.mod-detalhe-card .card-content {padding:2rem;}
+.mod-detalhe-card h3 {margin:0.5rem 0; font-size:1.4rem; color:#fff;}
+.mod-detalhe-card p {color:var(--muted); font-size:1rem; margin:0;}
+
+.mod-detalhe h2 {font-size:2rem; margin:1rem 0 0.5rem; color: #fff;}
+.mod-detalhe p {
+    color:var(--muted); margin:0.5rem 0; line-height: 1.7; text-align: center; width: 100%;
+}
+.descricao-texto {
+  white-space: pre-wrap; word-wrap: break-word; overflow-wrap: break-word;
+  max-width: 100%; display: block; text-align: center;
+}
+
+/* --- BLOCO DE DOWNLOADS AJUSTADO (ESTILO FOTO) --- */
+.btn-group-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    margin: 2.5rem 0;
+}
+
+.download-container {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap; 
+    justify-content: center;
+    width: 100%;
+}
+
+.btn-dl {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 150px; 
+    height: 48px;  
+    border-radius: 50px; /* Bordas totalmente redondas como na segunda foto */
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.75rem;
+    transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    white-space: nowrap;
+}
+
+.btn-dl:hover {
+    transform: translateY(-3px);
+}
+
+/* Estilos individuais e Hovers corrigidos */
+.btn-mediafire { background-color: #007bff; color: #fff; }
+.btn-mediafire:hover { background-color: #0069d9; }
+
+.btn-mega { background-color: #d92424; color: #fff; }
+.btn-mega:hover { background-color: #b31d1d; }
+
+.btn-drive { background-color: #ffffff; color: #000; }
+.btn-drive:hover { background-color: #e6e6e6; color: #000; } /* Garante que o texto continue preto */
+
+.btn-voltar {
+  background: #333; color: #fff; border: var(--border); 
+  border-radius: 50px; 
+  width: 130px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer; font-weight: 600; transition: all 0.2s;
+  text-decoration: none; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  font-size: 0.85rem;
+  margin-top: 5px;
+}
+.btn-voltar:hover {
+  background: #444; transform: translateY(-2px); box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+}
+
+.footer {
+  background: #050505; padding: 2rem 0; border-top: var(--border);
+  margin-top: 4rem; text-align: center;
+}
+.footer-grid {display:flex; justify-content:center; align-items:center; gap:1.5rem; flex-wrap:wrap; margin-bottom:0.4rem;}
+.footer .list {
+  display:flex; gap:1.2rem; list-style:none; padding:0; margin:0; position:relative; left:-1.8rem;
+}
+.footer .list li a {
+  text-decoration:none; color:var(--muted); font-size:0.9rem; transition:color 0.2s; padding: 0; background: transparent; 
+}
+.footer .list li a:hover { color:#fff; padding-left: 0; background: transparent;}
+.footer-bottom {display:flex; justify-content:center; align-items:center;}
+.footer-bottom small {color:var(--muted); font-size:0.8rem;}
+
+a {color: #ccc; transition: color 0.2s;}
+a:hover {color: #fff;}
+
+@media(max-width: 768px) {
+    .container.grid { display: block; }
+    #cards, #titulo-section { left: 0; width: 100%; padding: 0 1rem; box-sizing: border-box;}
+    .card { width: 100%; }
+    .mod-detalhe-card { width: 100%; }
+    .mod-detalhe { width: 100%; }
+    aside { display: none; }
+    .footer .list { flex-direction: column; gap: 0.5rem; left: 0; }
+    .btn-dl { width: 140px; } 
+}
 </style>
 </head>
 <body>
@@ -77,16 +279,16 @@ aside {position: sticky; top: 1.3rem; align-self: flex-start; height: max-conten
         <li><a class="active" href="index.html">Início</a></li>
         <li class="dropdown"><a href="#mods">Menu dos Mods</a>
           <div class="dropdown-content">
-            <a href="#motos" data-cat="motos">Mods de Moto</a>
-            <a href="#mapas" data-cat="mapas">Mods pro Mapa</a>
-            <a href="#pecas" data-cat="pecas">Peças Zmodler</a>
-            <a href="#personagens" data-cat="personagens">Mods de Personagem</a>
-            <a href="#outros" data-cat="outros">Outros Mods</a>
-            <a href="#todos" data-cat="todos">Todos os Mods</a>
+            <span class="interativo" data-cat="motos">Mods de Moto</span>
+            <span class="interativo" data-cat="mapas">Mods pro Mapa</span>
+            <span class="interativo" data-cat="pecas">Peças Zmodler</span>
+            <span class="interativo" data-cat="personagens">Mods de Personagem</span>
+            <span class="interativo" data-cat="outros">Outros Mods</span>
+            <span class="interativo" data-cat="todos">Todos os Mods</span>
           </div>
         </li>
         <li><a href="https://www.youtube.com/@GuikaModsRJ" target="_blank" rel="noopener">YouTube</a></li>
-        <li><a href="#tutoriais">Tutoriais</a></li>
+        <li><a href="tutoriais.html">Tutoriais</a></li>
       </ul>
     </nav>
     <form class="search" id="search-form" role="search" onsubmit="return false;" style="display:flex;align-items:center;">
@@ -104,25 +306,26 @@ aside {position: sticky; top: 1.3rem; align-self: flex-start; height: max-conten
     </section>
     <aside>
       <div class="panel"><h3>Categorias</h3><ul class="list" id="lista-categorias">
-        <li><a href="#motos" data-cat="motos">Motos (0)</a></li>
-        <li><a href="#mapas" data-cat="mapas">Mods pro Mapa (0)</a></li>
-        <li><a href="#pecas" data-cat="pecas">Peças Zmodler (0)</a></li>
-        <li><a href="#personagens" data-cat="personagens">Personagens (0)</a></li>
-        <li><a href="#outros" data-cat="outros">Outros Mods (0)</a></li>
-        <li><a href="#todos" data-cat="todos">Todos (0)</a></li>
+        <li><span class="interativo" data-cat="motos">Motos (0)</span></li>
+        <li><span class="interativo" data-cat="mapas">Mods pro Mapa (0)</span></li>
+        <li><span class="interativo" data-cat="pecas">Peças Zmodler (0)</span></li>
+        <li><span class="interativo" data-cat="personagens">Personagens (0)</span></li>
+        <li><span class="interativo" data-cat="outros">Outros Mods (0)</span></li>
+        <li><span class="interativo" data-cat="todos">Todos (0)</span></li>
       </ul></div>
+      
       <div class="panel"><h3>Blogs Parceiros</h3>
         <ul class="list">
           <li><a href="https://adventuresog.netlify.app/" target="_blank" rel="noopener">Roblox Adventures</a></li>
         </ul>
       </div>
-      <div class="panel"><h3>Populares</h3>
-        <ul class="list">
-          <li><a href="#">Top 5 Mods de Moto</a></li>
-          <li><a href="#">Melhores Peças Zmodler</a></li>
-          <li><a href="#">Mods de Mapa Atualizados</a></li>
+
+      <div class="panel"><h3>Populares 🔥</h3>
+        <ul class="list" id="lista-populares">
+           <li><span style='color:var(--muted);'>Carregando...</span></li>
         </ul>
       </div>
+      
       <div class="panel"><h3>Mais Recentes</h3>
         <div id="lista-recentes">
           <p style='font-size:0.9rem; color:var(--muted);'>Carregando...</p>
@@ -148,13 +351,15 @@ aside {position: sticky; top: 1.3rem; align-self: flex-start; height: max-conten
 document.addEventListener("DOMContentLoaded",()=>{
   const container=document.getElementById("cards");
   const titulo=document.getElementById("titulo-section");
-  const listaCat=document.getElementById("lista-categorias");
   const searchInput=document.getElementById("search-input");
-  const searchBtn=document.getElementById("search-button"); // Adicionado
+  const searchBtn=document.getElementById("search-button"); 
 
-  // Estado local
   const modsSalvos=JSON.parse(localStorage.getItem("modsSalvos"))||[];
-  let LOADED = false; // evita "Nenhum mod" antes do 1º fetch
+  let LOADED = false; 
+
+  let paginaAtualGlobal = 1;
+  let ultimaCategoriaCache = null;
+  let ultimaBuscaCache = "";
 
   const nomesCategorias={
     motos:"Motos",mapas:"Mods pro Mapa",pecas:"Peças Zmodler",
@@ -162,11 +367,18 @@ document.addEventListener("DOMContentLoaded",()=>{
   };
 
   function fadeOutIn(callback){
-    container.classList.remove("show");
-    setTimeout(()=>{callback();container.classList.add("show");},300);
+    container.style.transition = 'opacity 0.2s ease';
+    container.style.opacity = '0';
+    setTimeout(()=>{
+        callback();
+        window.scrollTo({top:0, behavior:'auto'});
+        setTimeout(() => {
+            container.style.transition = 'opacity 0.6s ease-out';
+            container.style.opacity = '1';
+        }, 50);
+    }, 200); 
   }
   
-  // Função auxiliar para formatar a data
   function formatarData(dataValor) {
       const data = dataValor ? new Date(dataValor) : null;
       if (!data || isNaN(data.getTime())) {
@@ -178,11 +390,21 @@ document.addEventListener("DOMContentLoaded",()=>{
       return `${dia}/${mes}/${ano}`;
   }
 
-  function renderMods(cat,query=""){
+  function renderMods(cat, query=""){
     container.innerHTML="";
-    if(!LOADED){
+    container.style.alignItems = "center";
+    container.style.left = "calc((25% + 2.5rem)/2)";
+    container.style.width = "100%";
+    
+    if(!LOADED && modsSalvos.length === 0){
       container.innerHTML = "<p>Carregando mods…</p>";
       return;
+    }
+
+    if(cat !== ultimaCategoriaCache || query !== ultimaBuscaCache) {
+        paginaAtualGlobal = 1;
+        ultimaCategoriaCache = cat;
+        ultimaBuscaCache = query;
     }
 
     let lista=modsSalvos;
@@ -196,9 +418,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     }
     if(lista.length===0){container.innerHTML="<p>Nenhum mod encontrado.</p>";return;}
 
-    // --- PAGINAÇÃO ---
     const itensPorPagina = 3;
-    let paginaAtual = 1;
     const totalPaginas = Math.ceil(lista.length / itensPorPagina);
 
     function exibirPagina(pagina){
@@ -208,14 +428,11 @@ document.addEventListener("DOMContentLoaded",()=>{
       const paginaMods = lista.slice(inicio, fim);
 
       paginaMods.forEach(mod=>{
-        // Obtém e formata a data para exibição
         const dataLancamento = formatarData(mod.timestamp || mod.data);
-        
         const card=document.createElement("div");
         card.className="card";
         card.setAttribute("data-id",mod.id);
         
-        // Inclui a data de lançamento no card-content
         card.innerHTML=`<img src="${mod.img}" alt="${mod.titulo}">
           <div class='card-content'>
             <h3>${mod.titulo}</h3>
@@ -230,85 +447,100 @@ document.addEventListener("DOMContentLoaded",()=>{
         const paginacao = document.createElement("div");
         paginacao.style.textAlign = "center";
         paginacao.style.margin = "2rem 0";
-
         const btnPrev = document.createElement("button");
-        btnPrev.textContent = "← Página Anterior";
+        btnPrev.textContent = "← Anterior";
         btnPrev.className = "btn-voltar";
+        btnPrev.style.width = "auto";
+        btnPrev.style.padding = "0 15px";
 
         const info = document.createElement("span");
         info.style.margin = "0 1rem";
-
+        info.style.color = "var(--muted)";
+        
         const btnNext = document.createElement("button");
-        btnNext.textContent = "Próxima Página →";
-        btnNext.className = "btn-download";
+        btnNext.textContent = "Próxima →";
+        btnNext.className = "btn-voltar";
+        btnNext.style.width = "auto";
+        btnNext.style.padding = "0 15px";
 
         function atualizarBotoes(){
-          info.textContent = `Página ${paginaAtual} de ${totalPaginas}`;
-          btnPrev.style.display = paginaAtual === 1 ? "none" : "inline-block";
-          btnNext.style.display = paginaAtual === totalPaginas ? "none" : "inline-block";
+          info.textContent = `Página ${paginaAtualGlobal} de ${totalPaginas}`;
+          btnPrev.style.display = paginaAtualGlobal === 1 ? "none" : "inline-block";
+          btnNext.style.display = paginaAtualGlobal === totalPaginas ? "none" : "inline-block";
         }
-
         btnPrev.onclick = ()=>{
-          if(paginaAtual>1){
-            paginaAtual--;
-            exibirPagina(paginaAtual);
-            atualizarBotoes();
-            window.scrollTo({top:0,behavior:'smooth'});
+          if(paginaAtualGlobal > 1){ 
+              paginaAtualGlobal--; 
+              exibirPagina(paginaAtualGlobal); 
+              atualizarBotoes(); 
+              window.scrollTo({top:0, behavior:'smooth'}); 
           }
         };
-
         btnNext.onclick = ()=>{
-          if(paginaAtual<totalPaginas){
-            paginaAtual++;
-            exibirPagina(paginaAtual);
-            atualizarBotoes();
-            window.scrollTo({top:0,behavior:'smooth'});
+          if(paginaAtualGlobal < totalPaginas){ 
+              paginaAtualGlobal++; 
+              exibirPagina(paginaAtualGlobal); 
+              atualizarBotoes(); 
+              window.scrollTo({top:0, behavior:'smooth'}); 
           }
         };
-
-        paginacao.appendChild(btnPrev);
-        paginacao.appendChild(info);
-        paginacao.appendChild(btnNext);
-        container.appendChild(paginacao);
-        atualizarBotoes();
+        paginacao.appendChild(btnPrev); paginacao.appendChild(info); paginacao.appendChild(btnNext);
+        container.appendChild(paginacao); atualizarBotoes();
       }
     }
-
-    exibirPagina(paginaAtual);
+    exibirPagina(paginaAtualGlobal);
   }
 
   function mostrarDetalhe(id){
     const mod=modsSalvos.find(m=>m.id===id);
     if(!mod){inicializar();return;}
-
-    // Obtém e format a data de lançamento para a página de detalhes
+    container.style.alignItems = "center"; 
+    container.style.left = "calc((25% + 2.5rem)/2)"; 
     const dataLancamento = formatarData(mod.timestamp || mod.data);
+    const tituloTopo = mod.tituloTopo && mod.tituloTopo.trim() !== "" ? mod.tituloTopo : mod.titulo;
+    titulo.textContent=tituloTopo;
     
-    fadeOutIn(()=>{
-      const tituloTopo = mod.tituloTopo && mod.tituloTopo.trim() !== "" ? mod.tituloTopo : mod.titulo;
-      titulo.textContent=tituloTopo;
-      container.innerHTML=`<div class='mod-detalhe'>
-          <div class='mod-detalhe-card'>
-            <a href="${mod.img}" target="_blank">
-              <img src="${mod.img}" alt="${mod.titulo}">
-            </a>
-            <div class='card-content'>
-              <h3>${mod.titulo}</h3>
-              <p><strong>Categoria:</strong> ${mod.categoria}</p>
-              <p><strong>Lançamento:</strong> ${dataLancamento}</p>
-            </div>
+    let downloadButtons = "";
+    if (mod.downloadMediafire) {
+        downloadButtons += `<a href="${mod.downloadMediafire}" target="_blank" class="btn-dl btn-mediafire">MEDIAFIRE</a>`;
+    }
+    if (mod.downloadMega) {
+        downloadButtons += `<a href="${mod.downloadMega}" target="_blank" class="btn-dl btn-mega">MEGA</a>`;
+    }
+    if (mod.downloadDrive) {
+        downloadButtons += `<a href="${mod.downloadDrive}" target="_blank" class="btn-dl btn-drive">GOOGLE DRIVE</a>`;
+    }
+    if (!downloadButtons && mod.download) {
+        downloadButtons = `<a href="${mod.download}" target="_blank" class="btn-dl btn-mediafire">BAIXAR MOD</a>`;
+    }
+
+    container.innerHTML=`<div class='mod-detalhe'>
+        <div class='mod-detalhe-card'>
+          <a href="${mod.img}" target="_blank">
+            <img src="${mod.img}" alt="${mod.titulo}">
+          </a>
+          <div class='card-content'>
+            <h3>${mod.titulo}</h3>
+            <p><strong>Categoria:</strong> ${mod.categoria}</p>
+            <p><strong>Lançamento:</strong> ${dataLancamento}</p>
           </div>
-          <p><strong>Categoria:</strong> ${mod.categoria}</p>
-          <p><strong>Lançamento:</strong> ${dataLancamento}</p>
-          <p>${mod.descricao||""}</p>
-          <a href="${mod.download}" target="_blank" class="btn-download">Baixar Mod</a>
-          <a href="#" class="btn-voltar">Voltar</a>
-        </div>`;
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      document.querySelector(".btn-voltar").addEventListener("click",(e)=>{
-        e.preventDefault();
-        history.back();
-      });
+        </div>
+        <p><strong>Categoria:</strong> ${mod.categoria}</p>
+        <p><strong>Lançamento:</strong> ${dataLancamento}</p>
+        <p class="descricao-texto">${mod.descricao||""}</p>
+        
+        <div class="btn-group-container">
+            <div class="download-container">
+               ${downloadButtons}
+            </div>
+            
+            <a href="#" class="btn-voltar">Voltar</a>
+        </div>
+      </div>`;
+    
+    document.querySelector(".btn-voltar").addEventListener("click",(e)=>{
+      e.preventDefault();
+      history.back(); 
     });
   }
 
@@ -316,82 +548,95 @@ document.addEventListener("DOMContentLoaded",()=>{
     const contadores={motos:0,mapas:0,pecas:0,personagens:0,outros:0};
     modsSalvos.forEach(m=>{if(contadores[m.categoria]!=undefined) contadores[m.categoria]++;});
     const total=modsSalvos.length;
-    listaCat.querySelectorAll("a[data-cat]").forEach(a=>{
+    document.querySelectorAll(".interativo[data-cat]").forEach(a=>{
       const c=a.getAttribute("data-cat");
       const num=c==="todos"?total:(contadores[c]||0);
       const texto=a.textContent.replace(/\(\d+\)/,"");
-      a.textContent=texto.trim()+" ("+num+")";
+      if(a.closest('aside')) {
+        a.textContent=texto.trim()+" ("+num+")";
+      }
     });
   }
 
-  // FUNÇÃO PARA RENDERIZAR OS MAIS RECENTES (mantida do pedido anterior)
   function renderMaisRecentes(limite = 3) {
     const container = document.getElementById("lista-recentes");
     if (!container) return;
-    
-    if(!LOADED) {
+    if(!LOADED && modsSalvos.length === 0) {
       container.innerHTML = "<p style='font-size:0.9rem; color:var(--muted);'>Carregando...</p>";
       return;
     }
-
-    // 1. Ordena os mods pela data.
     const modsOrdenados = [...modsSalvos].sort((a, b) => {
-      // Tenta usar 'timestamp' ou 'data' como a propriedade de data
       const dataA = a.timestamp || a.data || 0;
       const dataB = b.timestamp || b.data || 0;
-      
       const dateA_ms = new Date(dataA).getTime() || 0;
       const dateB_ms = new Date(dataB).getTime() || 0;
-
-      // Fallback: se datas inválidas, tenta ordenar por ID (útil para chaves geradas pelo Firebase)
-      if (dateA_ms === 0 && dateB_ms === 0) {
-          return String(b.id).localeCompare(String(a.id));
-      }
-
-      return dateB_ms - dateA_ms; // Mais novo primeiro
+      return dateB_ms - dateA_ms; 
     });
-
-    // 2. Pega os 'limite' primeiros (os mais novos)
     const recentes = modsOrdenados.slice(0, limite);
     
-    // 3. Limpa o container e renderiza os itens
-    container.innerHTML = ""; 
-
+    container.innerHTML = "";
     if (recentes.length === 0) {
       container.innerHTML = "<p style='font-size:0.9rem; color:var(--muted);'>Nenhum mod recente.</p>";
       return;
     }
-
     recentes.forEach(mod => {
-      const item = document.createElement("div");
-      item.className = "recent-item";
-      
-      const dataRecente = formatarData(mod.timestamp || mod.data); // Formata a data aqui também
-
-      // Cria um "snippet" da descrição
-      let snippet = mod.descricao || "Sem descrição.";
-      if (snippet.length > 80) {
-        snippet = snippet.substring(0, 80) + "...";
-      }
-
-      // Cria o HTML do item recente
-      item.innerHTML = `
-        <a href="#mod-${mod.id}">
-            <img src="${mod.img || 'https://placehold.co/400x200?text=Mod'}" alt="${mod.titulo}">
-        </a>
-        <p style="font-weight: 600; margin-bottom: 0.2rem; margin-top: 0.5rem;">
-            <a href="#mod-${mod.id}" style="color: var(--text); text-decoration: none;">${mod.titulo}</a>
-        </p>
-        <p><strong>Lançamento:</strong> ${dataRecente}</p>
-      `; // Mudança na descrição para mostrar a data
-      item.querySelector('a').addEventListener("click", (e) => {
-          e.preventDefault();
-          location.hash = "mod-" + mod.id;
-      });
-      container.appendChild(item);
+          const item = document.createElement("div");
+          item.className = "recent-item";
+          const dataMod = formatarData(mod.timestamp || mod.data); 
+          item.innerHTML = `
+            <a href="#mod-${mod.id}">
+                <img src="${mod.img || 'https://placehold.co/400x200?text=Mod'}" alt="${mod.titulo}">
+            </a>
+            <p style="font-weight: 600; margin-bottom: 0.2rem; margin-top: 0.5rem;">
+                <a href="#mod-${mod.id}" style="color: var(--text); text-decoration: none;">${mod.titulo}</a>
+            </p>
+            <p><strong>Lançamento:</strong> ${dataMod}</p>
+          `; 
+          item.querySelector('a').addEventListener("click", (e) => {
+              e.preventDefault();
+              location.hash = "mod-" + mod.id;
+          });
+          container.appendChild(item);
     });
   }
-  // FIM DA FUNÇÃO DE MAIS RECENTES
+
+  function renderPopulares() {
+    const container = document.getElementById("lista-populares");
+    if (!container) return;
+    if(!LOADED && modsSalvos.length === 0) {
+      container.innerHTML = "<li><span style='color:var(--muted);'>Carregando...</span></li>";
+      return;
+    }
+
+    const populares = modsSalvos.filter(m => m.destaque === true);
+    
+    populares.sort((a, b) => {
+      const dataA = new Date(a.timestamp || a.data || 0).getTime();
+      const dataB = new Date(b.timestamp || b.data || 0).getTime();
+      return dataB - dataA;
+    });
+
+    container.innerHTML = "";
+    if (populares.length === 0) {
+      container.innerHTML = "<li><span style='color:var(--muted);'>Nenhum destaque.</span></li>";
+      return;
+    }
+
+    populares.forEach(mod => {
+       const li = document.createElement("li");
+       const a = document.createElement("a");
+       a.href = "#mod-" + mod.id;
+       a.textContent = mod.titulo; 
+       
+       a.addEventListener("click", (e) => {
+           e.preventDefault();
+           location.hash = "mod-" + mod.id;
+       });
+
+       li.appendChild(a);
+       container.appendChild(li);
+    });
+  }
 
   function atualizarTitulo(cat){
     if(!cat || cat==="inicio" || cat==="") titulo.textContent="Últimas Postagens";
@@ -403,38 +648,30 @@ document.addEventListener("DOMContentLoaded",()=>{
     const hash=location.hash.replace("#","");
     const query=searchInput.value.trim();
     if(hash.startsWith("mod-")){const id=hash.replace("mod-","");mostrarDetalhe(id);return;}
-    fadeOutIn(()=>{atualizarTitulo(hash);renderMods(hash,query);atualizarContadores();});
+    atualizarTitulo(hash);
+    renderMods(hash,query);
+    atualizarContadores();
   }
 
-  listaCat.querySelectorAll("a[data-cat]").forEach(link=>{
+  window.addEventListener("hashchange", () => {
+    fadeOutIn(inicializar);
+  });
+
+  document.querySelectorAll("[data-cat]").forEach(link=>{
     link.addEventListener("click",e=>{
       e.preventDefault();
       const cat=e.target.getAttribute("data-cat");
-      location.hash=cat;
-      inicializar();
-      window.scrollTo({top:0,behavior:"smooth"});
+      location.hash=cat; 
     });
   });
 
-  // REMOVIDO: O evento 'input' que fazia a busca automática foi removido daqui.
-  /* searchInput.addEventListener("input",()=>{
-    const hash=location.hash.replace("#","");
-    const query=searchInput.value.trim();
-    fadeOutIn(()=>renderMods(hash,query));
-  }); */
-  // O evento 'input' foi substituído pela ação do botão.
+  inicializar();
+  const hash=location.hash.replace("#","");
+  if(hash.startsWith("mod-")){mostrarDetalhe(hash.replace("mod-",""));}
+  
+  renderMaisRecentes();
+  renderPopulares(); 
 
-  window.addEventListener("hashchange", inicializar);
-
-  setTimeout(()=>{
-    inicializar();
-    setTimeout(()=>container.classList.add("show"),200);
-    const hash=location.hash.replace("#","");
-    if(hash.startsWith("mod-")){mostrarDetalhe(hash.replace("mod-",""));}
-    renderMaisRecentes(); // Chama a função na inicialização
-  },100);
-
-  // NOVO: Adicionado um listener de evento para o botão de busca (click) e para a tecla Enter (keyup)
   function handleSearch(){
     const hash=location.hash.replace("#","");
     const query=searchInput.value.trim();
@@ -442,39 +679,19 @@ document.addEventListener("DOMContentLoaded",()=>{
   }
 
   searchBtn.addEventListener("click", handleSearch);
-
   searchInput.addEventListener("keyup", (e) => {
-      if (e.key === "Enter") {
-          handleSearch();
-      }
+      if (e.key === "Enter") { handleSearch(); }
   });
 
-
-  /* =======================
-     SINCRONIZAÇÃO COM FIREBASE
-     - O PATHS foi corrigido de "/modsSalvos" para "/mods"
-     ======================= */
+  // SUPABASE IMPLEMENTATION
   (function(){
-    const DB_BASE = "https://guikamodsrj-default-rtdb.firebaseio.com";
-    // *** CORREÇÃO APLICADA AQUI: MODIFICAÇÃO DE "/modsSalvos" PARA "/mods" ***
-    const PATHS = ["/mods"]; // <<<<<<<<<<<<<<<< PATH CORRIGIDO PARA BATER COM AS REGRAS DO FIREBASE
-    let streamStarted = false;
-    const seenStreams = new Set();
+    const supabaseUrl = 'https://uczpomdhzbarenmxysfc.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVjenBvbWRoemJhcmVubXh5c2ZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI2NzA3OTIsImV4cCI6MjA4ODI0Njc5Mn0.oKwFayvnBPPxOjHGFcHLxG44eH3C_NTgDQMUqUKa7vo';
+    const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
     function normalizeMods(val){
-      const arr=[];
-      if(!val) return arr;
-      if(Array.isArray(val)){
-        val.forEach((v,i)=>{ if(v){ arr.push(buildMod(v, v.id || String(i))); } });
-      } else if(typeof val === "object"){
-        Object.keys(val).forEach(key=>{
-          const v = val[key];
-          if(v!==null && typeof v!=="undefined"){
-            arr.push(buildMod(v, v.id || key));
-          }
-        });
-      }
-      return dedupe(arr);
+      if(!val) return [];
+      return val.map(v => buildMod(v, v.id));
     }
 
     function buildMod(v, key){
@@ -485,19 +702,14 @@ document.addEventListener("DOMContentLoaded",()=>{
       if(m.category && !m.categoria) m.categoria = m.category;
       if(m.image && !m.img) m.img = m.image;
       if(m.link && !m.download) m.download = m.link;
-      if(!m.tituloTopo) m.tituloTopo = m.title || m.titulo; // Fallback mais robusto
-      // Normaliza a data para um campo único se necessário
+      if(!m.tituloTopo) m.tituloTopo = m.title || m.titulo; 
       if(m.data && !m.timestamp) m.timestamp = m.data; 
-      
       return m;
     }
 
     function dedupe(list){
       const map=new Map();
-      list.forEach(m=>{
-        if(!m || !m.id) return;
-        map.set(m.id, Object.assign(map.get(m.id)||{}, m));
-      });
+      list.forEach(m=>{ if(!m || !m.id) return; map.set(m.id, Object.assign(map.get(m.id)||{}, m)); });
       return Array.from(map.values());
     }
 
@@ -508,18 +720,11 @@ document.addEventListener("DOMContentLoaded",()=>{
         if(!n || !n.id) return;
         const exist = byId.get(n.id);
         if(exist){
-          const before = JSON.stringify(exist);
-          Object.assign(exist, n);
-          const after = JSON.stringify(exist);
+          const before = JSON.stringify(exist); Object.assign(exist, n); const after = JSON.stringify(exist);
           if(before!==after) changed = true;
-        } else {
-          modsSalvos.push(n);
-          changed = true;
-        }
+        } else { modsSalvos.push(n); changed = true; }
       });
-      if(changed){
-        localStorage.setItem("modsSalvos", JSON.stringify(modsSalvos));
-      }
+      if(changed){ localStorage.setItem("modsSalvos", JSON.stringify(modsSalvos)); }
       return changed;
     }
 
@@ -531,125 +736,51 @@ document.addEventListener("DOMContentLoaded",()=>{
         const b = JSON.stringify(list.slice().sort((x,y)=>x.id>y.id?1:-1));
         changed = a!==b;
       }
-      if(changed){
-        modsSalvos.splice(0, modsSalvos.length, ...list);
-        localStorage.setItem("modsSalvos", JSON.stringify(modsSalvos));
-      }
+      if(changed){ modsSalvos.splice(0, modsSalvos.length, ...list); localStorage.setItem("modsSalvos", JSON.stringify(modsSalvos)); }
       return changed;
     }
 
     function removeById(id){
       const idx = modsSalvos.findIndex(m=>m.id===id);
-      if(idx>-1){
-        modsSalvos.splice(idx,1);
-        localStorage.setItem("modsSalvos", JSON.stringify(modsSalvos));
-        return true;
-      }
+      if(idx>-1){ modsSalvos.splice(idx,1); localStorage.setItem("modsSalvos", JSON.stringify(modsSalvos)); return true; }
       return false;
     }
-
-    function refreshUI(){
-      try{ 
-        inicializar(); 
-        renderMaisRecentes(); 
-      }catch(_){}
+    
+    function refreshUI(){ 
+        try{ 
+            inicializar(); 
+            renderMaisRecentes(); 
+            renderPopulares(); 
+        }catch(_){} 
     }
 
-    function fetchAllOnce(){
-      return Promise.all(
-        PATHS.map(p =>
-          fetch(DB_BASE + p + ".json").then(r=>r.ok?r.json():null).catch(()=>null)
-        )
-      ).then(values=>{
-        const arr = dedupe(values.flatMap(v=>normalizeMods(v)));
-        if(arr.length>0){
+    async function fetchAllOnce(){
+      try {
+        const { data, error } = await supabase.from('mods').select('*');
+        if (data) {
+          const arr = dedupe(normalizeMods(data));
           if(replaceAll(arr)) refreshUI();
         }
-        LOADED = true;       // libera a renderização
-        refreshUI();
-      }).catch(()=>{
-        LOADED = true;
-        refreshUI();
-      });
-    }
-
-    function startStream(path){
-      if(seenStreams.has(path)) return;
-      seenStreams.add(path);
-      try{
-        // O streaming EventSource não precisa de ?auth= se a regra for ".read": "true"
-        const es = new EventSource(DB_BASE + path + ".json");
-        streamStarted = true;
-
-        es.addEventListener("put", ev=>{
-          try{
-            const msg = JSON.parse(ev.data); // {path, data}
-            applyChange(msg.path, msg.data);
-          }catch(_){}
-        });
-        es.addEventListener("patch", ev=>{
-          try{
-            const msg = JSON.parse(ev.data);
-            applyChange(msg.path, msg.data);
-          }catch(_){}
-        });
-        es.addEventListener("error", _=>{
-          streamStarted = false; // fallback ativo
-        });
-      }catch(_){
-        streamStarted = false;
+        LOADED = true; refreshUI();
+      } catch (err) {
+        LOADED = true; refreshUI();
       }
     }
 
-    function applyChange(relPath, data){
-      // Evento no root: não zera tudo quando for null
-      if(relPath === "/" || relPath === "" || relPath === null){
-        const arr = normalizeMods(data);
-        if(arr.length>0){
-          if(replaceAll(arr)) refreshUI();
-        }
-        return;
-      }
-      const parts = relPath.split("/").filter(Boolean);
-      const id = parts[0];
-      if(!id) return;
-
-      // deleção do mod inteiro
-      if(parts.length === 1 && data === null){
-        if(removeById(id)) refreshUI();
-        return;
-      }
-
-      // atualização parcial
-      const exist = modsSalvos.find(m=>m.id===id) || {id};
-      setDeep(exist, parts.slice(1), data);
-      if(mergeMods([exist])) refreshUI();
+    function startStream(){
+      supabase.channel('public:mods')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'mods' }, payload => {
+          if (payload.eventType === 'INSERT' || payload.eventType === 'UPDATE') {
+            const newMod = buildMod(payload.new, payload.new.id);
+            if(mergeMods([newMod])) refreshUI();
+          } else if (payload.eventType === 'DELETE') {
+            if(removeById(payload.old.id)) refreshUI();
+          }
+        })
+        .subscribe();
     }
 
-    function setDeep(obj, pathArr, value){
-      let cur = obj;
-      for(let i=0;i<pathArr.length;i++){
-        const k = pathArr[i];
-        if(i === pathArr.length - 1){
-          cur[k] = value;
-        } else {
-          if(typeof cur[k] !== "object" || cur[k] === null) cur[k] = {};
-          cur = cur[k];
-        }
-      }
-    }
-
-    // Inicial
-    fetchAllOnce().then(()=>{
-      PATHS.forEach(startStream);
-    });
-
-    // Fallback polling
-    setInterval(()=>{
-      if(!streamStarted){
-        fetchAllOnce();
-      }
-    }, 15000);
+    fetchAllOnce().then(() => { startStream(); });
   })();
 });
 </script>
