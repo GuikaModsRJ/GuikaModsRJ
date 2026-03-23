@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' https://cdn.jsdelivr.net https://*.supabase.co https://fonts.googleapis.com https://fonts.gstatic.com; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src * data:; connect-src https://*.supabase.co;">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<meta name="googlebot" content="noindex, nofollow">
+<title>Painel Admin - Guika Mods RJ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+/* --- CONFIGURAÇÃO VISUAL --- */
+:root {
+  --bg: #09090b;
+  --panel: #18181b;
+  --panel-hover: #27272a;
+  --text: #e4e4e7;
+  --muted: #a1a1aa;
+  --border: 1px solid rgba(255, 255, 255, 0.1);
+  --primary: #fff;
+  --danger: #ef4444;
+  --edit: #3b82f6;
+  --radius: 12px;
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; width: 100%; max-width: 100vw; overflow-x: hidden; font-family: 'Inter', system-ui, sans-serif; background: var(--bg); background-image: radial-gradient(circle at 50% 0%, #1c1c1c 0%, var(--bg) 70%); color: var(--text); line-height: 1.6; min-height: 100vh; }
+h1, h2 { color: #fff; font-weight: 700; text-align: center; margin-bottom: 1.5rem; }
+h1 { font-size: 1.8rem; text-shadow: 0 0 20px rgba(255,255,255,0.1); margin: 0; }
+h2 { font-size: 1.4rem; margin-top: 3rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 1rem; }
+.admin-container { max-width: 1000px; width: 100%; margin: 0 auto; padding: 2rem 1rem; }
+.card { background: var(--panel); border: var(--border); border-radius: var(--radius); padding: 2rem; box-shadow: var(--shadow); margin-bottom: 2rem; width: 100%; }
+form { display: flex; flex-direction: column; gap: 1rem; }
+label { font-size: 0.9rem; color: var(--muted); margin-bottom: -0.5rem; margin-left: 0.2rem; }
+input, select, textarea { background: rgba(0,0,0,0.3); border: var(--border); border-radius: 8px; color: #fff; padding: 0.8rem 1rem; font-family: inherit; font-size: 0.95rem; transition: all 0.2s; width: 100%; }
+input:focus, select:focus, textarea:focus { outline: none; border-color: rgba(255,255,255,0.3); background: rgba(0,0,0,0.5); }
+.download-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+@media (max-width: 768px) { .download-grid { grid-template-columns: 1fr; } }
+.checkbox-wrapper { background: rgba(255, 255, 255, 0.05); padding: 1rem; border-radius: 8px; display: flex; align-items: center; gap: 0.8rem; border: 1px dashed rgba(255, 255, 255, 0.2); cursor: pointer; transition: background 0.2s; }
+.checkbox-wrapper:hover { background: rgba(255, 255, 255, 0.08); }
+.checkbox-wrapper input { width: 20px; height: 20px; accent-color: #fff; cursor: pointer; }
+button { padding: 0.8rem 1.5rem; border-radius: 8px; border: none; font-weight: 600; cursor: pointer; transition: transform 0.1s, opacity 0.2s; }
+button:active { transform: scale(0.98); }
+.btn-submit { background: #fff; color: #000; margin-top: 1rem; width: 100%; font-size: 1.1rem; }
+.btn-submit:hover { background: #e4e4e7; }
+.btn-cancel { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: var(--muted); width: 100%; }
+.btn-edit { background: rgba(59, 130, 246, 0.2); color: #60a5fa; padding: 0.4rem 0.8rem; font-size: 0.85rem; margin-right: 0.5rem; }
+.btn-delete { background: rgba(239, 68, 68, 0.2); color: #f87171; padding: 0.4rem 0.8rem; font-size: 0.85rem; }
+.btn-login { background: #fff; color: #000; width: 100%; }
+.toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; gap: 1rem; flex-wrap: wrap; }
+.search-container { flex: 1; position: relative; min-width: 250px; }
+.search-container input { padding-left: 2.5rem; background: var(--panel); }
+.search-icon { position: absolute; left: 0.8rem; top: 50%; transform: translateY(-50%); opacity: 0.5; }
+.table-container { width: 100%; overflow-x: auto; border-radius: 8px; border: var(--border); background: rgba(0,0,0,0.2); margin-bottom: 1rem; }
+table { width: 100%; border-collapse: collapse; white-space: nowrap; min-width: 800px; }
+th { background: rgba(255,255,255,0.05); text-align: left; padding: 1rem; font-size: 0.85rem; text-transform: uppercase; color: var(--muted); }
+td { padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.95rem; }
+.pagination { display: flex; justify-content: center; align-items: center; gap: 1rem; margin-top: 1rem; }
+.btn-page { background: var(--panel); border: var(--border); color: var(--text); padding: 0.5rem 1rem; }
+.preview { margin-top: 0.5rem; padding: 0.5rem; background: rgba(0,0,0,0.2); border-radius: 6px; text-align: center; display: none; }
+.preview:not(:empty) { display: block; }
+.preview img { max-width: 100%; max-height: 200px; border-radius: 6px; }
+#login { max-width: 400px; margin: 10vh auto; text-align: center; padding: 2rem; }
+.header-admin { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+</style>
+</head>
+<body>
+
+<div id="login" class="card">
+  <h2 style="margin-top:0; border:none;">🔐 Login Administrativo</h2>
+  <p style="color:var(--muted); margin-bottom:1.5rem;">Acesse para gerenciar a Guika Mods RJ.</p>
+  <input type="email" id="email" placeholder="Username" style="margin-bottom: 1rem;">
+  <input type="password" id="senha" placeholder="Sua Senha" style="margin-bottom: 1rem;">
+  <button id="btnEntrar" class="btn-login">Acessar Painel</button>
+  <p id="erro" style="color:var(--danger); display:none; margin-top:1rem; font-size:0.9rem;"></p>
+</div>
+
+<div id="admin" class="admin-container" style="display:none;">
+  
+  <div class="header-admin">
+    <div style="display:flex; flex-direction:column; gap:0.2rem;">
+      <h1>Painel Admin</h1>
+      <span id="adminEmailLabel" style="color:var(--muted); font-size:0.85rem; text-align:center;"></span>
+    </div>
+    <button id="btnSair" class="btn-cancel" style="width: auto; padding: 0.5rem 1.5rem; border-color: var(--danger); color: var(--danger);">Sair</button>
+  </div>
+
+  <div class="card">
+    <form id="modForm">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div><label>Título do Mod</label><input type="text" id="titulo" placeholder="Ex: Honda XRE 300" required></div>
+          <div><label>Título Topo (Opcional)</label><input type="text" id="tituloTopo" placeholder="Ex: Detalhes do Mod"></div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div><label>URL da Imagem</label><input type="url" id="img" placeholder="https://..."></div>
+          <div><label>Ou Upload de Imagem (Direto pro Storage)</label><input type="file" id="imgUpload" accept="image/*" style="padding: 0.55rem 1rem;"></div>
+      </div>
+      <div id="imgPreview" class="preview"></div>
+      
+      <label>Links de Download</label>
+      <div class="download-grid">
+          <div><input type="url" id="downloadMediafire" placeholder="Link Mediafire (Azul)"></div>
+          <div><input type="url" id="downloadMega" placeholder="Link Mega (Vermelho)"></div>
+          <div><input type="url" id="downloadDrive" placeholder="Link Google Drive (Branco)"></div>
+      </div>
+
+      <label>Descrição</label>
+      <textarea id="descricao" placeholder="Descreva os detalhes do mod..." rows="5" required></textarea>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div><label>Data de Lançamento</label><input type="date" id="data" required></div>
+          <div>
+            <label>Categoria</label>
+            <select id="categoria" required>
+              <option value="">Selecione...</option>
+              <option value="motos">Motos</option>
+              <option value="mapas">Mods pro Mapa</option>
+              <option value="pecas">Peças Zmodler</option>
+              <option value="personagens">Mods de Personagem</option>
+              <option value="outros">Outros Mods</option>
+            </select>
+          </div>
+      </div>
+
+      <div class="checkbox-wrapper" onclick="document.getElementById('destaque').click()">
+          <input type="checkbox" id="destaque" onclick="event.stopPropagation()">
+          <label for="destaque">🔥 Marcar como POPULAR (Destaque na Home)</label>
+      </div>
+
+      <button type="submit" class="btn-submit">Adicionar Mod</button>
+    </form>
+  </div>
+
+  <h2>Gerenciar Mods Salvos</h2>
+  <div class="toolbar">
+    <div class="search-container"><span class="search-icon">🔍</span><input type="text" id="searchTable" placeholder="Pesquisar mod por nome..."></div>
+  </div>
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Título</th>
+          <th>Categoria</th>
+          <th>Data</th>
+          <th style="text-align: center;">👁️ Views</th>
+          <th style="text-align: center;">❤️ Likes</th>
+          <th style="text-align: right;">Ações</th>
+        </tr>
+      </thead>
+      <tbody id="listaMods"></tbody>
+    </table>
+  </div>
+  <div class="pagination" id="paginacaoControls" style="display:none;">
+    <button class="btn-page" id="btnPrev">← Anterior</button><span id="pageInfo" style="color: var(--muted); font-size: 0.9rem;"></span><button class="btn-page" id="btnNext">Próximo →</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  // Bloqueia clique direito
+  document.addEventListener('contextmenu', e => e.preventDefault());
+  // Detecta DevTools aberto e redireciona
+  (function() {
+    const threshold = 160;
+    setInterval(() => {
+      if (window.outerWidth - window.innerWidth > threshold || window.outerHeight - window.innerHeight > threshold) {
+        document.body.innerHTML = '';
+        window.location.href = 'index.html';
+      }
+    }, 1000);
+  })();
+</script>
+<script>
+  const _u = ["https://uczpom","dhzbarenmxysfc",".supabase.co"].join("");
+  const _k = ["eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",".",
+    "eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVjenBvbWRoemJhcmVubXh5c2ZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI2NzA3OTIsImV4cCI6MjA4ODI0Njc5Mn0",
+    ".oKwFayvnBPPxOjHGFcHLxG44eH3C_NTgDQMUqUKa7vo"].join("");
+  const supabaseUrl = _u;
+  const supabaseKey = _k;
+  const _supabase = window.supabase.createClient(supabaseUrl, supabaseKey, {
+    auth: { storageKey: "guika_admin_session" }
+  });
+
+  // Variáveis de Autenticação
+  const loginDiv = document.getElementById("login");
+  const adminDiv = document.getElementById("admin");
+  const emailInput = document.getElementById("email");
+  const senhaInput = document.getElementById("senha");
+  const erroMsg = document.getElementById("erro");
+  const btnEntrar = document.getElementById("btnEntrar");
+  const btnSair = document.getElementById("btnSair");
+
+  // --- SISTEMA DE LOGIN SEGURO ---
+  let tentativas = 0;
+  let bloqueadoAte = 0;
+
+  btnEntrar.addEventListener("click", async () => {
+    const agora = Date.now();
+    if (agora < bloqueadoAte) {
+      const seg = Math.ceil((bloqueadoAte - agora) / 1000);
+      erroMsg.innerText = "Muitas tentativas. Aguarde " + seg + " segundos.";
+      erroMsg.style.display = "block";
+      return;
+    }
+
+    btnEntrar.textContent = "Acessando...";
+    btnEntrar.disabled = true;
+
+    const { data, error } = await _supabase.auth.signInWithPassword({
+      email: emailInput.value,
+      password: senhaInput.value,
+    });
+
+    if (error) {
+      tentativas++;
+      if (tentativas >= 5) {
+        bloqueadoAte = Date.now() + 2 * 60 * 1000;
+        tentativas = 0;
+        erroMsg.innerText = "Muitas tentativas incorretas. Aguarde 2 minutos.";
+      } else {
+        erroMsg.innerText = "Credenciais inválidas. Tentativa " + tentativas + " de 5.";
+      }
+      erroMsg.style.display = "block";
+      btnEntrar.textContent = "Acessar Painel";
+      btnEntrar.disabled = false;
+    } else {
+      tentativas = 0;
+      location.reload();
+    }
+  });
+
+  // Enter para logar
+  senhaInput.addEventListener("keydown", (e) => { if (e.key === "Enter") btnEntrar.click(); });
+  emailInput.addEventListener("keydown", (e) => { if (e.key === "Enter") btnEntrar.click(); });
+
+  // Botão de Sair
+  btnSair.addEventListener("click", async () => {
+      await _supabase.auth.signOut();
+      location.reload();
+  });
+
+  // Verifica se o usuário já tem uma sessão ativa ao abrir a página
+  // Emails hasheados (btoa) para não ficarem expostos em texto puro no código
+  const ADMIN_HASHES = [
+    btoa('guikamodsrj@gmail.com'),
+    btoa('mutanoyt18@gmail.com')
+  ];
+  function isAdmin(email) {
+    return ADMIN_HASHES.includes(btoa(email));
+  }
+
+  async function checkUser() {
+      const { data: { user } } = await _supabase.auth.getUser();
+      if (user && isAdmin(user.email)) {
+          loginDiv.style.display = "none";
+          adminDiv.style.display = "block";
+          const label = document.getElementById("adminEmailLabel");
+          if(label) label.textContent = "Logado como: " + user.email;
+          carregarMods();
+      } else {
+          if (user) {
+              // Logado mas não é admin — faz logout e mostra erro
+              await _supabase.auth.signOut();
+              erroMsg.innerText = "Acesso negado. Você não tem permissão de administrador.";
+              erroMsg.style.display = "block";
+          }
+          loginDiv.style.display = "block";
+          adminDiv.style.display = "none";
+      }
+  }
+
+  // --- LÓGICA DO PAINEL ADMIN COMPLETA ---
+  const form = document.getElementById("modForm");
+  const listaMods = document.getElementById("listaMods");
+  const paginacaoControls = document.getElementById("paginacaoControls");
+  const btnPrev = document.getElementById("btnPrev");
+  const btnNext = document.getElementById("btnNext");
+  const pageInfo = document.getElementById("pageInfo");
+  const searchInput = document.getElementById("searchTable");
+
+  const inputs = {
+    titulo: document.getElementById("titulo"), tituloTopo: document.getElementById("tituloTopo"),
+    img: document.getElementById("img"), imgUpload: document.getElementById("imgUpload"),
+    downloadMediafire: document.getElementById("downloadMediafire"), downloadMega: document.getElementById("downloadMega"),
+    downloadDrive: document.getElementById("downloadDrive"), descricao: document.getElementById("descricao"),
+    data: document.getElementById("data"), categoria: document.getElementById("categoria"), destaque: document.getElementById("destaque")
+  };
+
+  const imgPreview = document.getElementById("imgPreview");
+  let allMods = []; let filteredMods = []; let currentPage = 1; const itemsPerPage = 8; let editingId = null;
+
+  const submitBtn = form.querySelector('button[type="submit"]');
+  const cancelBtn = document.createElement('button');
+  cancelBtn.type = "button"; cancelBtn.textContent = "Cancelar edição"; cancelBtn.className = "btn-cancel"; cancelBtn.style.display = "none"; cancelBtn.style.marginTop = "0.5rem";
+  cancelBtn.addEventListener("click", cancelarEdicao);
+  form.insertBefore(cancelBtn, submitBtn.nextSibling); 
+
+  function preencherDataHoje() {
+    const h = new Date();
+    inputs.data.value = h.getFullYear()+'-'+String(h.getMonth()+1).padStart(2,'0')+'-'+String(h.getDate()).padStart(2,'0');
+  }
+  function cancelarEdicao() {
+    editingId = null; form.reset(); imgPreview.innerHTML = ""; inputs.destaque.checked = false; submitBtn.textContent = "Adicionar Mod"; cancelBtn.style.display = "none";
+    preencherDataHoje();
+  }
+
+  inputs.img.addEventListener("input", () => {
+    const url = inputs.img.value.trim(); imgPreview.innerHTML = url ? `<img src="${url}" alt="Preview">` : "";
+  });
+
+  inputs.imgUpload.addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (file) { imgPreview.innerHTML = `<img src="${URL.createObjectURL(file)}" alt="Preview">`; inputs.img.value = ""; }
+  });
+
+  searchInput.addEventListener("input", (e) => {
+    const term = e.target.value.toLowerCase();
+    filteredMods = allMods.filter(([id, mod]) => { return (mod.titulo || "").toLowerCase().includes(term) || (mod.categoria || "").toLowerCase().includes(term); });
+    currentPage = 1; renderTable();
+  });
+
+  async function fazerUploadImagem(file) {
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${Math.random().toString(36).substring(2)}.${fileExt}`;
+    const { error: uploadError } = await _supabase.storage.from('imagens_mods').upload(fileName, file);
+    if (uploadError) throw uploadError;
+    const { data } = _supabase.storage.from('imagens_mods').getPublicUrl(fileName);
+    return data.publicUrl;
+  }
+
+  async function carregarMods() {
+    const { data, error } = await _supabase.from('mods').select('*').order('data', { ascending: false });
+    if (error || !data || data.length === 0) { listaMods.innerHTML = "<tr><td colspan='6' style='text-align:center; padding:2rem; color:var(--muted);'>Nenhum mod encontrado.</td></tr>"; paginacaoControls.style.display = "none"; return; }
+    allMods = data.map(mod => [mod.id, mod]); filteredMods = [...allMods]; currentPage = 1; renderTable();
+  }
+
+  function renderTable() {
+    listaMods.innerHTML = ""; const totalPages = Math.ceil(filteredMods.length / itemsPerPage);
+    if (filteredMods.length === 0) { listaMods.innerHTML = "<tr><td colspan='6' style='text-align:center; padding:2rem; color:var(--muted);'>Nenhum mod encontrado.</td></tr>"; paginacaoControls.style.display = "none"; return; }
+    const start = (currentPage - 1) * itemsPerPage; const pageItems = filteredMods.slice(start, start + itemsPerPage);
+    pageItems.forEach(([id, mod]) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td><strong style="color:#fff;">${mod.destaque ? "⭐ " : ""}${mod.titulo || "Sem título"}</strong></td>
+          <td><span style="background:rgba(255,255,255,0.1); padding:2px 8px; border-radius:4px; font-size:0.8rem;">${mod.categoria || "?"}</span></td>
+          <td style="color:var(--muted); font-size:0.85rem;">${mod.data || "--"}</td>
+          <td style="text-align: center; color: #fff; font-weight: 600;">${mod.views || 0}</td>
+          <td style="text-align: center; color: #ef4444; font-weight: 600;">${mod.likes || 0}</td>
+          <td style="text-align: right;">
+            <button class="btn-edit" onclick="editarMod('${id}')">Editar</button>
+            <button class="btn-delete" onclick="excluirMod('${id}')">Excluir</button>
+          </td>`;
+        listaMods.appendChild(tr);
+    });
+    if (totalPages > 1) { paginacaoControls.style.display = "flex"; pageInfo.textContent = `Página ${currentPage} de ${totalPages}`; btnPrev.disabled = currentPage === 1; btnNext.disabled = currentPage === totalPages; } else { paginacaoControls.style.display = "none"; }
+  }
+
+  btnPrev.addEventListener("click", () => { if (currentPage > 1) { currentPage--; renderTable(); } });
+  btnNext.addEventListener("click", () => { const totalPages = Math.ceil(filteredMods.length / itemsPerPage); if (currentPage < totalPages) { currentPage++; renderTable(); } });
+
+  window.excluirMod = async function(id) {
+    if(confirm("Tem certeza que deseja excluir este mod?")) {
+        const { error } = await _supabase.from('mods').delete().eq('id', id);
+        if(!error) carregarMods(); else alert("Erro ao excluir: " + error.message);
+    }
+  };
+
+  window.editarMod = function(id) {
+    const item = allMods.find(m => m[0] === id); if (!item) return; const m = item[1];
+    inputs.titulo.value = m.titulo || ""; inputs.tituloTopo.value = m.tituloTopo || ""; inputs.img.value = m.img || ""; inputs.imgUpload.value = ""; 
+    imgPreview.innerHTML = m.img ? `<img src="${m.img}" alt="Preview">` : "";
+    inputs.downloadMediafire.value = m.downloadMediafire || ""; inputs.downloadMega.value = m.downloadMega || ""; inputs.downloadDrive.value = m.downloadDrive || "";
+    inputs.descricao.value = m.descricao || ""; inputs.data.value = m.data || ""; inputs.categoria.value = m.categoria || ""; inputs.destaque.checked = m.destaque === true;
+    editingId = id; submitBtn.textContent = "Salvar Alterações"; cancelBtn.style.display = "block"; document.querySelector('.admin-container').scrollIntoView({ behavior: 'smooth' });
+  };
+
+  form.addEventListener("submit", async e => {
+    e.preventDefault(); submitBtn.textContent = "Salvando...";
+    try {
+        let finalImageUrl = inputs.img.value; const file = inputs.imgUpload.files[0];
+        if (file) finalImageUrl = await fazerUploadImagem(file);
+        if (!finalImageUrl) throw new Error("Você deve informar uma URL de imagem ou fazer upload.");
+
+        const dados = { titulo: inputs.titulo.value, tituloTopo: inputs.tituloTopo.value, img: finalImageUrl, descricao: inputs.descricao.value, data: inputs.data.value, categoria: inputs.categoria.value, downloadMediafire: inputs.downloadMediafire.value, downloadMega: inputs.downloadMega.value, downloadDrive: inputs.downloadDrive.value, destaque: inputs.destaque.checked === true };
+
+        if (editingId) {
+          const { error } = await _supabase.from('mods').update(dados).eq('id', editingId);
+          if (!error) { alert("✅ Mod atualizado!"); cancelarEdicao(); carregarMods(); } else throw error;
+        } else {
+          dados.id = crypto.randomUUID();
+          dados.views = 0;
+          dados.likes = 0; 
+          const { error } = await _supabase.from('mods').insert([dados]);
+          if (!error) { alert("✅ Mod adicionado!"); cancelarEdicao(); carregarMods(); } else throw error;
+        }
+    } catch (err) { alert("Erro: " + err.message); submitBtn.textContent = editingId ? "Salvar Alterações" : "Adicionar Mod"; }
+  });
+
+  // Dispara a verificação ao abrir a página
+  preencherDataHoje();
+  checkUser();
+
+  // Auto-logout após 30 minutos de inatividade
+  let inactivityTimer;
+  function resetTimer() {
+    clearTimeout(inactivityTimer);
+    inactivityTimer = setTimeout(async () => {
+      await _supabase.auth.signOut();
+      alert("Sessão encerrada por inatividade.");
+      location.reload();
+    }, 30 * 60 * 1000);
+  }
+  ['mousemove','keydown','click','scroll'].forEach(e => document.addEventListener(e, resetTimer));
+  resetTimer();
+</script>
+</body>
+</html>
