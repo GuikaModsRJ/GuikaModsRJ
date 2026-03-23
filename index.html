@@ -5,269 +5,114 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta name="description" content="Guika Mods RJ — Mods, tutoriais e conteúdo sobre GTA SA RJ."/>
 <title>Guika Mods RJ — Blog de Mods GTA SA</title>
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <style>
 /* --- CONFIGURAÇÃO VISUAL (PREMIUM) --- */
-:root {
-  --bg: #09090b;
-  --panel: #18181b;
-  --panel-hover: #27272a;
-  --text: #e4e4e7;
-  --muted: #a1a1aa;
-  --accent: #ffffff;
-  --border: 1px solid rgba(255, 255, 255, 0.1);
-  --radius: 12px;
-  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
-  --glow: 0 0 15px rgba(255, 255, 255, 0.05);
-}
-
+:root { --bg: #09090b; --panel: #18181b; --panel-hover: #27272a; --text: #e4e4e7; --muted: #a1a1aa; --accent: #ffffff; --border: 1px solid rgba(255, 255, 255, 0.1); --radius: 12px; --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3); --glow: 0 0 15px rgba(255, 255, 255, 0.05); }
 @keyframes fadeInPage { 0% { opacity: 0; } 100% { opacity: 1; } }
-
 html { overflow-y: scroll; scroll-behavior: smooth; }
-
-body {
-  margin: 0; font-family: 'Inter', system-ui, sans-serif;
-  background: var(--bg);
-  background-image: radial-gradient(circle at 50% 0%, #1c1c1c 0%, var(--bg) 70%);
-  color: var(--text); line-height: 1.6; overflow-x: hidden; width: 100%;
-  animation: fadeInPage 0.6s ease-out forwards;
-}
-
+body { margin: 0; font-family: 'Inter', system-ui, sans-serif; background: var(--bg); background-image: radial-gradient(circle at 50% 0%, #1c1c1c 0%, var(--bg) 70%); color: var(--text); line-height: 1.6; overflow-x: hidden; width: 100%; animation: fadeInPage 0.6s ease-out forwards; }
 main { min-height: 100vh; }
-
-/* --- HEADER --- */
-header {
-  background: rgba(18, 18, 18, 0.85); backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 100;
-  border-bottom: var(--border); will-change: transform;
-}
-
+header { background: rgba(18, 18, 18, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 100; border-bottom: var(--border); will-change: transform; }
 .container {max-width:1200px; margin:0 auto; padding:0 1rem;}
 .header-inner {display:flex; align-items:center; justify-content:space-between; padding:1rem 0;}
-
-.logo {
-  color: var(--text); text-decoration: none; font-weight: 700; font-size: 1.3rem;
-  display: flex; align-items: center; gap: 0.4rem; text-shadow: 0 0 10px rgba(255,255,255,0.1);
-}
-
-/* --- NAVEGAÇÃO --- */
+.logo { color: var(--text); text-decoration: none; font-weight: 700; font-size: 1.3rem; display: flex; align-items: center; gap: 0.4rem; text-shadow: 0 0 10px rgba(255,255,255,0.1); }
 nav ul {list-style:none; display:flex; gap:1rem; margin:0; padding:0; align-items:center;}
-nav a, nav span.interativo {
-  text-decoration: none; color: var(--muted); padding: 0.5rem 0.9rem;
-  border-radius: var(--radius); transition: all 0.2s ease; font-weight: 500; cursor: pointer;
-}
-nav a:hover, nav a.active, nav span.interativo:hover {
-  background: rgba(255,255,255,0.1); color: #fff;
-}
-
-.dropdown {position:relative;}
-.dropdown>a::after {content:" ▼"; font-size:0.7em; opacity: 0.7;}
-.dropdown-content {
-  display: none; position: absolute; top: 100%; left: 0;
-  background-color: var(--panel); min-width: 200px; border-radius: var(--radius);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.7); border: var(--border); padding: 0.5rem 0; z-index: 200;
-}
-.dropdown-content a, .dropdown-content span.interativo {
-    display:block; padding:0.6rem 1rem; color:var(--text); text-decoration:none; 
-    transition:background 0.2s; cursor: pointer;
-}
-.dropdown-content a:hover, .dropdown-content span.interativo:hover {
-    background: var(--panel-hover); color: #fff;
-}
+nav a, nav span.interativo { text-decoration: none; color: var(--muted); padding: 0.5rem 0.9rem; border-radius: var(--radius); transition: all 0.2s ease; font-weight: 500; cursor: pointer; }
+nav a:hover, nav a.active, nav span.interativo:hover { background: rgba(255,255,255,0.1); color: #fff; }
+.dropdown {position:relative;} .dropdown>a::after {content:" ▼"; font-size:0.7em; opacity: 0.7;}
+.dropdown-content { display: none; position: absolute; top: 100%; left: 0; background-color: var(--panel); min-width: 200px; border-radius: var(--radius); box-shadow: 0 10px 25px rgba(0,0,0,0.7); border: var(--border); padding: 0.5rem 0; z-index: 200; }
+.dropdown-content a, .dropdown-content span.interativo { display:block; padding:0.6rem 1rem; color:var(--text); text-decoration:none; transition:background 0.2s; cursor: pointer; }
+.dropdown-content a:hover, .dropdown-content span.interativo:hover { background: var(--panel-hover); color: #fff; }
 .dropdown:hover .dropdown-content {display:block;}
-
-/* --- BUSCA --- */
-input {
-  background: rgba(0,0,0,0.3); border: var(--border); border-radius: var(--radius);
-  color: var(--text); padding: 0.5rem 0.8rem; transition: border-color 0.2s;
-}
+input { background: rgba(0,0,0,0.3); border: var(--border); border-radius: var(--radius); color: var(--text); padding: 0.5rem 0.8rem; transition: border-color 0.2s; }
 input:focus { outline:none; border-color: #666; }
 #search-button { transition: all 0.25s ease; border: var(--border) !important; }
 #search-button:hover { background: #3a3a3a !important; box-shadow: 0 0 8px rgba(255, 255, 255, 0.2); }
-
-/* --- GRID --- */
-.container.grid {
-  display: grid; grid-template-columns: 3fr 1fr; gap: 1.2rem; column-gap: 2rem;
-  justify-content: center; align-items: flex-start; margin: 0 auto; max-width: 1250px;
-}
-
-#cards {
-  display: flex; flex-direction: column; gap: 1.5rem; margin: 0 auto;
-  align-items: center; position: relative; left: calc((25% + 2.5rem)/2); width: 100%; opacity: 1; 
-}
-
+.container.grid { display: grid; grid-template-columns: 3fr 1fr; gap: 1.2rem; column-gap: 2rem; justify-content: center; align-items: flex-start; margin: 0 auto; max-width: 1250px; }
+#cards { display: flex; flex-direction: column; gap: 1.5rem; margin: 0 auto; align-items: center; position: relative; left: calc((25% + 2.5rem)/2); width: 100%; opacity: 1; }
 section[aria-labelledby="titulo-section"] {text-align:center;}
-#titulo-section {
-  text-align: center; font-size: 2rem; margin-top: 1rem; margin-bottom: 1.5rem;
-  font-weight: 700; color: #fff; position: relative; left: calc((25% + 2.5rem)/2);
-}
-
-.card {
-  background: var(--panel); border: var(--border); border-radius: var(--radius);
-  width: 63.75%; text-align: left; box-shadow: var(--shadow); overflow: hidden;
-  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s;
-  cursor: pointer; min-height: 100px; 
-}
-.card:hover {
-  transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.4), var(--glow);
-  border-color: rgba(255,255,255,0.2);
-}
-
+#titulo-section { text-align: center; font-size: 2rem; margin-top: 1rem; margin-bottom: 1.5rem; font-weight: 700; color: #fff; position: relative; left: calc((25% + 2.5rem)/2); }
+.card { background: var(--panel); border: var(--border); border-radius: var(--radius); width: 63.75%; text-align: left; box-shadow: var(--shadow); overflow: hidden; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s; cursor: pointer; min-height: 100px; }
+.card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.4), var(--glow); border-color: rgba(255,255,255,0.2); }
 .card img {width:100%; height:340px; object-fit:cover; display:block; border-bottom: 1px solid rgba(255,255,255,0.05); background: #111;}
 .card-content {padding:1.5rem;}
 .card-content h3 {margin:0.5rem 0; font-size:1.2rem; color:#fff;}
 .card-content p {color:var(--muted); font-size:0.95rem; margin:0;}
-
-/* --- SIDEBAR --- */
 aside {position: sticky; top: 1.3rem; align-self: flex-start; height: max-content;}
-.panel {
-  background: var(--panel); padding: 1.2rem; border-radius: var(--radius);
-  margin-bottom: 1rem; border: var(--border); box-shadow: var(--shadow);
-}
-.panel h3 {
-  margin-top: 0; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.5rem; 
-  margin-bottom: 0.8rem; font-size: 1.1rem;
-}
+.panel { background: var(--panel); padding: 1.2rem; border-radius: var(--radius); margin-bottom: 1rem; border: var(--border); box-shadow: var(--shadow); }
+.panel h3 { margin-top: 0; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.5rem; margin-bottom: 0.8rem; font-size: 1.1rem; }
 aside .panel:first-of-type {margin-top:1.3rem;}
-
 .list {list-style:none; padding:0;}
-.list li a, .list li span.interativo {
-  color: var(--muted); text-decoration: none; display: block; padding: 0.4rem 0.5rem;
-  border-radius: 6px; transition: all 0.2s; cursor: pointer;
-}
-.list li a:hover, .list li span.interativo:hover {
-  background: var(--panel-hover); color: #fff; padding-left: 0.8rem; 
-}
-
-.recent-item {
-  margin-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 1rem;
-}
+.list li a, .list li span.interativo { color: var(--muted); text-decoration: none; display: block; padding: 0.4rem 0.5rem; border-radius: 6px; transition: all 0.2s; cursor: pointer; }
+.list li a:hover, .list li span.interativo:hover { background: var(--panel-hover); color: #fff; padding-left: 0.8rem; }
+.recent-item { margin-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 1rem; }
 .recent-item:last-child {border:none; padding-bottom:0;}
-.recent-item img {
-  width: 100%; border-radius: 6px; margin-bottom: 0.5rem; border: var(--border); background: #111;
-}
+.recent-item img { width: 100%; border-radius: 6px; margin-bottom: 0.5rem; border: var(--border); background: #111; }
 .recent-item p {font-size:0.9rem; color:var(--muted); margin:0;}
-
-/* --- DETALHES --- */
-.mod-detalhe {
-    width: 70%; margin: 2rem 0; text-align: center; display: flex; flex-direction: column; align-items: center;
-}
-.mod-detalhe-card {
-  background: var(--panel); border-radius: var(--radius); border: var(--border);
-  width: 100%; text-align: left; box-shadow: 0 15px 35px rgba(0,0,0,0.5); 
-  overflow: hidden; margin: 0 0 1.5rem 0; position: relative;
-}
+.mod-detalhe { width: 70%; margin: 2rem 0; text-align: center; display: flex; flex-direction: column; align-items: center; }
+.mod-detalhe-card { background: var(--panel); border-radius: var(--radius); border: var(--border); width: 100%; text-align: left; box-shadow: 0 15px 35px rgba(0,0,0,0.5); overflow: hidden; margin: 0 0 1.5rem 0; position: relative; }
 .mod-detalhe-card img {width:100%; height:420px; object-fit:cover; aspect-ratio:16/9; display:block; background: #111;}
 .mod-detalhe-card .card-content {padding:2rem;}
 .mod-detalhe-card h3 {margin:0.5rem 0; font-size:1.4rem; color:#fff;}
 .mod-detalhe-card p {color:var(--muted); font-size:1rem; margin:0;}
-
 .mod-detalhe h2 {font-size:2rem; margin:1rem 0 0.5rem; color: #fff;}
-.mod-detalhe p {
-    color:var(--muted); margin:0.5rem 0; line-height: 1.7; text-align: center; width: 100%;
-}
-.descricao-texto {
-  white-space: pre-wrap; word-wrap: break-word; overflow-wrap: break-word;
-  max-width: 100%; display: block; text-align: center;
-}
+.mod-detalhe p { color:var(--muted); margin:0.5rem 0; line-height: 1.7; text-align: center; width: 100%; }
+.descricao-texto { white-space: pre-wrap; word-wrap: break-word; overflow-wrap: break-word; max-width: 100%; display: block; text-align: center; }
+.stats-container { display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.3); padding: 10px 15px; border-radius: 8px; margin-top: 15px; border: 1px solid rgba(255,255,255,0.05); }
+.stats-info { display: flex; gap: 15px; color: var(--muted); font-size: 0.9rem; }
+.btn-like { background: transparent; border: 1px solid #ef4444; color: #ef4444; padding: 5px 15px; border-radius: 50px; cursor: pointer; font-weight: bold; transition: all 0.2s; display: flex; align-items: center; gap: 5px; }
+.btn-like:hover:not(:disabled) { background: #ef4444; color: white; }
+.btn-like:disabled { cursor: not-allowed; opacity: 0.9; }
+.btn-group-container { display: flex; flex-direction: column; align-items: center; gap: 20px; width: 100%; margin: 2.5rem 0; }
+.download-container { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; width: 100%; }
+.btn-dl { display: flex; align-items: center; justify-content: center; width: 150px; height: 48px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 0.75rem; transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.3); white-space: nowrap; }
+.btn-dl:hover { transform: translateY(-3px); }
+.btn-mediafire { background-color: #007bff; color: #fff; } .btn-mediafire:hover { background-color: #0069d9; }
+.btn-mega { background-color: #d92424; color: #fff; } .btn-mega:hover { background-color: #b31d1d; }
+.btn-drive { background-color: #ffffff; color: #000; } .btn-drive:hover { background-color: #e6e6e6; color: #000; } 
+.btn-voltar { background: #333; color: #fff; border: var(--border); border-radius: 50px; width: 130px; height: 42px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-weight: 600; transition: all 0.2s; text-decoration: none; box-shadow: 0 2px 5px rgba(0,0,0,0.2); font-size: 0.85rem; margin-top: 5px; }
+.btn-voltar:hover { background: #444; transform: translateY(-2px); box-shadow: 0 5px 10px rgba(0,0,0,0.3); }
 
-/* --- BLOCO DE DOWNLOADS AJUSTADO (ESTILO FOTO) --- */
-.btn-group-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    width: 100%;
-    margin: 2.5rem 0;
-}
+/* --- CSS DOS COMENTÁRIOS E LOGIN --- */
+.comments-wrapper { width: 100%; margin-top: 3rem; text-align: center; }
+.comments-wrapper h3 { font-size: 1.5rem; color: #fff; margin-bottom: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.5rem; }
+.login-prompt { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); padding: 2.5rem; border-radius: 8px; text-align: center; margin-bottom: 2rem; }
+.comment-item { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); padding: 1rem 1.5rem; border-radius: 8px; margin-bottom: 1rem; display: flex; flex-direction: column; text-align: left; }
+.comment-top { display: flex; justify-content: space-between; margin-bottom: 0.5rem; align-items: center;}
+.comment-author { font-weight: bold; color: var(--accent); }
+.comment-date { color: var(--muted); font-size: 0.8rem; }
+.comment-text { color: var(--text); white-space: pre-wrap; margin-bottom: 0.5rem; font-size: 0.95rem; line-height: 1.5;}
+.comment-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 5px; }
+.btn-delete { background: transparent; border: 1px solid #ef4444; color: #ef4444; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; transition: all 0.2s;}
+.btn-delete:hover { background: #ef4444; color: #fff; }
 
-.download-container {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap; 
-    justify-content: center;
-    width: 100%;
-}
+.modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+.modal-content { background: var(--panel); padding: 2.5rem 2rem; border-radius: var(--radius); border: var(--border); width: 90%; max-width: 380px; text-align: center; position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.8); }
+.close-modal { position: absolute; top: 12px; right: 18px; cursor: pointer; font-size: 1.5rem; color: var(--muted); transition: color 0.2s;}
+.close-modal:hover { color: #fff; }
+.social-btn { display: flex; align-items: center; justify-content: center; width: 100%; padding: 12px; margin-bottom: 12px; border-radius: 8px; cursor: pointer; font-weight: 600; border: none; color: white; gap: 10px; font-size: 0.95rem; transition: transform 0.2s, background 0.2s;}
+.social-btn:hover { transform: translateY(-2px); }
+.email-form { display: flex; flex-direction: column; gap: 12px; margin-top: 15px; }
+.email-form input { padding: 12px; font-family: inherit; font-size: 0.95rem; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white; }
+.email-form input:focus { outline: none; border-color: #666; background: rgba(0,0,0,0.6); }
+.btn-modal-primary { background: #2b2b2b !important; color: #fff !important; border: 1px solid rgba(255,255,255,0.15) !important; }
+.btn-modal-primary:hover { background: #3a3a3a !important; }
+.btn-modal-secondary { background: transparent !important; border: 1px solid rgba(255,255,255,0.15) !important; color: var(--muted) !important; }
+.btn-modal-secondary:hover { background: rgba(255,255,255,0.05) !important; color: #fff !important; }
 
-.btn-dl {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 150px; 
-    height: 48px;  
-    border-radius: 50px; /* Bordas totalmente redondas como na segunda foto */
-    text-decoration: none;
-    font-weight: 700;
-    font-size: 0.75rem;
-    transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    white-space: nowrap;
-}
-
-.btn-dl:hover {
-    transform: translateY(-3px);
-}
-
-/* Estilos individuais e Hovers corrigidos */
-.btn-mediafire { background-color: #007bff; color: #fff; }
-.btn-mediafire:hover { background-color: #0069d9; }
-
-.btn-mega { background-color: #d92424; color: #fff; }
-.btn-mega:hover { background-color: #b31d1d; }
-
-.btn-drive { background-color: #ffffff; color: #000; }
-.btn-drive:hover { background-color: #e6e6e6; color: #000; } /* Garante que o texto continue preto */
-
-.btn-voltar {
-  background: #333; color: #fff; border: var(--border); 
-  border-radius: 50px; 
-  width: 130px;
-  height: 42px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer; font-weight: 600; transition: all 0.2s;
-  text-decoration: none; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-  font-size: 0.85rem;
-  margin-top: 5px;
-}
-.btn-voltar:hover {
-  background: #444; transform: translateY(-2px); box-shadow: 0 5px 10px rgba(0,0,0,0.3);
-}
-
-.footer {
-  background: #050505; padding: 2rem 0; border-top: var(--border);
-  margin-top: 4rem; text-align: center;
-}
+.footer { background: #050505; padding: 2rem 0; border-top: var(--border); margin-top: 4rem; text-align: center; }
 .footer-grid {display:flex; justify-content:center; align-items:center; gap:1.5rem; flex-wrap:wrap; margin-bottom:0.4rem;}
-.footer .list {
-  display:flex; gap:1.2rem; list-style:none; padding:0; margin:0; position:relative; left:-1.8rem;
-}
-.footer .list li a {
-  text-decoration:none; color:var(--muted); font-size:0.9rem; transition:color 0.2s; padding: 0; background: transparent; 
-}
+.footer .list { display:flex; gap:1.2rem; list-style:none; padding:0; margin:0; position:relative; left:-1.8rem; }
+.footer .list li a { text-decoration:none; color:var(--muted); font-size:0.9rem; transition:color 0.2s; padding: 0; background: transparent; }
 .footer .list li a:hover { color:#fff; padding-left: 0; background: transparent;}
 .footer-bottom {display:flex; justify-content:center; align-items:center;}
 .footer-bottom small {color:var(--muted); font-size:0.8rem;}
-
-a {color: #ccc; transition: color 0.2s;}
-a:hover {color: #fff;}
-
-@media(max-width: 768px) {
-    .container.grid { display: block; }
-    #cards, #titulo-section { left: 0; width: 100%; padding: 0 1rem; box-sizing: border-box;}
-    .card { width: 100%; }
-    .mod-detalhe-card { width: 100%; }
-    .mod-detalhe { width: 100%; }
-    aside { display: none; }
-    .footer .list { flex-direction: column; gap: 0.5rem; left: 0; }
-    .btn-dl { width: 140px; } 
-}
+a {color: #ccc; transition: color 0.2s;} a:hover {color: #fff;}
+@media(max-width: 768px) { .container.grid { display: block; } #cards, #titulo-section { left: 0; width: 100%; padding: 0 1rem; box-sizing: border-box;} .card { width: 100%; } .mod-detalhe-card { width: 100%; } .mod-detalhe { width: 100%; } aside { display: none; } .footer .list { flex-direction: column; gap: 0.5rem; left: 0; } .btn-dl { width: 140px; } .stats-container { flex-direction: column; gap: 10px; } }
 </style>
 </head>
 <body>
@@ -289,6 +134,7 @@ a:hover {color: #fff;}
         </li>
         <li><a href="https://www.youtube.com/@GuikaModsRJ" target="_blank" rel="noopener">YouTube</a></li>
         <li><a href="tutoriais.html">Tutoriais</a></li>
+        <li id="auth-menu-item"><a href="#" onclick="abrirModalLogin(); return false;">Entrar</a></li>
       </ul>
     </nav>
     <form class="search" id="search-form" role="search" onsubmit="return false;" style="display:flex;align-items:center;">
@@ -313,7 +159,7 @@ a:hover {color: #fff;}
         <li><span class="interativo" data-cat="outros">Outros Mods (0)</span></li>
         <li><span class="interativo" data-cat="todos">Todos (0)</span></li>
       </ul></div>
-      
+
       <div class="panel"><h3>Blogs Parceiros</h3>
         <ul class="list">
           <li><a href="https://adventuresog.netlify.app/" target="_blank" rel="noopener">Roblox Adventures</a></li>
@@ -321,15 +167,11 @@ a:hover {color: #fff;}
       </div>
 
       <div class="panel"><h3>Populares 🔥</h3>
-        <ul class="list" id="lista-populares">
-           <li><span style='color:var(--muted);'>Carregando...</span></li>
-        </ul>
+        <ul class="list" id="lista-populares"><li><span style='color:var(--muted);'>Carregando...</span></li></ul>
       </div>
       
       <div class="panel"><h3>Mais Recentes</h3>
-        <div id="lista-recentes">
-          <p style='font-size:0.9rem; color:var(--muted);'>Carregando...</p>
-        </div>
+        <div id="lista-recentes"><p style='font-size:0.9rem; color:var(--muted);'>Carregando...</p></div>
       </div>
     </aside>
   </div>
@@ -338,210 +180,462 @@ a:hover {color: #fff;}
 <footer class="footer">
   <div class="container footer-grid">
     <ul class="list">
-      <li><a href="sobre.html">Sobre</a></li>
-      <li><a href="contato.html">Contato</a></li>
-      <li><a href="privacidade.html">Política de Privacidade</a></li>
-      <li><a href="termos.html">Termos de Uso</a></li>
+      <li><a href="sobre.html">Sobre</a></li><li><a href="contato.html">Contato</a></li><li><a href="privacidade.html">Política de Privacidade</a></li><li><a href="termos.html">Termos de Uso</a></li>
     </ul>
   </div>
-  <div class="container footer-bottom"><small>© 2025 Guika Mods RJ. Todos os direitos reservados.</small></div>
+  <div class="container footer-bottom"><small>© 2026 Guika Mods RJ. Todos os direitos reservados.</small></div>
 </footer>
 
+<div id="auth-modal" class="modal-overlay">
+    <div class="modal-content">
+        <span class="close-modal" onclick="fecharModalLogin()">×</span>
+        <h3 style="margin-top:0; color:#fff; font-size: 1.4rem;" id="auth-modal-titulo">Acesse sua Conta</h3>
+        <p style="color:var(--muted); font-size:0.9rem; margin-bottom: 10px;" id="auth-modal-subtitulo">Entre com seu usuário e senha para comentar.</p>
+        
+        <div class="email-form" id="auth-form-login">
+            <input type="text" id="auth-username" placeholder="Seu usuário" autocomplete="username" onkeydown="if(event.key==='Enter') fazerLoginEmail()" />
+            <input type="password" id="auth-senha" placeholder="Sua senha" autocomplete="current-password" onkeydown="if(event.key==='Enter') fazerLoginEmail()" />
+            <button class="social-btn btn-modal-primary" style="margin-top: 10px;" onclick="fazerLoginEmail()">Entrar</button>
+            <button class="social-btn btn-modal-secondary" onclick="alternarParaCadastro()">Não tenho conta — Criar uma</button>
+        </div>
+
+        <div class="email-form" id="auth-form-cadastro" style="display:none;">
+            <input type="text" id="cad-username" placeholder="Escolha um usuário (ex: CJ_RJ)" autocomplete="username" onkeydown="if(event.key==='Enter') document.getElementById('cad-senha').focus()" />
+            <input type="password" id="cad-senha" placeholder="Crie uma senha (mín. 6 caracteres)" autocomplete="new-password" onkeydown="if(event.key==='Enter') criarContaEmail()" />
+            <button class="social-btn btn-modal-primary" style="margin-top: 10px;" onclick="criarContaEmail()">Criar Conta</button>
+            <button class="social-btn btn-modal-secondary" onclick="alternarParaLogin()">Já tenho conta — Entrar</button>
+        </div>
+        
+        <p id="auth-msg" style="color: #ef4444; font-size: 0.85rem; margin: 15px 0 0 0; min-height: 20px;"></p>
+    </div>
+</div>
+
 <script>
+// ==========================================
+// CONTAS ADMINISTRADORAS DO SITE
+// Adicione aqui os usernames que terão poderes de admin
+// (responder comentários, apagar qualquer comentário)
+const ADMIN_USERNAMES = ['guikamodsrj', 'mutanoyt18'];
+// ==========================================
+
+// Função global para conversão de username → email interno
+function usernameParaEmail(username) {
+    return username.toLowerCase().trim() + '@guikamods.internal';
+}
+
 document.addEventListener("DOMContentLoaded",()=>{
-  const container=document.getElementById("cards");
-  const titulo=document.getElementById("titulo-section");
-  const searchInput=document.getElementById("search-input");
-  const searchBtn=document.getElementById("search-button"); 
+  const container=document.getElementById("cards"); const titulo=document.getElementById("titulo-section");
+  const searchInput=document.getElementById("search-input"); const searchBtn=document.getElementById("search-button"); 
 
   const modsSalvos=JSON.parse(localStorage.getItem("modsSalvos"))||[];
-  let LOADED = false; 
+  let LOADED = false; let paginaAtualGlobal = 1; let ultimaCategoriaCache = null; let ultimaBuscaCache = "";
 
-  let paginaAtualGlobal = 1;
-  let ultimaCategoriaCache = null;
-  let ultimaBuscaCache = "";
+  const nomesCategorias={ motos:"Motos",mapas:"Mods pro Mapa",pecas:"Peças Zmodler", personagens:"Mods de Personagem",outros:"Outros Mods",todos:"Todos os Mods" };
 
-  const nomesCategorias={
-    motos:"Motos",mapas:"Mods pro Mapa",pecas:"Peças Zmodler",
-    personagens:"Mods de Personagem",outros:"Outros Mods",todos:"Todos os Mods"
-  };
+  window.supabaseGlobal = null;
+  window.currentUser = null;
 
   function fadeOutIn(callback){
-    container.style.transition = 'opacity 0.2s ease';
-    container.style.opacity = '0';
-    setTimeout(()=>{
-        callback();
-        window.scrollTo({top:0, behavior:'auto'});
-        setTimeout(() => {
-            container.style.transition = 'opacity 0.6s ease-out';
-            container.style.opacity = '1';
-        }, 50);
-    }, 200); 
+    container.style.transition = 'opacity 0.2s ease'; container.style.opacity = '0';
+    setTimeout(()=>{ callback(); window.scrollTo({top:0, behavior:'auto'}); setTimeout(() => { container.style.transition = 'opacity 0.6s ease-out'; container.style.opacity = '1'; }, 50); }, 200); 
   }
   
   function formatarData(dataValor) {
       const data = dataValor ? new Date(dataValor) : null;
-      if (!data || isNaN(data.getTime())) {
-          return "Data Desconhecida";
-      }
-      const dia = String(data.getDate()).padStart(2, '0');
-      const mes = String(data.getMonth() + 1).padStart(2, '0');
-      const ano = data.getFullYear();
+      if (!data || isNaN(data.getTime())) return "Data Desconhecida";
+      const dia = String(data.getDate()).padStart(2, '0'); const mes = String(data.getMonth() + 1).padStart(2, '0'); const ano = data.getFullYear();
       return `${dia}/${mes}/${ano}`;
   }
 
   function renderMods(cat, query=""){
-    container.innerHTML="";
-    container.style.alignItems = "center";
-    container.style.left = "calc((25% + 2.5rem)/2)";
-    container.style.width = "100%";
-    
-    if(!LOADED && modsSalvos.length === 0){
-      container.innerHTML = "<p>Carregando mods…</p>";
-      return;
-    }
-
-    if(cat !== ultimaCategoriaCache || query !== ultimaBuscaCache) {
-        paginaAtualGlobal = 1;
-        ultimaCategoriaCache = cat;
-        ultimaBuscaCache = query;
-    }
+    container.innerHTML=""; container.style.alignItems = "center"; container.style.left = "calc((25% + 2.5rem)/2)"; container.style.width = "100%";
+    if(!LOADED && modsSalvos.length === 0){ container.innerHTML = "<p>Carregando mods…</p>"; return; }
+    if(cat !== ultimaCategoriaCache || query !== ultimaBuscaCache) { paginaAtualGlobal = 1; ultimaCategoriaCache = cat; ultimaBuscaCache = query; }
 
     let lista=modsSalvos;
     if(cat && cat!=="todos" && !cat.startsWith("mod")) lista=modsSalvos.filter(m=>m.categoria===cat);
-    if(query.trim()!==""){
-      const q = query.toLowerCase();
-      lista = lista.filter(m =>
-        (m.titulo||"").toLowerCase().includes(q) ||
-        (m.descricao||"").toLowerCase().includes(q)
-      );
-    }
+    if(query.trim()!==""){ const q = query.toLowerCase(); lista = lista.filter(m => (m.titulo||"").toLowerCase().includes(q) || (m.descricao||"").toLowerCase().includes(q)); }
     if(lista.length===0){container.innerHTML="<p>Nenhum mod encontrado.</p>";return;}
 
-    const itensPorPagina = 3;
-    const totalPaginas = Math.ceil(lista.length / itensPorPagina);
+    const itensPorPagina = 3; const totalPaginas = Math.ceil(lista.length / itensPorPagina);
 
     function exibirPagina(pagina){
-      container.innerHTML = "";
-      const inicio = (pagina - 1) * itensPorPagina;
-      const fim = inicio + itensPorPagina;
-      const paginaMods = lista.slice(inicio, fim);
-
+      container.innerHTML = ""; const inicio = (pagina - 1) * itensPorPagina; const fim = inicio + itensPorPagina; const paginaMods = lista.slice(inicio, fim);
       paginaMods.forEach(mod=>{
         const dataLancamento = formatarData(mod.timestamp || mod.data);
-        const card=document.createElement("div");
-        card.className="card";
-        card.setAttribute("data-id",mod.id);
-        
-        card.innerHTML=`<img src="${mod.img}" alt="${mod.titulo}">
-          <div class='card-content'>
-            <h3>${mod.titulo}</h3>
-            <p style='margin-bottom: 0.5rem;'><strong>Categoria:</strong> ${mod.categoria}</p>
-            <p><strong>Lançamento:</strong> ${dataLancamento}</p>
-          </div>`;
-        card.addEventListener("click",()=>{location.hash="mod-"+mod.id;});
-        container.appendChild(card);
+        const card=document.createElement("div"); card.className="card"; card.setAttribute("data-id",mod.id);
+        card.innerHTML=`<img src="${mod.img}" alt="${mod.titulo}"><div class='card-content'><h3>${mod.titulo}</h3><p style='margin-bottom: 0.5rem;'><strong>Categoria:</strong> ${mod.categoria}</p><p><strong>Lançamento:</strong> ${dataLancamento}</p></div>`;
+        card.addEventListener("click",()=>{location.hash="mod-"+mod.id;}); container.appendChild(card);
       });
 
       if(totalPaginas > 1){
-        const paginacao = document.createElement("div");
-        paginacao.style.textAlign = "center";
-        paginacao.style.margin = "2rem 0";
-        const btnPrev = document.createElement("button");
-        btnPrev.textContent = "← Anterior";
-        btnPrev.className = "btn-voltar";
-        btnPrev.style.width = "auto";
-        btnPrev.style.padding = "0 15px";
-
-        const info = document.createElement("span");
-        info.style.margin = "0 1rem";
-        info.style.color = "var(--muted)";
-        
-        const btnNext = document.createElement("button");
-        btnNext.textContent = "Próxima →";
-        btnNext.className = "btn-voltar";
-        btnNext.style.width = "auto";
-        btnNext.style.padding = "0 15px";
-
-        function atualizarBotoes(){
-          info.textContent = `Página ${paginaAtualGlobal} de ${totalPaginas}`;
-          btnPrev.style.display = paginaAtualGlobal === 1 ? "none" : "inline-block";
-          btnNext.style.display = paginaAtualGlobal === totalPaginas ? "none" : "inline-block";
-        }
-        btnPrev.onclick = ()=>{
-          if(paginaAtualGlobal > 1){ 
-              paginaAtualGlobal--; 
-              exibirPagina(paginaAtualGlobal); 
-              atualizarBotoes(); 
-              window.scrollTo({top:0, behavior:'smooth'}); 
-          }
-        };
-        btnNext.onclick = ()=>{
-          if(paginaAtualGlobal < totalPaginas){ 
-              paginaAtualGlobal++; 
-              exibirPagina(paginaAtualGlobal); 
-              atualizarBotoes(); 
-              window.scrollTo({top:0, behavior:'smooth'}); 
-          }
-        };
-        paginacao.appendChild(btnPrev); paginacao.appendChild(info); paginacao.appendChild(btnNext);
-        container.appendChild(paginacao); atualizarBotoes();
+        const paginacao = document.createElement("div"); paginacao.style.textAlign = "center"; paginacao.style.margin = "2rem 0";
+        const btnPrev = document.createElement("button"); btnPrev.textContent = "← Anterior"; btnPrev.className = "btn-voltar"; btnPrev.style.width = "auto"; btnPrev.style.padding = "0 15px";
+        const info = document.createElement("span"); info.style.margin = "0 1rem"; info.style.color = "var(--muted)";
+        const btnNext = document.createElement("button"); btnNext.textContent = "Próxima →"; btnNext.className = "btn-voltar"; btnNext.style.width = "auto"; btnNext.style.padding = "0 15px";
+        function atualizarBotoes(){ info.textContent = `Página ${paginaAtualGlobal} de ${totalPaginas}`; btnPrev.style.display = paginaAtualGlobal === 1 ? "none" : "inline-block"; btnNext.style.display = paginaAtualGlobal === totalPaginas ? "none" : "inline-block"; }
+        btnPrev.onclick = ()=>{ if(paginaAtualGlobal > 1){ paginaAtualGlobal--; exibirPagina(paginaAtualGlobal); atualizarBotoes(); window.scrollTo({top:0, behavior:'smooth'}); } };
+        btnNext.onclick = ()=>{ if(paginaAtualGlobal < totalPaginas){ paginaAtualGlobal++; exibirPagina(paginaAtualGlobal); atualizarBotoes(); window.scrollTo({top:0, behavior:'smooth'}); } };
+        paginacao.appendChild(btnPrev); paginacao.appendChild(info); paginacao.appendChild(btnNext); container.appendChild(paginacao); atualizarBotoes();
       }
     }
     exibirPagina(paginaAtualGlobal);
   }
 
-  function mostrarDetalhe(id){
+  window.curtirMod = async function(id) {
+      if(!window.supabaseGlobal) return;
+      const likeBtn = document.getElementById("btn-curtir");
+      likeBtn.disabled = true; likeBtn.innerHTML = "Curtindo...";
+      try {
+          const { error } = await window.supabaseGlobal.rpc('increment_likes', { mod_id_text: id });
+          if(!error) {
+              const mod = modsSalvos.find(m => m.id === id);
+              if(mod) { mod.likes = (mod.likes || 0) + 1; localStorage.setItem("modsSalvos", JSON.stringify(modsSalvos)); }
+              const likedMods = JSON.parse(localStorage.getItem('likedMods') || '[]');
+              if (!likedMods.includes(id)) { likedMods.push(id); localStorage.setItem('likedMods', JSON.stringify(likedMods)); }
+              const contador = document.getElementById("like-counter");
+              if(contador) contador.innerText = mod.likes;
+              likeBtn.innerHTML = "✅ Curtido"; likeBtn.style.background = "#ef4444"; likeBtn.style.color = "white";
+          } else { likeBtn.innerHTML = "❤️ Curtir"; likeBtn.disabled = false; }
+      } catch (err) { likeBtn.innerHTML = "❤️ Curtir"; likeBtn.disabled = false; }
+  };
+
+  async function mostrarDetalhe(id){
     const mod=modsSalvos.find(m=>m.id===id);
     if(!mod){inicializar();return;}
-    container.style.alignItems = "center"; 
-    container.style.left = "calc((25% + 2.5rem)/2)"; 
+
+    const likedMods = JSON.parse(localStorage.getItem('likedMods') || '[]');
+    const isLiked = likedMods.includes(id);
+
+    if(window.supabaseGlobal) {
+        const viewKey = `viewed_${id}`;
+        if (!sessionStorage.getItem(viewKey)) {
+            window.supabaseGlobal.rpc('increment_views', { mod_id_text: id }).then(({error}) => {
+                if(!error) {
+                    mod.views = (mod.views || 0) + 1; localStorage.setItem("modsSalvos", JSON.stringify(modsSalvos));
+                    const viewEl = document.getElementById("view-counter"); if(viewEl) viewEl.innerText = mod.views;
+                    sessionStorage.setItem(viewKey, 'true');
+                }
+            });
+        }
+    }
+
+    container.style.alignItems = "center"; container.style.left = "calc((25% + 2.5rem)/2)"; 
     const dataLancamento = formatarData(mod.timestamp || mod.data);
     const tituloTopo = mod.tituloTopo && mod.tituloTopo.trim() !== "" ? mod.tituloTopo : mod.titulo;
     titulo.textContent=tituloTopo;
     
     let downloadButtons = "";
-    if (mod.downloadMediafire) {
-        downloadButtons += `<a href="${mod.downloadMediafire}" target="_blank" class="btn-dl btn-mediafire">MEDIAFIRE</a>`;
-    }
-    if (mod.downloadMega) {
-        downloadButtons += `<a href="${mod.downloadMega}" target="_blank" class="btn-dl btn-mega">MEGA</a>`;
-    }
-    if (mod.downloadDrive) {
-        downloadButtons += `<a href="${mod.downloadDrive}" target="_blank" class="btn-dl btn-drive">GOOGLE DRIVE</a>`;
-    }
-    if (!downloadButtons && mod.download) {
-        downloadButtons = `<a href="${mod.download}" target="_blank" class="btn-dl btn-mediafire">BAIXAR MOD</a>`;
-    }
+    if (mod.downloadMediafire) downloadButtons += `<a href="${mod.downloadMediafire}" target="_blank" class="btn-dl btn-mediafire">MEDIAFIRE</a>`;
+    if (mod.downloadMega) downloadButtons += `<a href="${mod.downloadMega}" target="_blank" class="btn-dl btn-mega">MEGA</a>`;
+    if (mod.downloadDrive) downloadButtons += `<a href="${mod.downloadDrive}" target="_blank" class="btn-dl btn-drive">GOOGLE DRIVE</a>`;
+    if (!downloadButtons && mod.download) downloadButtons = `<a href="${mod.download}" target="_blank" class="btn-dl btn-mediafire">BAIXAR MOD</a>`;
+
+    const curtidoHtml = isLiked ? '✅ Curtido' : '❤️ Curtir';
+    const curtidoStyle = isLiked ? 'background: #ef4444; color: white;' : '';
+    const curtidoDisabled = isLiked ? 'disabled' : '';
 
     container.innerHTML=`<div class='mod-detalhe'>
         <div class='mod-detalhe-card'>
-          <a href="${mod.img}" target="_blank">
-            <img src="${mod.img}" alt="${mod.titulo}">
-          </a>
+          <a href="${mod.img}" target="_blank"><img src="${mod.img}" alt="${mod.titulo}"></a>
           <div class='card-content'>
             <h3>${mod.titulo}</h3>
-            <p><strong>Categoria:</strong> ${mod.categoria}</p>
-            <p><strong>Lançamento:</strong> ${dataLancamento}</p>
+            <div class="stats-container">
+                <div class="stats-info">
+                    <span>👁️ <span id="view-counter">${mod.views || 0}</span> visualizações</span>
+                    <span>❤️ <span id="like-counter">${mod.likes || 0}</span> curtidas</span>
+                </div>
+                <button id="btn-curtir" class="btn-like" onclick="curtirMod('${mod.id}')" style="${curtidoStyle}" ${curtidoDisabled}>${curtidoHtml}</button>
+            </div>
           </div>
         </div>
-        <p><strong>Categoria:</strong> ${mod.categoria}</p>
-        <p><strong>Lançamento:</strong> ${dataLancamento}</p>
+        <p><strong>Categoria:</strong> ${mod.categoria}</p><p><strong>Lançamento:</strong> ${dataLancamento}</p>
         <p class="descricao-texto">${mod.descricao||""}</p>
+        <div class="btn-group-container"><div class="download-container">${downloadButtons}</div><a href="#" class="btn-voltar">Voltar</a></div>
         
-        <div class="btn-group-container">
-            <div class="download-container">
-               ${downloadButtons}
-            </div>
-            
-            <a href="#" class="btn-voltar">Voltar</a>
+        <div class="comments-wrapper" id="comments-wrapper">
+            <h3>Comentários</h3>
+            <div id="comments-container">Carregando comentários...</div>
         </div>
       </div>`;
     
-    document.querySelector(".btn-voltar").addEventListener("click",(e)=>{
-      e.preventDefault();
-      history.back(); 
-    });
+    document.querySelector(".btn-voltar").addEventListener("click",(e)=>{ e.preventDefault(); history.back(); });
+    carregarComentarios(mod.id);
+  }
+
+  // LÓGICA DE COMENTÁRIOS E RESPOSTA
+  window.carregarComentarios = async function(modId) {
+      const cContainer = document.getElementById('comments-container');
+      if(!window.supabaseGlobal || !cContainer) return;
+
+      const { data, error } = await window.supabaseGlobal
+          .from('comentarios').select('*').eq('mod_id', modId).order('criado_em', { ascending: false });
+
+      let html = '';
+
+      if(window.currentUser) {
+          const username = window.currentUser.username || window.currentUser.email.replace('@guikamods.internal','');
+          html += `
+          <div style="background: rgba(255,255,255,0.03); padding: 20px; border-radius: 8px; margin-bottom: 25px; text-align: center; border: 1px solid rgba(255,255,255,0.05);">
+              <p style="text-align: left; margin-top: 0; color: var(--muted); font-size: 0.9rem;">Comentando como: <strong style="color: white;">${username}</strong></p>
+              <textarea id="novo-comentario-texto" placeholder="O que achou deste mod?" style="width: 100%; box-sizing: border-box; height: 90px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: white; padding: 12px; resize: vertical; margin-bottom: 15px; font-family: inherit; font-size: 0.95rem;"></textarea>
+              <button onclick="enviarComentario('${modId}')" class="btn-voltar" style="margin: 0 auto; background: #2b2b2b; border: 1px solid rgba(255,255,255,0.15);">Postar Comentário</button>
+          </div>`;
+      } else {
+          html += `
+          <div class="login-prompt">
+              <p style="margin-bottom: 20px; color: white; font-weight: 600; font-size: 1.1rem;">Faça login para poder fazer um comentário.</p>
+              <button onclick="abrirModalLogin()" class="btn-voltar" style="margin: 0 auto; background: #2b2b2b; color: white; width: 180px;">Criar conta / Entrar</button>
+          </div>`;
+      }
+
+      if(error || !data || data.length === 0) {
+          html += `<p style="color: var(--muted); text-align: center; padding: 2rem 0;">Nenhum comentário ainda. Seja o primeiro!</p>`;
+      } else {
+          data.forEach(c => {
+              const dataFormatada = new Date(c.criado_em).toLocaleString('pt-BR');
+              const currentUsername = window.currentUser ? (window.currentUser.username || window.currentUser.email.replace('@guikamods.internal','')) : '';
+              const isAdmin = window.currentUser && ADMIN_USERNAMES.includes(currentUsername);
+              const isOwnerOrAdmin = window.currentUser && (window.currentUser.id === c.user_id || isAdmin);
+              
+              const deleteBtn = isOwnerOrAdmin ? `<button class="btn-delete" onclick="apagarComentario('${c.id}', '${modId}')">Apagar</button>` : '';
+              const replyBtn = isAdmin && !c.resposta ? `<button class="btn-edit" style="background: transparent; border: 1px solid #3b82f6; color: #3b82f6; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; transition: all 0.2s;" onclick="abrirResposta('${c.id}')">Responder</button>` : '';
+
+              let respostaHtml = '';
+              if(c.resposta) {
+                  const deleteRespostaBtn = isAdmin ? `<button class="btn-delete" style="font-size: 0.75rem; padding: 2px 6px; margin-left: 10px; border-color: transparent;" onclick="apagarResposta('${c.id}', '${modId}')">Excluir Resposta</button>` : '';
+                  respostaHtml = `
+                  <div style="margin-top: 10px; background: rgba(59, 130, 246, 0.1); border-left: 3px solid #3b82f6; padding: 10px 15px; border-radius: 0 8px 8px 0;">
+                      <div style="font-size: 0.85rem; color: #3b82f6; font-weight: bold; margin-bottom: 5px; display: flex; justify-content: space-between; align-items: center;">👑 Resposta do Admin ${deleteRespostaBtn}</div>
+                      <div style="font-size: 0.95rem; color: var(--text);">${c.resposta.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</div>
+                  </div>`;
+              }
+
+              let replyBoxHtml = `<div id="reply-box-${c.id}" style="display: none; margin-top: 10px;">
+                  <textarea id="reply-text-${c.id}" placeholder="Escreva a resposta do site..." style="width: 100%; box-sizing: border-box; height: 60px; background: rgba(0,0,0,0.3); border: var(--border); border-radius: 8px; color: white; padding: 8px; resize: vertical; margin-bottom: 8px; font-family: inherit; font-size: 0.9rem;"></textarea>
+                  <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                      <button onclick="cancelarResposta('${c.id}')" style="background: transparent; border: 1px solid rgba(255,255,255,0.2); color: var(--muted); padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Cancelar</button>
+                      <button onclick="enviarResposta('${c.id}', '${modId}')" style="background: #3b82f6; border: none; color: white; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Enviar</button>
+                  </div>
+              </div>`;
+
+              const isCommentAuthorAdmin = ADMIN_USERNAMES.includes(c.user_name || '');
+              const authorLabel = isCommentAuthorAdmin 
+                  ? `👑 ${c.user_name} <span style="font-size:0.75rem; background: rgba(59,130,246,0.2); color: #60a5fa; padding: 2px 7px; border-radius: 4px; font-weight: 600; margin-left: 4px;">Admin</span>`
+                  : `👤 ${c.user_name || 'Usuário'}`;
+
+              html += `
+              <div class="comment-item">
+                  <div class="comment-top">
+                      <span class="comment-author">${authorLabel}</span>
+                      <span class="comment-date">${dataFormatada}</span>
+                  </div>
+                  <div class="comment-text">${c.texto.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</div>
+                  ${respostaHtml}
+                  ${(deleteBtn || replyBtn) ? `<div class="comment-actions" style="margin-top: 10px;">${replyBtn} ${deleteBtn}</div>` : ''}
+                  ${isAdmin ? replyBoxHtml : ''}
+              </div>`;
+          });
+      }
+      cContainer.innerHTML = html;
+  };
+
+  window.enviarComentario = async function(modId) {
+      const texto = document.getElementById('novo-comentario-texto').value.trim();
+      if(!texto || !window.currentUser) return;
+      
+      const btn = event.target; btn.disabled = true; btn.innerText = "Enviando...";
+
+      const { error } = await window.supabaseGlobal.from('comentarios').insert({
+          mod_id: modId,
+          user_id: window.currentUser.id,
+          user_name: window.currentUser.username || window.currentUser.email.replace('@guikamods.internal',''),
+          texto: texto
+      });
+
+      if(!error) { carregarComentarios(modId); } 
+      else { 
+          alert("Erro ao enviar comentário: " + error.message); 
+          btn.disabled = false; btn.innerText = "Postar Comentário"; 
+      }
+  };
+
+  window.apagarComentario = async function(comentarioId, modId) {
+      if(!confirm("Tem certeza que deseja apagar este comentário?")) return;
+      const { error } = await window.supabaseGlobal
+          .rpc('admin_apagar_comentario', { comentario_id: comentarioId });
+      if(!error) { 
+          carregarComentarios(modId); 
+      } else { 
+          console.error('Erro apagar:', error);
+          alert("Erro ao apagar: " + error.message + " | " + error.code); 
+      }
+  };
+
+  window.abrirResposta = function(id) {
+      const box = document.getElementById('reply-box-'+id);
+      if(box) box.style.display = 'block';
+  };
+  
+  window.cancelarResposta = function(id) {
+      const box = document.getElementById('reply-box-'+id);
+      const txt = document.getElementById('reply-text-'+id);
+      if(box) box.style.display = 'none';
+      if(txt) txt.value = '';
+  };
+
+  window.enviarResposta = async function(comentarioId, modId) {
+      const txtEl = document.getElementById('reply-text-'+comentarioId);
+      const texto = txtEl ? txtEl.value.trim() : '';
+      if(!texto) return;
+      const { error } = await window.supabaseGlobal
+          .rpc('admin_responder_comentario', { comentario_id: comentarioId, texto_resposta: texto });
+      if(!error) { 
+          carregarComentarios(modId); 
+      } else { 
+          console.error('Erro resposta:', error);
+          alert("Erro ao enviar resposta: " + error.message + " | " + error.code); 
+      }
+  };
+
+  window.apagarResposta = async function(comentarioId, modId) {
+      if(!confirm("Tem certeza que deseja apagar sua resposta?")) return;
+      const { error } = await window.supabaseGlobal
+          .rpc('admin_apagar_resposta', { comentario_id: comentarioId });
+      if(!error) { 
+          carregarComentarios(modId); 
+      } else { 
+          console.error('Erro apagar resposta:', error);
+          alert("Erro ao apagar resposta: " + error.message); 
+      }
+  };
+
+  // LÓGICA DE AUTENTICAÇÃO (LOGIN VIA USERNAME + SENHA)
+  window.alternarParaCadastro = () => {
+      document.getElementById('auth-form-login').style.display = 'none';
+      document.getElementById('auth-form-cadastro').style.display = 'flex';
+      document.getElementById('auth-modal-titulo').innerText = 'Criar Conta';
+      document.getElementById('auth-modal-subtitulo').innerText = 'Escolha um usuário e senha para entrar.';
+      document.getElementById('auth-msg').innerText = '';
+  };
+
+  window.alternarParaLogin = () => {
+      document.getElementById('auth-form-cadastro').style.display = 'none';
+      document.getElementById('auth-form-login').style.display = 'flex';
+      document.getElementById('auth-modal-titulo').innerText = 'Acesse sua Conta';
+      document.getElementById('auth-modal-subtitulo').innerText = 'Entre com seu usuário e senha para comentar.';
+      document.getElementById('auth-msg').innerText = '';
+  };
+
+  window.abrirModalLogin = () => { 
+      document.getElementById('auth-modal').style.display = 'flex'; 
+      document.getElementById('auth-msg').innerText = '';
+      alternarParaLogin();
+  };
+
+  window.fecharModalLogin = () => { 
+      document.getElementById('auth-modal').style.display = 'none';
+      document.getElementById('auth-username').value = '';
+      document.getElementById('auth-senha').value = '';
+      document.getElementById('cad-username').value = '';
+      document.getElementById('cad-senha').value = '';
+      document.getElementById('auth-msg').innerText = '';
+  };
+
+  window.fazerLoginEmail = async () => {
+      if(!window.supabaseGlobal) return;
+      const username = document.getElementById('auth-username').value.trim();
+      const senha = document.getElementById('auth-senha').value;
+      const msg = document.getElementById('auth-msg');
+      
+      if(!username || !senha) { msg.style.color = "#ef4444"; msg.innerText = "Preencha o usuário e a senha."; return; }
+      msg.style.color = "var(--muted)"; msg.innerText = "Entrando...";
+
+      const email = usernameParaEmail(username);
+      const { data, error } = await window.supabaseGlobal.auth.signInWithPassword({ email, password: senha });
+
+      if(error) { 
+          msg.style.color = "#ef4444";
+          if(error.message === "Invalid login credentials") {
+              msg.innerText = "Usuário ou senha incorretos. Se você criou a conta antes da atualização do site, crie uma nova conta com o mesmo nome de usuário.";
+          } else {
+              msg.innerText = error.message;
+          }
+      } else {
+          // Garante que o perfil existe e é marcado como admin se for conta admin
+          if(data.session?.user) {
+              const userId = data.session.user.id;
+              const isAdminUsername = ADMIN_USERNAMES.includes(username.toLowerCase());
+              await window.supabaseGlobal.from('perfis').upsert({ 
+                  id: userId, 
+                  username: username,
+                  is_admin: isAdminUsername,
+                  criado_em: new Date().toISOString()
+              }, { onConflict: 'id' });
+          }
+          fecharModalLogin();
+      }
+  };
+
+  window.criarContaEmail = async () => {
+      if(!window.supabaseGlobal) return;
+      const username = document.getElementById('cad-username').value.trim();
+      const senha = document.getElementById('cad-senha').value;
+      const msg = document.getElementById('auth-msg');
+      
+      if(!username || !senha) { msg.style.color = "#ef4444"; msg.innerText = "Preencha o usuário e a senha."; return; }
+      if(username.length < 3) { msg.style.color = "#ef4444"; msg.innerText = "Usuário precisa ter pelo menos 3 caracteres."; return; }
+      if(!/^[a-zA-Z0-9_]+$/.test(username)) { msg.style.color = "#ef4444"; msg.innerText = "Usuário só pode ter letras, números e _."; return; }
+      if(senha.length < 6) { msg.style.color = "#ef4444"; msg.innerText = "A senha precisa ter pelo menos 6 caracteres."; return; }
+      
+      msg.style.color = "var(--muted)"; msg.innerText = "Criando conta...";
+
+      const email = usernameParaEmail(username);
+      const { data, error } = await window.supabaseGlobal.auth.signUp({
+          email,
+          password: senha,
+          options: { data: { username: username } }
+      });
+
+      if(error) { 
+          msg.style.color = "#ef4444";
+          msg.innerText = error.message === "User already registered" ? "Este usuário já existe. Tente outro." : error.message;
+      } else {
+          // Pega o user do data ou da sessão atual (quando confirm email está desligado)
+          const userId = data.user?.id || data.session?.user?.id;
+          if(userId) {
+              const { error: perfisError } = await window.supabaseGlobal.from('perfis').upsert({ 
+                  id: userId, 
+                  username: username,
+                  criado_em: new Date().toISOString()
+              }, { onConflict: 'id' });
+              if(perfisError) console.error('Erro ao salvar perfil:', perfisError);
+          }
+          msg.style.color = "#10b981";
+          msg.innerText = "Conta criada! Agora clique em Entrar.";
+          setTimeout(() => alternarParaLogin(), 1500);
+      }
+  };
+
+  window.fazerLogout = async () => {
+      if(window.supabaseGlobal) await window.supabaseGlobal.auth.signOut();
+  };
+
+  function atualizarMenuUsuario(session) {
+      const menuItem = document.getElementById('auth-menu-item');
+      if(session && session.user) {
+          window.currentUser = session.user;
+          // Prioridade: metadata > derivar do email interno
+          const username = session.user.user_metadata?.username 
+              || session.user.email.replace('@guikamods.internal','');
+          window.currentUser.username = username;
+          menuItem.innerHTML = `<a href="#" onclick="fazerLogout(); return false;" style="color: var(--muted);">Sair (${username})</a>`;
+      } else {
+          window.currentUser = null;
+          menuItem.innerHTML = `<a href="#" onclick="abrirModalLogin(); return false;">Entrar</a>`;
+      }
+      const hash = location.hash.replace("#","");
+      if(hash.startsWith("mod-")) { carregarComentarios(hash.replace("mod-","")); }
   }
 
   function atualizarContadores(){
@@ -549,92 +643,34 @@ document.addEventListener("DOMContentLoaded",()=>{
     modsSalvos.forEach(m=>{if(contadores[m.categoria]!=undefined) contadores[m.categoria]++;});
     const total=modsSalvos.length;
     document.querySelectorAll(".interativo[data-cat]").forEach(a=>{
-      const c=a.getAttribute("data-cat");
-      const num=c==="todos"?total:(contadores[c]||0);
-      const texto=a.textContent.replace(/\(\d+\)/,"");
-      if(a.closest('aside')) {
-        a.textContent=texto.trim()+" ("+num+")";
-      }
+      const c=a.getAttribute("data-cat"); const num=c==="todos"?total:(contadores[c]||0); const texto=a.textContent.replace(/\(\d+\)/,"");
+      if(a.closest('aside')) { a.textContent=texto.trim()+" ("+num+")"; }
     });
   }
 
   function renderMaisRecentes(limite = 3) {
-    const container = document.getElementById("lista-recentes");
-    if (!container) return;
-    if(!LOADED && modsSalvos.length === 0) {
-      container.innerHTML = "<p style='font-size:0.9rem; color:var(--muted);'>Carregando...</p>";
-      return;
-    }
-    const modsOrdenados = [...modsSalvos].sort((a, b) => {
-      const dataA = a.timestamp || a.data || 0;
-      const dataB = b.timestamp || b.data || 0;
-      const dateA_ms = new Date(dataA).getTime() || 0;
-      const dateB_ms = new Date(dataB).getTime() || 0;
-      return dateB_ms - dateA_ms; 
-    });
+    const container = document.getElementById("lista-recentes"); if (!container) return;
+    if(!LOADED && modsSalvos.length === 0) { container.innerHTML = "<p style='font-size:0.9rem; color:var(--muted);'>Carregando...</p>"; return; }
+    const modsOrdenados = [...modsSalvos].sort((a, b) => { const dateA_ms = new Date(a.timestamp || a.data || 0).getTime() || 0; const dateB_ms = new Date(b.timestamp || b.data || 0).getTime() || 0; return dateB_ms - dateA_ms; });
     const recentes = modsOrdenados.slice(0, limite);
-    
-    container.innerHTML = "";
-    if (recentes.length === 0) {
-      container.innerHTML = "<p style='font-size:0.9rem; color:var(--muted);'>Nenhum mod recente.</p>";
-      return;
-    }
+    container.innerHTML = ""; if (recentes.length === 0) { container.innerHTML = "<p style='font-size:0.9rem; color:var(--muted);'>Nenhum mod recente.</p>"; return; }
     recentes.forEach(mod => {
-          const item = document.createElement("div");
-          item.className = "recent-item";
-          const dataMod = formatarData(mod.timestamp || mod.data); 
-          item.innerHTML = `
-            <a href="#mod-${mod.id}">
-                <img src="${mod.img || 'https://placehold.co/400x200?text=Mod'}" alt="${mod.titulo}">
-            </a>
-            <p style="font-weight: 600; margin-bottom: 0.2rem; margin-top: 0.5rem;">
-                <a href="#mod-${mod.id}" style="color: var(--text); text-decoration: none;">${mod.titulo}</a>
-            </p>
-            <p><strong>Lançamento:</strong> ${dataMod}</p>
-          `; 
-          item.querySelector('a').addEventListener("click", (e) => {
-              e.preventDefault();
-              location.hash = "mod-" + mod.id;
-          });
-          container.appendChild(item);
+          const item = document.createElement("div"); item.className = "recent-item"; const dataMod = formatarData(mod.timestamp || mod.data); 
+          item.innerHTML = `<a href="#mod-${mod.id}"><img src="${mod.img || 'https://placehold.co/400x200?text=Mod'}" alt="${mod.titulo}"></a><p style="font-weight: 600; margin-bottom: 0.2rem; margin-top: 0.5rem;"><a href="#mod-${mod.id}" style="color: var(--text); text-decoration: none;">${mod.titulo}</a></p><p><strong>Lançamento:</strong> ${dataMod}</p>`; 
+          item.querySelector('a').addEventListener("click", (e) => { e.preventDefault(); location.hash = "mod-" + mod.id; }); container.appendChild(item);
     });
   }
 
   function renderPopulares() {
-    const container = document.getElementById("lista-populares");
-    if (!container) return;
-    if(!LOADED && modsSalvos.length === 0) {
-      container.innerHTML = "<li><span style='color:var(--muted);'>Carregando...</span></li>";
-      return;
-    }
-
+    const container = document.getElementById("lista-populares"); if (!container) return;
+    if(!LOADED && modsSalvos.length === 0) { container.innerHTML = "<li><span style='color:var(--muted);'>Carregando...</span></li>"; return; }
     const populares = modsSalvos.filter(m => m.destaque === true);
-    
-    populares.sort((a, b) => {
-      const dataA = new Date(a.timestamp || a.data || 0).getTime();
-      const dataB = new Date(b.timestamp || b.data || 0).getTime();
-      return dataB - dataA;
-    });
-
-    container.innerHTML = "";
-    if (populares.length === 0) {
-      container.innerHTML = "<li><span style='color:var(--muted);'>Nenhum destaque.</span></li>";
-      return;
-    }
-
+    populares.sort((a, b) => { return new Date(b.timestamp || b.data || 0).getTime() - new Date(a.timestamp || a.data || 0).getTime(); });
+    container.innerHTML = ""; if (populares.length === 0) { container.innerHTML = "<li><span style='color:var(--muted);'>Nenhum destaque.</span></li>"; return; }
     populares.forEach(mod => {
-       const li = document.createElement("li");
-       const a = document.createElement("a");
-       a.href = "#mod-" + mod.id;
-       a.textContent = mod.titulo; 
-       
-       a.addEventListener("click", (e) => {
-           e.preventDefault();
-           location.hash = "mod-" + mod.id;
-       });
-
-       li.appendChild(a);
-       container.appendChild(li);
+       const li = document.createElement("li"); const a = document.createElement("a"); a.href = "#mod-" + mod.id; a.textContent = mod.titulo; 
+       a.addEventListener("click", (e) => { e.preventDefault(); location.hash = "mod-" + mod.id; });
+       li.appendChild(a); container.appendChild(li);
     });
   }
 
@@ -645,141 +681,67 @@ document.addEventListener("DOMContentLoaded",()=>{
   }
 
   function inicializar(){
-    const hash=location.hash.replace("#","");
-    const query=searchInput.value.trim();
+    const hash=location.hash.replace("#",""); const query=searchInput.value.trim();
     if(hash.startsWith("mod-")){const id=hash.replace("mod-","");mostrarDetalhe(id);return;}
-    atualizarTitulo(hash);
-    renderMods(hash,query);
-    atualizarContadores();
+    atualizarTitulo(hash); renderMods(hash,query); atualizarContadores();
   }
 
-  window.addEventListener("hashchange", () => {
-    fadeOutIn(inicializar);
-  });
-
-  document.querySelectorAll("[data-cat]").forEach(link=>{
-    link.addEventListener("click",e=>{
-      e.preventDefault();
-      const cat=e.target.getAttribute("data-cat");
-      location.hash=cat; 
-    });
-  });
+  window.addEventListener("hashchange", () => { fadeOutIn(inicializar); });
+  document.querySelectorAll("[data-cat]").forEach(link=>{ link.addEventListener("click",e=>{ e.preventDefault(); location.hash=e.target.getAttribute("data-cat"); }); });
 
   inicializar();
-  const hash=location.hash.replace("#","");
-  if(hash.startsWith("mod-")){mostrarDetalhe(hash.replace("mod-",""));}
-  
-  renderMaisRecentes();
-  renderPopulares(); 
+  const hash=location.hash.replace("#",""); if(hash.startsWith("mod-")){mostrarDetalhe(hash.replace("mod-",""));}
+  renderMaisRecentes(); renderPopulares(); 
 
-  function handleSearch(){
-    const hash=location.hash.replace("#","");
-    const query=searchInput.value.trim();
-    fadeOutIn(()=>renderMods(hash,query));
-  }
+  function handleSearch(){ const hash=location.hash.replace("#",""); const query=searchInput.value.trim(); fadeOutIn(()=>renderMods(hash,query)); }
+  searchBtn.addEventListener("click", handleSearch); searchInput.addEventListener("keyup", (e) => { if (e.key === "Enter") { handleSearch(); } });
 
-  searchBtn.addEventListener("click", handleSearch);
-  searchInput.addEventListener("keyup", (e) => {
-      if (e.key === "Enter") { handleSearch(); }
-  });
-
-  // SUPABASE IMPLEMENTATION
+  // SUPABASE INICIALIZAÇÃO E LISTENERS
   (function(){
     const supabaseUrl = 'https://uczpomdhzbarenmxysfc.supabase.co';
     const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVjenBvbWRoemJhcmVubXh5c2ZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI2NzA3OTIsImV4cCI6MjA4ODI0Njc5Mn0.oKwFayvnBPPxOjHGFcHLxG44eH3C_NTgDQMUqUKa7vo';
     const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+    window.supabaseGlobal = supabase;
 
-    function normalizeMods(val){
-      if(!val) return [];
-      return val.map(v => buildMod(v, v.id));
-    }
+    supabase.auth.getSession().then(({ data: { session } }) => { atualizarMenuUsuario(session); });
+    supabase.auth.onAuthStateChange((_event, session) => { atualizarMenuUsuario(session); });
 
+    function normalizeMods(val){ if(!val) return []; return val.map(v => buildMod(v, v.id)); }
     function buildMod(v, key){
-      const m = Object.assign({}, v);
-      if(!m.id) m.id = key;
-      if(m.title && !m.titulo) m.titulo = m.title;
-      if(m.desc && !m.descricao) m.descricao = m.desc;
-      if(m.category && !m.categoria) m.categoria = m.category;
-      if(m.image && !m.img) m.img = m.image;
-      if(m.link && !m.download) m.download = m.link;
-      if(!m.tituloTopo) m.tituloTopo = m.title || m.titulo; 
+      const m = Object.assign({}, v); if(!m.id) m.id = key;
+      if(m.title && !m.titulo) m.titulo = m.title; if(m.desc && !m.descricao) m.descricao = m.desc; if(m.category && !m.categoria) m.categoria = m.category;
+      if(m.image && !m.img) m.img = m.image; if(m.link && !m.download) m.download = m.link; if(!m.tituloTopo) m.tituloTopo = m.title || m.titulo; 
       if(m.data && !m.timestamp) m.timestamp = m.data; 
+      m.views = parseInt(m.views) || 0; m.likes = parseInt(m.likes) || 0;
       return m;
     }
-
-    function dedupe(list){
-      const map=new Map();
-      list.forEach(m=>{ if(!m || !m.id) return; map.set(m.id, Object.assign(map.get(m.id)||{}, m)); });
-      return Array.from(map.values());
-    }
-
+    function dedupe(list){ const map=new Map(); list.forEach(m=>{ if(!m || !m.id) return; map.set(m.id, Object.assign(map.get(m.id)||{}, m)); }); return Array.from(map.values()); }
     function mergeMods(list){
-      const byId = new Map(modsSalvos.map(m=>[m.id,m]));
-      let changed = false;
+      const byId = new Map(modsSalvos.map(m=>[m.id,m])); let changed = false;
       list.forEach(n=>{
-        if(!n || !n.id) return;
-        const exist = byId.get(n.id);
-        if(exist){
-          const before = JSON.stringify(exist); Object.assign(exist, n); const after = JSON.stringify(exist);
-          if(before!==after) changed = true;
-        } else { modsSalvos.push(n); changed = true; }
+        if(!n || !n.id) return; const exist = byId.get(n.id);
+        if(exist){ const before = JSON.stringify(exist); Object.assign(exist, n); const after = JSON.stringify(exist); if(before!==after) changed = true; } 
+        else { modsSalvos.push(n); changed = true; }
       });
-      if(changed){ localStorage.setItem("modsSalvos", JSON.stringify(modsSalvos)); }
-      return changed;
+      if(changed){ localStorage.setItem("modsSalvos", JSON.stringify(modsSalvos)); } return changed;
     }
-
     function replaceAll(list){
-      let changed = false;
-      if(list.length!==modsSalvos.length) changed = true;
-      else {
-        const a = JSON.stringify(modsSalvos.slice().sort((x,y)=>x.id>y.id?1:-1));
-        const b = JSON.stringify(list.slice().sort((x,y)=>x.id>y.id?1:-1));
-        changed = a!==b;
-      }
-      if(changed){ modsSalvos.splice(0, modsSalvos.length, ...list); localStorage.setItem("modsSalvos", JSON.stringify(modsSalvos)); }
-      return changed;
+      let changed = false; if(list.length!==modsSalvos.length) changed = true;
+      else { const a = JSON.stringify(modsSalvos.slice().sort((x,y)=>x.id>y.id?1:-1)); const b = JSON.stringify(list.slice().sort((x,y)=>x.id>y.id?1:-1)); changed = a!==b; }
+      if(changed){ modsSalvos.splice(0, modsSalvos.length, ...list); localStorage.setItem("modsSalvos", JSON.stringify(modsSalvos)); } return changed;
     }
-
-    function removeById(id){
-      const idx = modsSalvos.findIndex(m=>m.id===id);
-      if(idx>-1){ modsSalvos.splice(idx,1); localStorage.setItem("modsSalvos", JSON.stringify(modsSalvos)); return true; }
-      return false;
-    }
-    
-    function refreshUI(){ 
-        try{ 
-            inicializar(); 
-            renderMaisRecentes(); 
-            renderPopulares(); 
-        }catch(_){} 
-    }
+    function removeById(id){ const idx = modsSalvos.findIndex(m=>m.id===id); if(idx>-1){ modsSalvos.splice(idx,1); localStorage.setItem("modsSalvos", JSON.stringify(modsSalvos)); return true; } return false; }
+    function refreshUI(){ try{ inicializar(); renderMaisRecentes(); renderPopulares(); }catch(_){} }
 
     async function fetchAllOnce(){
-      try {
-        const { data, error } = await supabase.from('mods').select('*');
-        if (data) {
-          const arr = dedupe(normalizeMods(data));
-          if(replaceAll(arr)) refreshUI();
-        }
-        LOADED = true; refreshUI();
-      } catch (err) {
-        LOADED = true; refreshUI();
-      }
+      try { const { data, error } = await supabase.from('mods').select('*'); if (data) { const arr = dedupe(normalizeMods(data)); if(replaceAll(arr)) refreshUI(); } LOADED = true; refreshUI(); } catch (err) { LOADED = true; refreshUI(); }
     }
-
     function startStream(){
-      supabase.channel('public:mods')
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'mods' }, payload => {
-          if (payload.eventType === 'INSERT' || payload.eventType === 'UPDATE') {
-            const newMod = buildMod(payload.new, payload.new.id);
-            if(mergeMods([newMod])) refreshUI();
-          } else if (payload.eventType === 'DELETE') {
-            if(removeById(payload.old.id)) refreshUI();
-          }
-        })
-        .subscribe();
+      supabase.channel('public:mods').on('postgres_changes', { event: '*', schema: 'public', table: 'mods' }, payload => {
+          if (payload.eventType === 'INSERT' || payload.eventType === 'UPDATE') { const newMod = buildMod(payload.new, payload.new.id); if(mergeMods([newMod])) refreshUI(); } 
+          else if (payload.eventType === 'DELETE') { if(removeById(payload.old.id)) refreshUI(); }
+        }).subscribe();
     }
-
     fetchAllOnce().then(() => { startStream(); });
   })();
 });
