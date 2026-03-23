@@ -330,8 +330,8 @@ td { padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 
         const dados = { titulo: inputs.titulo.value, tituloTopo: inputs.tituloTopo.value, img: finalImageUrl, descricao: inputs.descricao.value, data: inputs.data.value, categoria: inputs.categoria.value, downloadMediafire: inputs.downloadMediafire.value, downloadMega: inputs.downloadMega.value, downloadDrive: inputs.downloadDrive.value, destaque: inputs.destaque.checked === true };
 
         if (editingId) {
-          const { data: updData, error } = await _supabase.from('mods').update(dados).eq('id', editingId).select();
-          if (!error) { alert("✅ Mod atualizado! Destaque: " + dados.destaque); cancelarEdicao(); carregarMods(); } else throw error;
+          const { error } = await _supabase.from('mods').update(dados).eq('id', editingId);
+          if (!error) { alert("✅ Mod atualizado!"); cancelarEdicao(); carregarMods(); } else throw error;
         } else {
           dados.id = crypto.randomUUID();
           dados.views = 0;
