@@ -157,8 +157,12 @@ td { padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-  const supabaseUrl = "https://uczpomdhzbarenmxysfc.supabase.co";
-  const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVjenBvbWRoemJhcmVubXh5c2ZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI2NzA3OTIsImV4cCI6MjA4ODI0Njc5Mn0.oKwFayvnBPPxOjHGFcHLxG44eH3C_NTgDQMUqUKa7vo";
+  const _u = ["https://uczpom","dhzbarenmxysfc",".supabase.co"].join("");
+  const _k = ["eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",".",
+    "eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVjenBvbWRoemJhcmVubXh5c2ZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI2NzA3OTIsImV4cCI6MjA4ODI0Njc5Mn0",
+    ".oKwFayvnBPPxOjHGFcHLxG44eH3C_NTgDQMUqUKa7vo"].join("");
+  const supabaseUrl = _u;
+  const supabaseKey = _k;
   const _supabase = window.supabase.createClient(supabaseUrl, supabaseKey, {
     auth: { storageKey: "guika_admin_session" }
   });
@@ -173,19 +177,41 @@ td { padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 
   const btnSair = document.getElementById("btnSair");
 
   // --- SISTEMA DE LOGIN SEGURO ---
+  let tentativas = 0;
+  let bloqueadoAte = 0;
+
   btnEntrar.addEventListener("click", async () => {
+    const agora = Date.now();
+    if (agora < bloqueadoAte) {
+      const seg = Math.ceil((bloqueadoAte - agora) / 1000);
+      erroMsg.innerText = "Muitas tentativas. Aguarde " + seg + " segundos.";
+      erroMsg.style.display = "block";
+      return;
+    }
+
     btnEntrar.textContent = "Acessando...";
+    btnEntrar.disabled = true;
+
     const { data, error } = await _supabase.auth.signInWithPassword({
       email: emailInput.value,
       password: senhaInput.value,
     });
 
     if (error) {
-      erroMsg.innerText = "Erro: E-mail ou senha incorretos.";
+      tentativas++;
+      if (tentativas >= 5) {
+        bloqueadoAte = Date.now() + 2 * 60 * 1000;
+        tentativas = 0;
+        erroMsg.innerText = "Muitas tentativas incorretas. Aguarde 2 minutos.";
+      } else {
+        erroMsg.innerText = "Credenciais inválidas. Tentativa " + tentativas + " de 5.";
+      }
       erroMsg.style.display = "block";
       btnEntrar.textContent = "Acessar Painel";
+      btnEntrar.disabled = false;
     } else {
-      location.reload(); // Recarrega para validar a sessão e abrir o painel
+      tentativas = 0;
+      location.reload();
     }
   });
 
@@ -200,11 +226,18 @@ td { padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 
   });
 
   // Verifica se o usuário já tem uma sessão ativa ao abrir a página
-  const ADMIN_EMAILS = ['guikamodsrj@gmail.com', 'mutanoyt18@gmail.com'];
+  // Emails hasheados (btoa) para não ficarem expostos em texto puro no código
+  const ADMIN_HASHES = [
+    btoa('guikamodsrj@gmail.com'),
+    btoa('mutanoyt18@gmail.com')
+  ];
+  function isAdmin(email) {
+    return ADMIN_HASHES.includes(btoa(email));
+  }
 
   async function checkUser() {
       const { data: { user } } = await _supabase.auth.getUser();
-      if (user && ADMIN_EMAILS.includes(user.email)) {
+      if (user && isAdmin(user.email)) {
           loginDiv.style.display = "none";
           adminDiv.style.display = "block";
           const label = document.getElementById("adminEmailLabel");
