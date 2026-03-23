@@ -68,7 +68,7 @@ td { padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 
 <div id="login" class="card">
   <h2 style="margin-top:0; border:none;">🔐 Login Administrativo</h2>
   <p style="color:var(--muted); margin-bottom:1.5rem;">Acesse para gerenciar a Guika Mods RJ.</p>
-  <input type="email" id="email" placeholder="Seu E-mail" style="margin-bottom: 1rem;">
+  <input type="email" id="email" placeholder="Username" style="margin-bottom: 1rem;">
   <input type="password" id="senha" placeholder="Sua Senha" style="margin-bottom: 1rem;">
   <button id="btnEntrar" class="btn-login">Acessar Painel</button>
   <p id="erro" style="color:var(--danger); display:none; margin-top:1rem; font-size:0.9rem;"></p>
@@ -77,7 +77,10 @@ td { padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 
 <div id="admin" class="admin-container" style="display:none;">
   
   <div class="header-admin">
-    <h1>Painel Admin</h1>
+    <div style="display:flex; flex-direction:column; gap:0.2rem;">
+      <h1>Painel Admin</h1>
+      <span id="adminEmailLabel" style="color:var(--muted); font-size:0.85rem; text-align:center;"></span>
+    </div>
     <button id="btnSair" class="btn-cancel" style="width: auto; padding: 0.5rem 1.5rem; border-color: var(--danger); color: var(--danger);">Sair</button>
   </div>
 
@@ -202,6 +205,8 @@ td { padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 
       if (user && ADMIN_EMAILS.includes(user.email)) {
           loginDiv.style.display = "none";
           adminDiv.style.display = "block";
+          const label = document.getElementById("adminEmailLabel");
+          if(label) label.textContent = "Logado como: " + user.email;
           carregarMods();
       } else {
           if (user) {
