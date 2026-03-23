@@ -152,11 +152,11 @@ td { padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 
   </div>
 </div>
 
-<script type="module">
-  import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3/+esm";
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
   const supabaseUrl = "https://uczpomdhzbarenmxysfc.supabase.co";
   const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVjenBvbWRoemJhcmVubXh5c2ZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI2NzA3OTIsImV4cCI6MjA4ODI0Njc5Mn0.oKwFayvnBPPxOjHGFcHLxG44eH3C_NTgDQMUqUKa7vo";
-  const supabase = createClient(supabaseUrl, supabaseKey);
+  const _supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
   // Variáveis de Autenticação
   const loginDiv = document.getElementById("login");
@@ -170,7 +170,7 @@ td { padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 
   // --- SISTEMA DE LOGIN SEGURO ---
   btnEntrar.addEventListener("click", async () => {
     btnEntrar.textContent = "Acessando...";
-    const { data, error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await _supabase.auth.signInWithPassword({
       email: emailInput.value,
       password: senhaInput.value,
     });
@@ -190,13 +190,13 @@ td { padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 
 
   // Botão de Sair
   btnSair.addEventListener("click", async () => {
-      await supabase.auth.signOut();
+      await _supabase.auth.signOut();
       location.reload();
   });
 
   // Verifica se o usuário já tem uma sessão ativa ao abrir a página
   async function checkUser() {
-      const { data: { user } } = await supabase.auth.getUser();
+      const { data: { user } } = await _supabase.auth.getUser();
       if (user) {
           loginDiv.style.display = "none";
           adminDiv.style.display = "block";
@@ -260,14 +260,14 @@ td { padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 
   async function fazerUploadImagem(file) {
     const fileExt = file.name.split('.').pop();
     const fileName = `${Math.random().toString(36).substring(2)}.${fileExt}`;
-    const { error: uploadError } = await supabase.storage.from('imagens_mods').upload(fileName, file);
+    const { error: uploadError } = await _supabase.storage.from('imagens_mods').upload(fileName, file);
     if (uploadError) throw uploadError;
-    const { data } = supabase.storage.from('imagens_mods').getPublicUrl(fileName);
+    const { data } = _supabase.storage.from('imagens_mods').getPublicUrl(fileName);
     return data.publicUrl;
   }
 
   async function carregarMods() {
-    const { data, error } = await supabase.from('mods').select('*').order('data', { ascending: false });
+    const { data, error } = await _supabase.from('mods').select('*').order('data', { ascending: false });
     if (error || !data || data.length === 0) { listaMods.innerHTML = "<tr><td colspan='6' style='text-align:center; padding:2rem; color:var(--muted);'>Nenhum mod encontrado.</td></tr>"; paginacaoControls.style.display = "none"; return; }
     allMods = data.map(mod => [mod.id, mod]); filteredMods = [...allMods]; currentPage = 1; renderTable();
   }
@@ -298,7 +298,7 @@ td { padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 
 
   window.excluirMod = async function(id) {
     if(confirm("Tem certeza que deseja excluir este mod?")) {
-        const { error } = await supabase.from('mods').delete().eq('id', id);
+        const { error } = await _supabase.from('mods').delete().eq('id', id);
         if(!error) carregarMods(); else alert("Erro ao excluir: " + error.message);
     }
   };
@@ -322,13 +322,13 @@ td { padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 
         const dados = { titulo: inputs.titulo.value, tituloTopo: inputs.tituloTopo.value, img: finalImageUrl, descricao: inputs.descricao.value, data: inputs.data.value, categoria: inputs.categoria.value, downloadMediafire: inputs.downloadMediafire.value, downloadMega: inputs.downloadMega.value, downloadDrive: inputs.downloadDrive.value, destaque: inputs.destaque.checked === true };
 
         if (editingId) {
-          const { error } = await supabase.from('mods').update(dados).eq('id', editingId);
+          const { error } = await _supabase.from('mods').update(dados).eq('id', editingId);
           if (!error) { alert("✅ Mod atualizado!"); cancelarEdicao(); carregarMods(); } else throw error;
         } else {
           dados.id = crypto.randomUUID();
           dados.views = 0;
           dados.likes = 0; 
-          const { error } = await supabase.from('mods').insert([dados]);
+          const { error } = await _supabase.from('mods').insert([dados]);
           if (!error) { alert("✅ Mod adicionado!"); cancelarEdicao(); carregarMods(); } else throw error;
         }
     } catch (err) { alert("Erro: " + err.message); submitBtn.textContent = editingId ? "Salvar Alterações" : "Adicionar Mod"; }
