@@ -159,7 +159,9 @@ td { padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 
 <script>
   const supabaseUrl = "https://uczpomdhzbarenmxysfc.supabase.co";
   const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVjenBvbWRoemJhcmVubXh5c2ZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI2NzA3OTIsImV4cCI6MjA4ODI0Njc5Mn0.oKwFayvnBPPxOjHGFcHLxG44eH3C_NTgDQMUqUKa7vo";
-  const _supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+  const _supabase = window.supabase.createClient(supabaseUrl, supabaseKey, {
+    auth: { storageKey: "guika_admin_session" }
+  });
 
   // Variáveis de Autenticação
   const loginDiv = document.getElementById("login");
