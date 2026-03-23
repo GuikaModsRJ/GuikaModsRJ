@@ -195,13 +195,21 @@ td { padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 
   });
 
   // Verifica se o usuário já tem uma sessão ativa ao abrir a página
+  const ADMIN_EMAILS = ['guikamodsrj@gmail.com', 'mutanoyt18@gmail.com'];
+
   async function checkUser() {
       const { data: { user } } = await _supabase.auth.getUser();
-      if (user) {
+      if (user && ADMIN_EMAILS.includes(user.email)) {
           loginDiv.style.display = "none";
           adminDiv.style.display = "block";
-          carregarMods(); // Só carrega os mods depois que confirmar que está logado
+          carregarMods();
       } else {
+          if (user) {
+              // Logado mas não é admin — faz logout e mostra erro
+              await _supabase.auth.signOut();
+              erroMsg.innerText = "Acesso negado. Você não tem permissão de administrador.";
+              erroMsg.style.display = "block";
+          }
           loginDiv.style.display = "block";
           adminDiv.style.display = "none";
       }
@@ -322,8 +330,8 @@ td { padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 
         const dados = { titulo: inputs.titulo.value, tituloTopo: inputs.tituloTopo.value, img: finalImageUrl, descricao: inputs.descricao.value, data: inputs.data.value, categoria: inputs.categoria.value, downloadMediafire: inputs.downloadMediafire.value, downloadMega: inputs.downloadMega.value, downloadDrive: inputs.downloadDrive.value, destaque: inputs.destaque.checked === true };
 
         if (editingId) {
-          const { error } = await _supabase.from('mods').update(dados).eq('id', editingId);
-          if (!error) { alert("✅ Mod atualizado!"); cancelarEdicao(); carregarMods(); } else throw error;
+          const { data: updData, error } = await _supabase.from('mods').update(dados).eq('id', editingId).select();
+          if (!error) { alert("✅ Mod atualizado! Destaque: " + dados.destaque); cancelarEdicao(); carregarMods(); } else throw error;
         } else {
           dados.id = crypto.randomUUID();
           dados.views = 0;
