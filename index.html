@@ -32,7 +32,7 @@ input { background: rgba(0,0,0,0.3); border: var(--border); border-radius: var(-
 input:focus { outline:none; border-color: #666; }
 #search-button { transition: all 0.25s ease; border: var(--border) !important; }
 #search-button:hover { background: #3a3a3a !important; box-shadow: 0 0 8px rgba(255, 255, 255, 0.2); }
-.container.grid { display: grid; grid-template-columns: 3fr 1fr; gap: 1.2rem; column-gap: 2rem; justify-content: center; align-items: flex-start; margin: 0 auto; max-width: 1250px; }
+.container.grid { display: grid; grid-template-columns: 3fr 1fr; gap: 1.2rem; column-gap: 2rem; justify-content: center; align-items: stretch; margin: 0 auto; max-width: 1250px; }
 #cards { display: flex; flex-direction: column; gap: 1.5rem; margin: 0 auto; align-items: center; position: relative; left: calc((25% + 2.5rem)/2); width: 100%; opacity: 1; }
 section[aria-labelledby="titulo-section"] {text-align:center;}
 #titulo-section { text-align: center; font-size: 2rem; margin-top: 1rem; margin-bottom: 1.5rem; font-weight: 700; color: #fff; position: relative; left: calc((25% + 2.5rem)/2); }
@@ -42,7 +42,7 @@ section[aria-labelledby="titulo-section"] {text-align:center;}
 .card-content {padding:1.5rem;}
 .card-content h3 {margin:0.5rem 0; font-size:1.2rem; color:#fff;}
 .card-content p {color:var(--muted); font-size:0.95rem; margin:0;}
-aside {position: sticky; top: 1.3rem; align-self: flex-start; height: max-content;}
+aside {position: sticky; top: 1.3rem; align-self: stretch; height: auto;}
 .panel { background: var(--panel); padding: 1.2rem; border-radius: var(--radius); margin-bottom: 1rem; border: var(--border); box-shadow: var(--shadow); }
 .panel h3 { margin-top: 0; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.5rem; margin-bottom: 0.8rem; font-size: 1.1rem; }
 aside .panel:first-of-type {margin-top:1.3rem;}
@@ -78,9 +78,14 @@ aside .panel:first-of-type {margin-top:1.3rem;}
 .btn-voltar:hover { background: #444; transform: translateY(-2px); box-shadow: 0 5px 10px rgba(0,0,0,0.3); }
 
 /* --- CSS DOS COMENTÁRIOS E LOGIN --- */
-.comments-wrapper { width: 100%; margin-top: 3rem; text-align: center; }
+.comments-wrapper { width: 100%; margin-top: 1rem; text-align: center; }
 .comments-wrapper h3 { font-size: 1.5rem; color: #fff; margin-bottom: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.5rem; }
 .login-prompt { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); padding: 2.5rem; border-radius: 8px; text-align: center; margin-bottom: 2rem; }
+.comments-list { max-height: 280px; overflow-y: auto; padding-right: 8px; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.25) rgba(255,255,255,0.05); }
+.comments-list::-webkit-scrollbar { width: 6px; }
+.comments-list::-webkit-scrollbar-track { background: rgba(255,255,255,0.04); border-radius: 10px; }
+.comments-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.25); border-radius: 10px; transition: background 0.2s; }
+.comments-list::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.5); }
 .comment-item { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); padding: 1rem 1.5rem; border-radius: 8px; margin-bottom: 1rem; display: flex; flex-direction: column; text-align: left; }
 .comment-top { display: flex; justify-content: space-between; margin-bottom: 0.5rem; align-items: center;}
 .comment-author { font-weight: bold; color: var(--accent); }
@@ -489,8 +494,9 @@ document.addEventListener("DOMContentLoaded",()=>{
           </div>`;
       }
 
+      let commentsHtml = '';
       if(error || !data || data.length === 0) {
-          html += `<p style="color: var(--muted); text-align: center; padding: 2rem 0;">Nenhum comentário ainda. Seja o primeiro!</p>`;
+          commentsHtml += `<p style="color: var(--muted); text-align: center; padding: 2rem 0;">Nenhum comentário ainda. Seja o primeiro!</p>`;
       } else {
           data.forEach(c => {
               const dataFormatada = new Date(c.criado_em).toLocaleString('pt-BR');
@@ -526,7 +532,7 @@ document.addEventListener("DOMContentLoaded",()=>{
                   ? `👑 ${c.user_name} <span style="font-size:0.75rem; background: rgba(59,130,246,0.2); color: #60a5fa; padding: 2px 7px; border-radius: 4px; font-weight: 600; margin-left: 4px;">Admin</span>`
                   : `👤 ${c.user_name || 'Usuário'}`;
 
-              html += `
+              commentsHtml += `
               <div class="comment-item">
                   <div class="comment-top">
                       <span class="comment-author">${authorLabel}</span>
@@ -539,6 +545,7 @@ document.addEventListener("DOMContentLoaded",()=>{
               </div>`;
           });
       }
+      html += `<div class="comments-list">${commentsHtml}</div>`;
       cContainer.innerHTML = html;
   };
 
