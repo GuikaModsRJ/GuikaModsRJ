@@ -90,19 +90,48 @@ aside .panel:first-of-type {margin-top:1.3rem;}
 .btn-delete { background: transparent; border: 1px solid #ef4444; color: #ef4444; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; transition: all 0.2s;}
 .btn-delete:hover { background: #ef4444; color: #fff; }
 
-.modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
-.modal-content { background: var(--panel); padding: 2.5rem 2rem; border-radius: var(--radius); border: var(--border); width: 90%; max-width: 380px; text-align: center; position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.8); }
-.close-modal { position: absolute; top: 12px; right: 18px; cursor: pointer; font-size: 1.5rem; color: var(--muted); transition: color 0.2s;}
+.modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(6px); }
+.modal-content { background: #141414; padding: 2.5rem 2rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); width: 90%; max-width: 400px; text-align: center; position: relative; box-shadow: 0 25px 60px rgba(0,0,0,0.9); }
+.close-modal { position: absolute; top: 14px; right: 18px; cursor: pointer; font-size: 1.5rem; color: var(--muted); transition: color 0.2s; line-height: 1;}
 .close-modal:hover { color: #fff; }
-.social-btn { display: flex; align-items: center; justify-content: center; width: 100%; padding: 12px; margin-bottom: 12px; border-radius: 8px; cursor: pointer; font-weight: 600; border: none; color: white; gap: 10px; font-size: 0.95rem; transition: transform 0.2s, background 0.2s;}
-.social-btn:hover { transform: translateY(-2px); }
-.email-form { display: flex; flex-direction: column; gap: 12px; margin-top: 15px; }
-.email-form input { padding: 12px; font-family: inherit; font-size: 0.95rem; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white; }
-.email-form input:focus { outline: none; border-color: #666; background: rgba(0,0,0,0.6); }
-.btn-modal-primary { background: #2b2b2b !important; color: #fff !important; border: 1px solid rgba(255,255,255,0.15) !important; }
-.btn-modal-primary:hover { background: #3a3a3a !important; }
-.btn-modal-secondary { background: transparent !important; border: 1px solid rgba(255,255,255,0.15) !important; color: var(--muted) !important; }
-.btn-modal-secondary:hover { background: rgba(255,255,255,0.05) !important; color: #fff !important; }
+.social-btn { display: flex; align-items: center; justify-content: center; width: 100%; padding: 13px; margin-bottom: 10px; border-radius: 10px; cursor: pointer; font-weight: 600; border: none; color: white; gap: 10px; font-size: 0.93rem; transition: transform 0.2s, filter 0.2s; font-family: inherit;}
+.social-btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
+.btn-google { background: #fff; color: #333 !important; border: 1px solid #ddd !important; }
+.btn-google:hover { background: #f1f1f1 !important; }
+.btn-discord { background: #5865F2; }
+.btn-discord:hover { background: #4752c4 !important; }
+.social-divider { display: flex; align-items: center; gap: 12px; margin: 16px 0 10px; color: var(--muted); font-size: 0.82rem; }
+.social-divider::before, .social-divider::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.08); }
+.email-form { display: flex; flex-direction: column; gap: 10px; }
+.email-form input { padding: 12px 14px; font-family: inherit; font-size: 0.95rem; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: white; transition: border-color 0.2s; }
+.email-form input:focus { outline: none; border-color: rgba(255,255,255,0.35); background: rgba(0,0,0,0.7); }
+.btn-modal-primary { background: #252525 !important; color: #fff !important; border: 1px solid rgba(255,255,255,0.15) !important; }
+.btn-modal-primary:hover { background: #333 !important; }
+.btn-modal-secondary { background: transparent !important; border: 1px solid rgba(255,255,255,0.1) !important; color: var(--muted) !important; font-size: 0.85rem !important; padding: 10px !important; }
+.btn-modal-secondary:hover { background: rgba(255,255,255,0.04) !important; color: #fff !important; }
+
+/* --- PERFIL DO USUÁRIO --- */
+.perfil-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; align-items: flex-start; justify-content: center; backdrop-filter: blur(6px); overflow-y: auto; padding: 2rem 0; box-sizing: border-box; }
+.perfil-content { background: #141414; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); width: 90%; max-width: 560px; position: relative; box-shadow: 0 25px 60px rgba(0,0,0,0.9); overflow: hidden; margin: auto; }
+.perfil-header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); padding: 2rem 2rem 1.5rem; text-align: center; position: relative; }
+.perfil-avatar { width: 72px; height: 72px; border-radius: 50%; background: linear-gradient(135deg, #667eea, #764ba2); display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 1rem; border: 3px solid rgba(255,255,255,0.15); }
+.perfil-nome { font-size: 1.3rem; font-weight: 700; color: #fff; margin: 0 0 0.3rem; }
+.perfil-badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; background: rgba(255,255,255,0.1); color: #aaa; }
+.perfil-body { padding: 1.5rem 2rem 2rem; }
+.perfil-section-title { font-size: 0.85rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin: 1.5rem 0 0.8rem; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 0.5rem; }
+.perfil-section-title:first-child { margin-top: 0; }
+.perfil-mod-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.7rem; }
+.perfil-mod-item { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; overflow: hidden; cursor: pointer; transition: transform 0.2s, border-color 0.2s; }
+.perfil-mod-item:hover { transform: translateY(-2px); border-color: rgba(255,255,255,0.15); }
+.perfil-mod-img { width: 100%; height: 70px; object-fit: cover; background: #111; }
+.perfil-mod-info { padding: 0.5rem 0.7rem; }
+.perfil-mod-info p { margin: 0; font-size: 0.82rem; color: #ccc; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 500; }
+.perfil-mod-info span { font-size: 0.75rem; color: var(--muted); }
+.perfil-empty { color: var(--muted); font-size: 0.88rem; text-align: center; padding: 1rem; background: rgba(255,255,255,0.02); border-radius: 8px; }
+.perfil-btn-sair { display: flex; align-items: center; justify-content: center; width: 100%; padding: 11px; border-radius: 10px; background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: #ef4444; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.2s; margin-top: 1.5rem; font-family: inherit; gap: 8px; }
+.perfil-btn-sair:hover { background: rgba(239,68,68,0.2); border-color: #ef4444; }
+.close-perfil { position: absolute; top: 14px; right: 18px; cursor: pointer; font-size: 1.5rem; color: rgba(255,255,255,0.5); transition: color 0.2s; line-height: 1; background: none; border: none; }
+.close-perfil:hover { color: #fff; }
 
 .footer { background: #050505; padding: 2rem 0; border-top: var(--border); margin-top: 4rem; text-align: center; }
 .footer-grid {display:flex; justify-content:center; align-items:center; gap:1.5rem; flex-wrap:wrap; margin-bottom:0.4rem;}
@@ -188,25 +217,55 @@ a {color: #ccc; transition: color 0.2s;} a:hover {color: #fff;}
 
 <div id="auth-modal" class="modal-overlay">
     <div class="modal-content">
-        <span class="close-modal" onclick="fecharModalLogin()">×</span>
-        <h3 style="margin-top:0; color:#fff; font-size: 1.4rem;" id="auth-modal-titulo">Acesse sua Conta</h3>
-        <p style="color:var(--muted); font-size:0.9rem; margin-bottom: 10px;" id="auth-modal-subtitulo">Entre com seu usuário e senha para comentar.</p>
-        
+        <span class="close-modal" onclick="fecharModalLogin()">x</span>
+        <h3 style="margin-top:0; color:#fff; font-size: 1.4rem; margin-bottom: 0.3rem;" id="auth-modal-titulo">Acesse sua Conta</h3>
+        <p style="color:var(--muted); font-size:0.85rem; margin-bottom: 16px;" id="auth-modal-subtitulo">Entre para curtir, comentar e acompanhar mods.</p>
+
+        <div id="auth-social-btns">
+            <button class="social-btn btn-google" onclick="loginComGoogle()">
+                <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+                Entrar com Google
+            </button>
+            <button class="social-btn btn-discord" onclick="loginComDiscord()">
+                <svg width="20" height="20" viewBox="0 0 127.14 96.36" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M107.7 8.07A105.15 105.15 0 0 0 81.47 0a72.06 72.06 0 0 0-3.36 6.83 97.68 97.68 0 0 0-29.11 0A72.37 72.37 0 0 0 45.64 0a105.89 105.89 0 0 0-26.25 8.09C2.79 32.65-1.71 56.6.54 80.21a105.73 105.73 0 0 0 32.17 16.15 77.7 77.7 0 0 0 6.89-11.11 68.42 68.42 0 0 1-10.85-5.18c.91-.66 1.8-1.34 2.66-2a75.57 75.57 0 0 0 64.32 0c.87.71 1.76 1.39 2.66 2a68.68 68.68 0 0 1-10.87 5.19 77 77 0 0 0 6.89 11.1 105.25 105.25 0 0 0 32.19-16.14c2.64-27.38-4.51-51.11-18.9-72.15ZM42.45 65.69C36.18 65.69 31 60 31 53s5-12.74 11.43-12.74S54 46 53.89 53s-5.05 12.69-11.44 12.69Zm42.24 0C78.41 65.69 73.25 60 73.25 53s5-12.74 11.44-12.74S96.23 46 96.12 53s-5.04 12.69-11.43 12.69Z"/></svg>
+                Entrar com Discord
+            </button>
+            <div class="social-divider">ou entre com usuario e senha</div>
+        </div>
+
         <div class="email-form" id="auth-form-login">
-            <input type="text" id="auth-username" placeholder="Seu usuário" autocomplete="username" onkeydown="if(event.key==='Enter') fazerLoginEmail()" />
+            <input type="text" id="auth-username" placeholder="Seu usuario" autocomplete="username" onkeydown="if(event.key==='Enter') fazerLoginEmail()" />
             <input type="password" id="auth-senha" placeholder="Sua senha" autocomplete="current-password" onkeydown="if(event.key==='Enter') fazerLoginEmail()" />
-            <button class="social-btn btn-modal-primary" style="margin-top: 10px;" onclick="fazerLoginEmail()">Entrar</button>
-            <button class="social-btn btn-modal-secondary" onclick="alternarParaCadastro()">Não tenho conta — Criar uma</button>
+            <button class="social-btn btn-modal-primary" style="margin-top: 6px;" onclick="fazerLoginEmail()">Entrar</button>
+            <button class="social-btn btn-modal-secondary" onclick="alternarParaCadastro()">Nao tenho conta - Criar uma</button>
         </div>
 
         <div class="email-form" id="auth-form-cadastro" style="display:none;">
-            <input type="text" id="cad-username" placeholder="Escolha um usuário (ex: CJ_RJ)" autocomplete="username" onkeydown="if(event.key==='Enter') document.getElementById('cad-senha').focus()" />
-            <input type="password" id="cad-senha" placeholder="Crie uma senha (mín. 6 caracteres)" autocomplete="new-password" onkeydown="if(event.key==='Enter') criarContaEmail()" />
-            <button class="social-btn btn-modal-primary" style="margin-top: 10px;" onclick="criarContaEmail()">Criar Conta</button>
-            <button class="social-btn btn-modal-secondary" onclick="alternarParaLogin()">Já tenho conta — Entrar</button>
+            <input type="text" id="cad-username" placeholder="Escolha um usuario (ex: CJ_RJ)" autocomplete="username" onkeydown="if(event.key==='Enter') document.getElementById('cad-senha').focus()" />
+            <input type="password" id="cad-senha" placeholder="Crie uma senha (min. 6 caracteres)" autocomplete="new-password" onkeydown="if(event.key==='Enter') criarContaEmail()" />
+            <button class="social-btn btn-modal-primary" style="margin-top: 6px;" onclick="criarContaEmail()">Criar Conta</button>
+            <button class="social-btn btn-modal-secondary" onclick="alternarParaLogin()">Ja tenho conta - Entrar</button>
         </div>
         
-        <p id="auth-msg" style="color: #ef4444; font-size: 0.85rem; margin: 15px 0 0 0; min-height: 20px;"></p>
+        <p id="auth-msg" style="font-size: 0.85rem; margin: 12px 0 0 0; min-height: 20px; color: #ef4444;"></p>
+    </div>
+</div>
+
+<div id="perfil-modal" class="perfil-overlay" onclick="if(event.target===this) fecharPerfil()">
+    <div class="perfil-content">
+        <button class="close-perfil" onclick="fecharPerfil()">x</button>
+        <div class="perfil-header">
+            <div class="perfil-avatar" id="perfil-avatar">&#128100;</div>
+            <div class="perfil-nome" id="perfil-nome">Usuario</div>
+            <span class="perfil-badge" id="perfil-badge">Membro</span>
+        </div>
+        <div class="perfil-body">
+            <div class="perfil-section-title">Mods Curtidos</div>
+            <div id="perfil-curtidos" class="perfil-mod-grid"></div>
+            <div class="perfil-section-title">Mods Comentados</div>
+            <div id="perfil-comentados" class="perfil-mod-grid"></div>
+            <button class="perfil-btn-sair" onclick="fazerLogout()">Sair da conta</button>
+        </div>
     </div>
 </div>
 
@@ -282,19 +341,41 @@ document.addEventListener("DOMContentLoaded",()=>{
     exibirPagina(paginaAtualGlobal);
   }
 
+  // Verifica no Supabase se o usuário logado já curtiu um mod
+  async function verificarCurtida(modId) {
+      if(!window.supabaseGlobal || !window.currentUser) return false;
+      try {
+          const { data } = await window.supabaseGlobal
+              .from('curtidas')
+              .select('id')
+              .eq('mod_id', modId)
+              .eq('user_id', window.currentUser.id)
+              .maybeSingle();
+          return !!data;
+      } catch(e) { return false; }
+  }
+
   window.curtirMod = async function(id) {
       if(!window.supabaseGlobal) return;
+      // Exige login para curtir
+      if(!window.currentUser) { abrirModalLogin(); return; }
       const likeBtn = document.getElementById("btn-curtir");
       likeBtn.disabled = true; likeBtn.innerHTML = "Curtindo...";
       try {
+          // Salva a curtida vinculada ao user_id no Supabase
+          const { error: errInsert } = await window.supabaseGlobal
+              .from('curtidas')
+              .insert({ mod_id: id, user_id: window.currentUser.id });
+          if(errInsert && errInsert.code !== '23505') { // 23505 = unique violation (já curtiu)
+              likeBtn.innerHTML = "❤️ Curtir"; likeBtn.disabled = false; return;
+          }
+          // Incrementa contador no banco
           const { error } = await window.supabaseGlobal.rpc('increment_likes', { mod_id_text: id });
           if(!error) {
               const mod = modsSalvos.find(m => m.id === id);
               if(mod) { mod.likes = (mod.likes || 0) + 1; localStorage.setItem("modsSalvos", JSON.stringify(modsSalvos)); }
-              const likedMods = JSON.parse(localStorage.getItem('likedMods') || '[]');
-              if (!likedMods.includes(id)) { likedMods.push(id); localStorage.setItem('likedMods', JSON.stringify(likedMods)); }
               const contador = document.getElementById("like-counter");
-              if(contador) contador.innerText = mod.likes;
+              if(contador && mod) contador.innerText = mod.likes;
               likeBtn.innerHTML = "✅ Curtido"; likeBtn.style.background = "#ef4444"; likeBtn.style.color = "white";
           } else { likeBtn.innerHTML = "❤️ Curtir"; likeBtn.disabled = false; }
       } catch (err) { likeBtn.innerHTML = "❤️ Curtir"; likeBtn.disabled = false; }
@@ -304,8 +385,7 @@ document.addEventListener("DOMContentLoaded",()=>{
     const mod=modsSalvos.find(m=>m.id===id);
     if(!mod){inicializar();return;}
 
-    const likedMods = JSON.parse(localStorage.getItem('likedMods') || '[]');
-    const isLiked = likedMods.includes(id);
+    const isLiked = await verificarCurtida(id);
 
     if(window.supabaseGlobal) {
         const viewKey = `viewed_${id}`;
@@ -368,18 +448,38 @@ document.addEventListener("DOMContentLoaded",()=>{
       const cContainer = document.getElementById('comments-container');
       if(!window.supabaseGlobal || !cContainer) return;
 
+      // Busca sessao fresca — fonte de verdade para user_id e username
+      const { data: sessionData } = await window.supabaseGlobal.auth.getSession();
+      const sessionUser = sessionData?.session?.user || null;
+
+      // Sincroniza window.currentUser com a sessao real
+      if(sessionUser) {
+          if(!window.currentUser) window.currentUser = sessionUser;
+          window.currentUser.id = sessionUser.id;
+          // Garante username correto
+          if(!window.currentUser.username) {
+              window.currentUser.username = sessionUser.user_metadata?.username
+                  || sessionUser.user_metadata?.full_name?.split(' ')[0]
+                  || sessionUser.user_metadata?.name?.split(' ')[0]
+                  || sessionUser.email?.replace('@guikamods.internal','')
+                  || 'Usuario';
+          }
+      } else {
+          window.currentUser = null;
+      }
+
       const { data, error } = await window.supabaseGlobal
           .from('comentarios').select('*').eq('mod_id', modId).order('criado_em', { ascending: false });
 
       let html = '';
 
-      if(window.currentUser) {
-          const username = window.currentUser.username || window.currentUser.email.replace('@guikamods.internal','');
+      if(sessionUser && window.currentUser) {
+          const username = window.currentUser.username || window.currentUser.email?.replace('@guikamods.internal','') || 'Usuario';
           html += `
           <div style="background: rgba(255,255,255,0.03); padding: 20px; border-radius: 8px; margin-bottom: 25px; text-align: center; border: 1px solid rgba(255,255,255,0.05);">
               <p style="text-align: left; margin-top: 0; color: var(--muted); font-size: 0.9rem;">Comentando como: <strong style="color: white;">${username}</strong></p>
               <textarea id="novo-comentario-texto" placeholder="O que achou deste mod?" style="width: 100%; box-sizing: border-box; height: 90px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: white; padding: 12px; resize: vertical; margin-bottom: 15px; font-family: inherit; font-size: 0.95rem;"></textarea>
-              <button onclick="enviarComentario('${modId}')" class="btn-voltar" style="margin: 0 auto; background: #2b2b2b; border: 1px solid rgba(255,255,255,0.15);">Postar Comentário</button>
+              <button onclick="enviarComentario('${modId}')" class="btn-voltar" style="margin: 0 auto; background: #2b2b2b; border: 1px solid rgba(255,255,255,0.15);">Postar Comentario</button>
           </div>`;
       } else {
           html += `
@@ -394,9 +494,11 @@ document.addEventListener("DOMContentLoaded",()=>{
       } else {
           data.forEach(c => {
               const dataFormatada = new Date(c.criado_em).toLocaleString('pt-BR');
-              const currentUsername = window.currentUser ? (window.currentUser.username || window.currentUser.email.replace('@guikamods.internal','')) : '';
-              const isAdmin = window.currentUser && ADMIN_USERNAMES.includes(currentUsername);
-              const isOwnerOrAdmin = window.currentUser && (window.currentUser.id === c.user_id || isAdmin);
+              const currentUsername = window.currentUser ? (window.currentUser.username || window.currentUser.email?.replace('@guikamods.internal','')) : '';
+              const isAdmin = window.currentUser && ADMIN_USERNAMES.includes(currentUsername.toLowerCase());
+              // Usa sessionUser.id (sessao fresca) como fonte de verdade para ownership
+              const realUserId = sessionUser ? sessionUser.id : (window.currentUser ? window.currentUser.id : null);
+              const isOwnerOrAdmin = realUserId && (realUserId === c.user_id || isAdmin);
               
               const deleteBtn = isOwnerOrAdmin ? `<button class="btn-delete" onclick="apagarComentario('${c.id}', '${modId}')">Apagar</button>` : '';
               const replyBtn = isAdmin && !c.resposta ? `<button class="btn-edit" style="background: transparent; border: 1px solid #3b82f6; color: #3b82f6; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; transition: all 0.2s;" onclick="abrirResposta('${c.id}')">Responder</button>` : '';
@@ -442,21 +544,37 @@ document.addEventListener("DOMContentLoaded",()=>{
 
   window.enviarComentario = async function(modId) {
       const texto = document.getElementById('novo-comentario-texto').value.trim();
-      if(!texto || !window.currentUser) return;
-      
+      if(!texto) return;
+
       const btn = event.target; btn.disabled = true; btn.innerText = "Enviando...";
+
+      // Busca sessao fresca para garantir o user_id correto da conta atual
+      const { data: sessionData } = await window.supabaseGlobal.auth.getSession();
+      const sessionUser = sessionData?.session?.user;
+      if(!sessionUser) {
+          alert("Voce precisa estar logado para comentar.");
+          btn.disabled = false; btn.innerText = "Postar Comentario";
+          return;
+      }
+
+      // Sincroniza currentUser com a sessao real
+      if(window.currentUser) window.currentUser.id = sessionUser.id;
+      const username = window.currentUser?.username
+          || sessionUser.user_metadata?.username
+          || sessionUser.email?.replace('@guikamods.internal','')
+          || 'Usuario';
 
       const { error } = await window.supabaseGlobal.from('comentarios').insert({
           mod_id: modId,
-          user_id: window.currentUser.id,
-          user_name: window.currentUser.username || window.currentUser.email.replace('@guikamods.internal',''),
+          user_id: sessionUser.id,
+          user_name: username,
           texto: texto
       });
 
       if(!error) { carregarComentarios(modId); } 
       else { 
-          alert("Erro ao enviar comentário: " + error.message); 
-          btn.disabled = false; btn.innerText = "Postar Comentário"; 
+          alert("Erro ao enviar comentario: " + error.message); 
+          btn.disabled = false; btn.innerText = "Postar Comentario"; 
       }
   };
 
@@ -514,6 +632,7 @@ document.addEventListener("DOMContentLoaded",()=>{
   window.alternarParaCadastro = () => {
       document.getElementById('auth-form-login').style.display = 'none';
       document.getElementById('auth-form-cadastro').style.display = 'flex';
+      document.getElementById('auth-social-btns').style.display = 'none';
       document.getElementById('auth-modal-titulo').innerText = 'Criar Conta';
       document.getElementById('auth-modal-subtitulo').innerText = 'Escolha um usuário e senha para entrar.';
       document.getElementById('auth-msg').innerText = '';
@@ -522,8 +641,9 @@ document.addEventListener("DOMContentLoaded",()=>{
   window.alternarParaLogin = () => {
       document.getElementById('auth-form-cadastro').style.display = 'none';
       document.getElementById('auth-form-login').style.display = 'flex';
+      document.getElementById('auth-social-btns').style.display = 'block';
       document.getElementById('auth-modal-titulo').innerText = 'Acesse sua Conta';
-      document.getElementById('auth-modal-subtitulo').innerText = 'Entre com seu usuário e senha para comentar.';
+      document.getElementById('auth-modal-subtitulo').innerText = 'Entre para curtir, comentar e acompanhar mods.';
       document.getElementById('auth-msg').innerText = '';
   };
 
@@ -617,19 +737,127 @@ document.addEventListener("DOMContentLoaded",()=>{
       }
   };
 
+  window.loginComGoogle = async () => {
+      if(!window.supabaseGlobal) return;
+      const { error } = await window.supabaseGlobal.auth.signInWithOAuth({
+          provider: 'google',
+          options: { redirectTo: window.location.href }
+      });
+      if(error) { document.getElementById('auth-msg').style.color = '#ef4444'; document.getElementById('auth-msg').innerText = 'Erro ao entrar com Google: ' + error.message; }
+  };
+
+  window.loginComDiscord = async () => {
+      if(!window.supabaseGlobal) return;
+      const { error } = await window.supabaseGlobal.auth.signInWithOAuth({
+          provider: 'discord',
+          options: { redirectTo: window.location.href }
+      });
+      if(error) { document.getElementById('auth-msg').style.color = '#ef4444'; document.getElementById('auth-msg').innerText = 'Erro ao entrar com Discord: ' + error.message; }
+  };
+
+  window.abrirPerfil = async () => {
+      const modal = document.getElementById('perfil-modal');
+      if(!modal || !window.currentUser) return;
+      modal.style.display = 'flex';
+
+      const username = window.currentUser.username || 'Usuário';
+      const isAdmin = ADMIN_USERNAMES.includes(username.toLowerCase());
+      document.getElementById('perfil-nome').innerText = username;
+      document.getElementById('perfil-badge').innerText = isAdmin ? '👑 Admin' : 'Membro';
+
+      // Mods curtidos (via Supabase por user_id)
+      const curtidosEl = document.getElementById('perfil-curtidos');
+      curtidosEl.innerHTML = '<div class="perfil-empty">Carregando...</div>';
+      try {
+          const { data: curtidas } = await window.supabaseGlobal
+              .from('curtidas').select('mod_id').eq('user_id', window.currentUser.id);
+          if(!curtidas || curtidas.length === 0) {
+              curtidosEl.innerHTML = '<div class="perfil-empty">Nenhum mod curtido ainda.</div>';
+          } else {
+              const likedIds = curtidas.map(c => c.mod_id);
+              const modsLiked = modsSalvos.filter(m => likedIds.includes(m.id));
+              if(modsLiked.length === 0) {
+                  curtidosEl.innerHTML = '<div class="perfil-empty">Nenhum mod encontrado.</div>';
+              } else {
+                  curtidosEl.innerHTML = modsLiked.map(m => `
+                      <div class="perfil-mod-item" onclick="fecharPerfil(); location.hash='mod-${m.id}'">
+                          <img class="perfil-mod-img" src="${m.img||''}" alt="${m.titulo}" onerror="this.style.display='none'">
+                          <div class="perfil-mod-info"><p>${m.titulo}</p><span>${m.categoria||''}</span></div>
+                      </div>`).join('');
+              }
+          }
+      } catch(e) { curtidosEl.innerHTML = '<div class="perfil-empty">Erro ao carregar.</div>'; }
+
+      // Mods comentados (via Supabase)
+      const comentadosEl = document.getElementById('perfil-comentados');
+      comentadosEl.innerHTML = '<div class="perfil-empty">Carregando...</div>';
+      try {
+          const { data } = await window.supabaseGlobal
+              .from('comentarios').select('mod_id').eq('user_id', window.currentUser.id);
+          if(!data || data.length === 0) {
+              comentadosEl.innerHTML = '<div class="perfil-empty">Nenhum comentário ainda.</div>';
+          } else {
+              const modIdsUnicos = [...new Set(data.map(c => c.mod_id))];
+              const modsComentados = modsSalvos.filter(m => modIdsUnicos.includes(m.id));
+              if(modsComentados.length === 0) {
+                  comentadosEl.innerHTML = '<div class="perfil-empty">Mods não encontrados.</div>';
+              } else {
+                  comentadosEl.innerHTML = modsComentados.map(m => `
+                      <div class="perfil-mod-item" onclick="fecharPerfil(); location.hash='mod-${m.id}'">
+                          <img class="perfil-mod-img" src="${m.img||''}" alt="${m.titulo}" onerror="this.style.display='none'">
+                          <div class="perfil-mod-info"><p>${m.titulo}</p><span>${m.categoria||''}</span></div>
+                      </div>`).join('');
+              }
+          }
+      } catch(e) { comentadosEl.innerHTML = '<div class="perfil-empty">Erro ao carregar.</div>'; }
+  };
+
+  window.fecharPerfil = () => {
+      const modal = document.getElementById('perfil-modal');
+      if(modal) modal.style.display = 'none';
+  };
+
   window.fazerLogout = async () => {
-      if(window.supabaseGlobal) await window.supabaseGlobal.auth.signOut();
+      fecharPerfil();
+      if(window.supabaseGlobal) {
+          const { error } = await window.supabaseGlobal.auth.signOut();
+          if(error) console.error('Erro ao fazer logout:', error);
+      }
+      // Força limpeza local caso o evento não dispare
+      window.currentUser = null;
+      const menuItem = document.getElementById('auth-menu-item');
+      if (menuItem) menuItem.innerHTML = '<a href="#" onclick="abrirModalLogin(); return false;">Entrar</a>';
+      const hash = location.hash.replace('#','');
+      if(hash.startsWith('mod-')) { carregarComentarios(hash.replace('mod-','')); }
   };
 
   function atualizarMenuUsuario(session) {
       const menuItem = document.getElementById('auth-menu-item');
       if(session && session.user) {
           window.currentUser = session.user;
-          // Prioridade: metadata > derivar do email interno
-          const username = session.user.user_metadata?.username 
-              || session.user.email.replace('@guikamods.internal','');
+          // Suporte a login por usuário/senha, Google e Discord
+          let username = session.user.user_metadata?.username 
+              || session.user.user_metadata?.custom_claims?.username
+              || session.user.user_metadata?.preferred_username
+              || session.user.user_metadata?.full_name
+              || session.user.user_metadata?.name
+              || (session.user.email && !session.user.email.includes('@guikamods.internal') ? session.user.email.split('@')[0] : null)
+              || session.user.email?.replace('@guikamods.internal','')
+              || 'Usuário';
+          // Se vier nome completo (OAuth), pegar só o primeiro nome
+          if(username && username.includes(' ')) username = username.split(' ')[0];
           window.currentUser.username = username;
-          menuItem.innerHTML = `<a href="#" onclick="fazerLogout(); return false;" style="color: var(--muted);">Sair (${username})</a>`;
+
+          // Sincroniza perfil no banco (funciona para email e OAuth)
+          if(window.supabaseGlobal) {
+              const isAdminUsername = ADMIN_USERNAMES.includes(username.toLowerCase());
+              window.supabaseGlobal.from('perfis').upsert({ 
+                  id: session.user.id, username: username,
+                  is_admin: isAdminUsername, criado_em: new Date().toISOString()
+              }, { onConflict: 'id' }).then(() => {});
+          }
+
+          menuItem.innerHTML = `<a href="#" onclick="abrirPerfil(); return false;" style="color: var(--muted);">&#128100; ${username}</a>`;
       } else {
           window.currentUser = null;
           menuItem.innerHTML = `<a href="#" onclick="abrirModalLogin(); return false;">Entrar</a>`;
@@ -704,7 +932,18 @@ document.addEventListener("DOMContentLoaded",()=>{
     window.supabaseGlobal = supabase;
 
     supabase.auth.getSession().then(({ data: { session } }) => { atualizarMenuUsuario(session); });
-    supabase.auth.onAuthStateChange((_event, session) => { atualizarMenuUsuario(session); });
+    supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_OUT') {
+        window.currentUser = null;
+        const menuItem = document.getElementById('auth-menu-item');
+        if (menuItem) menuItem.innerHTML = '<a href="#" onclick="abrirModalLogin(); return false;">Entrar</a>';
+        fecharPerfil();
+        const hash = location.hash.replace('#','');
+        if(hash.startsWith('mod-')) { carregarComentarios(hash.replace('mod-','')); }
+      } else {
+        atualizarMenuUsuario(session);
+      }
+    });
 
     function normalizeMods(val){ if(!val) return []; return val.map(v => buildMod(v, v.id)); }
     function buildMod(v, key){
