@@ -138,6 +138,54 @@ aside .panel:first-of-type {margin-top:1.3rem;}
 .close-perfil { position: absolute; top: 14px; right: 18px; cursor: pointer; font-size: 1.5rem; color: rgba(255,255,255,0.5); transition: color 0.2s; line-height: 1; background: none; border: none; }
 .close-perfil:hover { color: #fff; }
 
+/* Abas do perfil */
+.perfil-tabs { display: flex; gap: 0; border-bottom: 1px solid rgba(255,255,255,0.08); margin: 0 -2rem 1.2rem; padding: 0 2rem; }
+.perfil-tab {
+  padding: 0.7rem 1.1rem; font-size: 0.85rem; font-weight: 600; cursor: pointer;
+  color: var(--muted); border-bottom: 2px solid transparent; margin-bottom: -1px;
+  transition: all 0.2s; background: none; border-top: none; border-left: none; border-right: none;
+  font-family: inherit; white-space: nowrap;
+}
+.perfil-tab:hover { color: #fff; }
+.perfil-tab.active { color: #fff; border-bottom-color: #fff; }
+.perfil-tab-badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  background: #ef4444; color: #fff; border-radius: 50%;
+  width: 16px; height: 16px; font-size: 0.65rem; font-weight: 700;
+  margin-left: 5px; vertical-align: middle;
+}
+@keyframes pulse-nav {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239,68,68,0.5); }
+  50% { transform: scale(1.2); box-shadow: 0 0 0 4px rgba(239,68,68,0); }
+}
+.perfil-tab-panel { display: none; }
+.perfil-tab-panel.active { display: block; }
+
+/* Cards de mensagem no perfil */
+.perfil-msg-item {
+  background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 10px; padding: 1rem 1.2rem; margin-bottom: 0.8rem;
+  transition: border-color 0.2s;
+}
+.perfil-msg-item.nao-respondida { border-left: 3px solid rgba(255,255,255,0.15); }
+.perfil-msg-item.respondida { border-left: 3px solid #10b981; }
+.perfil-msg-assunto { font-weight: 700; color: #fff; font-size: 0.9rem; margin-bottom: 0.2rem; }
+.perfil-msg-texto { color: var(--muted); font-size: 0.83rem; margin: 0.3rem 0; white-space: pre-wrap; line-height: 1.5; }
+.perfil-msg-data { color: var(--muted); font-size: 0.75rem; margin-bottom: 0.5rem; }
+.perfil-msg-status {
+  display: inline-block; font-size: 0.75rem; font-weight: 600;
+  padding: 1px 8px; border-radius: 4px; margin-bottom: 0.6rem;
+}
+.perfil-msg-status.aguardando { background: rgba(255,255,255,0.07); color: var(--muted); }
+.perfil-msg-status.respondida-tag { background: rgba(16,185,129,0.15); color: #34d399; }
+.perfil-resposta-box {
+  margin-top: 0.7rem; padding: 0.7rem 0.9rem;
+  background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.2);
+  border-radius: 8px;
+}
+.perfil-resposta-box .label { font-size: 0.75rem; color: #34d399; font-weight: 700; margin-bottom: 0.3rem; }
+.perfil-resposta-box p { margin: 0; color: var(--text); font-size: 0.85rem; line-height: 1.5; }
+
 .footer { background: #050505; padding: 2rem 0; border-top: var(--border); margin-top: 4rem; text-align: center; }
 .footer-grid {display:flex; justify-content:center; align-items:center; gap:1.5rem; flex-wrap:wrap; margin-bottom:0.4rem;}
 .footer .list { display:flex; gap:1.2rem; list-style:none; padding:0; margin:0; position:relative; left:-1.8rem; }
@@ -169,6 +217,12 @@ a {color: #ccc; transition: color 0.2s;} a:hover {color: #fff;}
         <li><a href="https://www.youtube.com/@GuikaModsRJ" target="_blank" rel="noopener">YouTube</a></li>
         <li><a href="tutoriais.html">Tutoriais</a></li>
         <li id="auth-menu-item"><a href="#" onclick="abrirModalLogin(); return false;">Entrar</a></li>
+        <li id="admin-msg-item" style="display:none;">
+          <a href="painel-gk7x2.html" style="position:relative;">
+            Admin
+            <span id="nav-badge-msgs" style="display:none; position:absolute; top:-4px; right:-6px; background:#ef4444; color:#fff; border-radius:50%; width:16px; height:16px; font-size:0.65rem; font-weight:700; align-items:center; justify-content:center; line-height:1;">!</span>
+          </a>
+        </li>
       </ul>
     </nav>
     <form class="search" id="search-form" role="search" onsubmit="return false;" style="display:flex;align-items:center;">
@@ -265,10 +319,28 @@ a {color: #ccc; transition: color 0.2s;} a:hover {color: #fff;}
             <span class="perfil-badge" id="perfil-badge">Membro</span>
         </div>
         <div class="perfil-body">
-            <div class="perfil-section-title">Mods Curtidos</div>
-            <div id="perfil-curtidos" class="perfil-mod-grid"></div>
-            <div class="perfil-section-title">Mods Comentados</div>
-            <div id="perfil-comentados" class="perfil-mod-grid"></div>
+            <!-- Abas -->
+            <div class="perfil-tabs">
+                <button class="perfil-tab active" onclick="trocarAbaPerfil('atividade', this)">Atividade</button>
+                <button class="perfil-tab" id="tab-msgs-btn" onclick="trocarAbaPerfil('mensagens', this)">
+                    Mensagens
+                    <span class="perfil-tab-badge" id="perfil-badge-msgs" style="display:none;"></span>
+                </button>
+            </div>
+
+            <!-- Aba: Atividade -->
+            <div class="perfil-tab-panel active" id="perfil-panel-atividade">
+                <div class="perfil-section-title">Mods Curtidos</div>
+                <div id="perfil-curtidos" class="perfil-mod-grid"></div>
+                <div class="perfil-section-title">Mods Comentados</div>
+                <div id="perfil-comentados" class="perfil-mod-grid"></div>
+            </div>
+
+            <!-- Aba: Mensagens -->
+            <div class="perfil-tab-panel" id="perfil-panel-mensagens">
+                <div id="perfil-msgs-lista"><div class="perfil-empty">Carregando...</div></div>
+            </div>
+
             <button class="perfil-btn-sair" onclick="fazerLogout()">Sair da conta</button>
         </div>
     </div>
@@ -328,7 +400,7 @@ document.addEventListener("DOMContentLoaded",()=>{
       paginaMods.forEach(mod=>{
         const dataLancamento = formatarData(mod.timestamp || mod.data);
         const card=document.createElement("div"); card.className="card"; card.setAttribute("data-id",mod.id);
-        card.innerHTML=`<img src="${mod.img}" alt="${mod.titulo}"><div class='card-content'><h3>${mod.titulo}</h3><p style='margin-bottom: 0.5rem;'><strong>Categoria:</strong> ${mod.categoria}</p><p><strong>Lançamento:</strong> ${dataLancamento}</p></div>`;
+        card.innerHTML=`<img src="${mod.img}" alt="${mod.titulo}"><div class='card-content'><h3>${mod.titulo}</h3><div style='display:flex; gap:1.5rem; flex-wrap:wrap; margin-top:0.4rem;'><span style='color:var(--muted); font-size:0.95rem;'><strong style='color:#e4e4e7;'>Categoria:</strong> ${mod.categoria}</span><span style='color:var(--muted); font-size:0.95rem;'><strong style='color:#e4e4e7;'>Lançamento:</strong> ${dataLancamento}</span></div></div>`;
         card.addEventListener("click",()=>{location.hash="mod-"+mod.id;}); container.appendChild(card);
       });
 
@@ -434,7 +506,7 @@ document.addEventListener("DOMContentLoaded",()=>{
             </div>
           </div>
         </div>
-        <p><strong>Categoria:</strong> ${mod.categoria}</p><p><strong>Lançamento:</strong> ${dataLancamento}</p>
+        <div style="display:flex; gap:0; flex-wrap:wrap; justify-content:center; margin:0.8rem 0; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:10px; overflow:hidden; width:100%;"><span style="flex:1; min-width:160px; text-align:center; padding:0.7rem 1rem; color:var(--muted); font-size:0.9rem; border-right:1px solid rgba(255,255,255,0.08);"><strong style="color:#e4e4e7;">Categoria:</strong> ${mod.categoria}</span><span style="flex:1; min-width:160px; text-align:center; padding:0.7rem 1rem; color:var(--muted); font-size:0.9rem;"><strong style="color:#e4e4e7;">Lançamento:</strong> ${dataLancamento}</span></div>
         <p class="descricao-texto">${mod.descricao||""}</p>
         <div class="btn-group-container"><div class="download-container">${downloadButtons}</div><a href="#" class="btn-voltar">Voltar</a></div>
         
@@ -767,10 +839,18 @@ document.addEventListener("DOMContentLoaded",()=>{
       if(!modal || !window.currentUser) return;
       modal.style.display = 'flex';
 
+      // Reseta para a aba Atividade ao abrir
+      document.querySelectorAll('.perfil-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.perfil-tab-panel').forEach(p => p.classList.remove('active'));
+      document.querySelector('.perfil-tab[onclick*="atividade"]')?.classList.add('active');
+      document.getElementById('perfil-panel-atividade')?.classList.add('active');
+
       const username = window.currentUser.username || 'Usuário';
       const isAdmin = ADMIN_USERNAMES.includes(username.toLowerCase());
       document.getElementById('perfil-nome').innerText = username;
       document.getElementById('perfil-badge').innerText = isAdmin ? '👑 Admin' : 'Membro';
+
+      atualizarBadgeMsgsPerfil();
 
       // Mods curtidos (via Supabase por user_id)
       const curtidosEl = document.getElementById('perfil-curtidos');
@@ -824,8 +904,152 @@ document.addEventListener("DOMContentLoaded",()=>{
       if(modal) modal.style.display = 'none';
   };
 
-  window.fazerLogout = async () => {
-      fecharPerfil();
+  window.trocarAbaPerfil = function(aba, btn) {
+      document.querySelectorAll('.perfil-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.perfil-tab-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('perfil-panel-' + aba).classList.add('active');
+      if (aba === 'mensagens') carregarMsgsPerfil();
+  };
+
+  async function carregarMsgsPerfil() {
+      if (!window.supabaseGlobal || !window.currentUser) return;
+      const lista = document.getElementById('perfil-msgs-lista');
+      lista.innerHTML = '<div class="perfil-empty">Carregando...</div>';
+
+      const { data, error } = await window.supabaseGlobal
+          .from('mensagens_contato')
+          .select('*')
+          .eq('user_id', window.currentUser.id)
+          .order('created_at', { ascending: false });
+
+      if (error || !data || data.length === 0) {
+          lista.innerHTML = '<div class="perfil-empty">Você ainda não enviou nenhuma mensagem. <a href="contato.html" style="color:#fff;">Fale conosco</a>.</div>';
+          return;
+      }
+
+      // Marca todas as respostas existentes como vistas e limpa badges
+      const idsComResposta = data.filter(m => m.resposta).map(m => m.id);
+      if (idsComResposta.length > 0) {
+          marcarRespostasComoVistas(idsComResposta);
+          // Esconde badge da aba
+          const badge = document.getElementById('perfil-badge-msgs');
+          if (badge) badge.style.display = 'none';
+          // Remove bolinha do nav
+          const navBadge = document.querySelector('.nav-perfil-badge');
+          if (navBadge) navBadge.remove();
+      }
+
+      lista.innerHTML = data.map(msg => {
+          const dataStr = new Date(msg.created_at).toLocaleString('pt-BR');
+          const respondida = !!msg.resposta;
+          const statusHtml = respondida
+              ? '<span class="perfil-msg-status respondida-tag">✅ Respondido</span>'
+              : '<span class="perfil-msg-status aguardando">⏳ Aguardando resposta</span>';
+          const respostaHtml = respondida ? `
+              <div class="perfil-resposta-box">
+                  <div class="label">👑 Resposta do Admin</div>
+                  <p>${msg.resposta.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</p>
+              </div>` : '';
+          return `
+          <div class="perfil-msg-item ${respondida ? 'respondida' : 'nao-respondida'}">
+              <div class="perfil-msg-assunto">📌 ${(msg.assunto||'Sem assunto').replace(/</g,'&lt;')}</div>
+              <div class="perfil-msg-data">${dataStr}</div>
+              ${statusHtml}
+              <div class="perfil-msg-texto">${(msg.mensagem||'').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>
+              ${respostaHtml}
+          </div>`;
+      }).join('');
+  }
+
+  // Chave do localStorage para respostas já vistas pelo usuário
+  function chaveRespostasVistas() {
+      return 'respostas_vistas_' + (window.currentUser?.id || '');
+  }
+  function getRespostasVistas() {
+      try { return JSON.parse(localStorage.getItem(chaveRespostasVistas()) || '[]'); } catch(e) { return []; }
+  }
+  function marcarRespostasComoVistas(ids) {
+      try {
+          const vistas = getRespostasVistas();
+          const novas = [...new Set([...vistas, ...ids])];
+          localStorage.setItem(chaveRespostasVistas(), JSON.stringify(novas));
+      } catch(e) {}
+  }
+
+  // Atualiza badge da aba mensagens ao abrir o perfil
+  // Mostra bolinha vermelha quando há RESPOSTAS NOVAS não vistas
+  async function atualizarBadgeMsgsPerfil() {
+      if (!window.supabaseGlobal || !window.currentUser) return;
+      try {
+          const { data } = await window.supabaseGlobal
+              .from('mensagens_contato')
+              .select('id, resposta')
+              .eq('user_id', window.currentUser.id)
+              .not('resposta', 'is', null);
+          const badge = document.getElementById('perfil-badge-msgs');
+          if (!badge) return;
+          if (!data || data.length === 0) { badge.style.display = 'none'; return; }
+          const vistas = getRespostasVistas();
+          const novasRespostas = data.filter(m => !vistas.includes(m.id));
+          if (novasRespostas.length > 0) {
+              badge.textContent = novasRespostas.length;
+              badge.style.display = 'inline-flex';
+          } else {
+              badge.style.display = 'none';
+          }
+      } catch(e) {}
+  }
+
+  // Também mostra badge no nome do usuário no nav quando há respostas novas
+  async function verificarRespostasNovasParaUsuario() {
+      if (!window.supabaseGlobal || !window.currentUser) return;
+      try {
+          const { data } = await window.supabaseGlobal
+              .from('mensagens_contato')
+              .select('id, resposta')
+              .eq('user_id', window.currentUser.id)
+              .not('resposta', 'is', null);
+          if (!data || data.length === 0) return;
+          const vistas = getRespostasVistas();
+          const novas = data.filter(m => !vistas.includes(m.id));
+          if (novas.length > 0) {
+              // Adiciona bolinha vermelha no link do perfil no nav
+              const menuItem = document.getElementById('auth-menu-item');
+              if (menuItem) {
+                  const link = menuItem.querySelector('a');
+                  if (link && !link.querySelector('.nav-perfil-badge')) {
+                      const dot = document.createElement('span');
+                      dot.className = 'nav-perfil-badge';
+                      dot.style.cssText = 'display:inline-flex;align-items:center;justify-content:center;background:#ef4444;color:#fff;border-radius:50%;width:16px;height:16px;font-size:0.65rem;font-weight:700;margin-left:4px;vertical-align:middle;animation:pulse-nav 1.5s ease-in-out infinite;';
+                      dot.textContent = novas.length;
+                      link.appendChild(dot);
+                  }
+              }
+          }
+      } catch(e) {}
+  }
+
+  // Verifica mensagens não lidas (só para admins)
+  async function verificarMsgsAdmin(username) {
+    if (!window.supabaseGlobal || !ADMIN_USERNAMES.includes(username.toLowerCase())) return;
+    try {
+      const { count } = await window.supabaseGlobal
+        .from('mensagens_contato')
+        .select('id', { count: 'exact', head: true })
+        .eq('lida', false);
+
+      const item  = document.getElementById('admin-msg-item');
+      const badge = document.getElementById('nav-badge-msgs');
+      if (item) item.style.display = 'list-item';
+      if (badge) {
+        if (count > 0) { badge.style.display = 'inline-flex'; badge.textContent = count > 9 ? '9+' : count; }
+        else { badge.style.display = 'none'; }
+      }
+    } catch(e) {}
+  }
+
+  window.fazerLogout = async () => {      fecharPerfil();
       if(window.supabaseGlobal) {
           const { error } = await window.supabaseGlobal.auth.signOut();
           if(error) console.error('Erro ao fazer logout:', error);
@@ -865,6 +1089,8 @@ document.addEventListener("DOMContentLoaded",()=>{
           }
 
           menuItem.innerHTML = `<a href="#" onclick="abrirPerfil(); return false;" style="color: var(--muted);">&#128100; ${username}</a>`;
+          verificarMsgsAdmin(username);
+          verificarRespostasNovasParaUsuario();
       } else {
           window.currentUser = null;
           menuItem.innerHTML = `<a href="#" onclick="abrirModalLogin(); return false;">Entrar</a>`;
