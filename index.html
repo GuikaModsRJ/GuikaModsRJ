@@ -20,7 +20,7 @@ header { background: rgba(18, 18, 18, 0.85); backdrop-filter: blur(12px); -webki
 .container {max-width:1200px; margin:0 auto; padding:0 1rem;}
 .header-inner {display:flex; align-items:center; justify-content:space-between; padding:1rem 0;}
 .logo { color: var(--text); text-decoration: none; font-weight: 700; font-size: 1.3rem; display: flex; align-items: center; gap: 0.4rem; text-shadow: 0 0 10px rgba(255,255,255,0.1); }
-nav ul {list-style:none; display:flex; gap:1rem; margin:0; padding:0; align-items:center;}
+nav ul {list-style:none; display:flex; gap:1rem; margin:0; padding:0; align-items:center; position:relative; left:18px;}
 nav a, nav span.interativo { text-decoration: none; color: var(--muted); padding: 0.5rem 0.9rem; border-radius: var(--radius); transition: all 0.2s ease; font-weight: 500; cursor: pointer; }
 nav a:hover, nav a.active, nav span.interativo:hover { background: rgba(255,255,255,0.1); color: #fff; }
 .dropdown {position:relative;} .dropdown>a::after {content:" ▼"; font-size:0.7em; opacity: 0.7;}
@@ -217,12 +217,7 @@ a {color: #ccc; transition: color 0.2s;} a:hover {color: #fff;}
         <li><a href="https://www.youtube.com/@GuikaModsRJ" target="_blank" rel="noopener">YouTube</a></li>
         <li><a href="tutoriais.html">Tutoriais</a></li>
         <li id="auth-menu-item"><a href="#" onclick="abrirModalLogin(); return false;">Entrar</a></li>
-        <li id="admin-msg-item" style="display:none;">
-          <a href="painel-gk7x2.html" style="position:relative;">
-            Admin
-            <span id="nav-badge-msgs" style="display:none; position:absolute; top:-4px; right:-6px; background:#ef4444; color:#fff; border-radius:50%; width:16px; height:16px; font-size:0.65rem; font-weight:700; align-items:center; justify-content:center; line-height:1;">!</span>
-          </a>
-        </li>
+
       </ul>
     </nav>
     <form class="search" id="search-form" role="search" onsubmit="return false;" style="display:flex;align-items:center;">
@@ -347,12 +342,16 @@ a {color: #ccc; transition: color 0.2s;} a:hover {color: #fff;}
 </div>
 
 <script>
-// ==========================================
-// CONTAS ADMINISTRADORAS DO SITE
-// Adicione aqui os usernames que terão poderes de admin
-// (responder comentários, apagar qualquer comentário)
-const ADMIN_USERNAMES = ['guikamodsrj', 'mutanoyt18'];
-// ==========================================
+// Admin verificado via banco de dados (is_admin na tabela perfis)
+async function verificarSeAdmin(userId) {
+    if (!userId || !window.supabaseGlobal) return false;
+    try {
+        const { data } = await window.supabaseGlobal
+            .from('perfis').select('is_admin').eq('id', userId).maybeSingle();
+        return data?.is_admin === true;
+    } catch(e) { return false; }
+}
+window.currentUserIsAdmin = false;
 
 // Função global para conversão de username → email interno
 function usernameParaEmail(username) {
@@ -573,7 +572,7 @@ document.addEventListener("DOMContentLoaded",()=>{
           data.forEach(c => {
               const dataFormatada = new Date(c.criado_em).toLocaleString('pt-BR');
               const currentUsername = window.currentUser ? (window.currentUser.username || window.currentUser.email?.replace('@guikamods.internal','')) : '';
-              const isAdmin = window.currentUser && ADMIN_USERNAMES.includes(currentUsername.toLowerCase());
+              const isAdmin = window.currentUser && window.currentUserIsAdmin;
               // Usa sessionUser.id (sessao fresca) como fonte de verdade para ownership
               const realUserId = sessionUser ? sessionUser.id : (window.currentUser ? window.currentUser.id : null);
               const isOwnerOrAdmin = realUserId && (realUserId === c.user_id || isAdmin);
@@ -599,7 +598,7 @@ document.addEventListener("DOMContentLoaded",()=>{
                   </div>
               </div>`;
 
-              const isCommentAuthorAdmin = ADMIN_USERNAMES.includes(c.user_name || '');
+              const isCommentAuthorAdmin = c.is_admin_comment === true;
               const authorLabel = isCommentAuthorAdmin 
                   ? `👑 ${c.user_name} <span style="font-size:0.75rem; background: rgba(59,130,246,0.2); color: #60a5fa; padding: 2px 7px; border-radius: 4px; font-weight: 600; margin-left: 4px;">Admin</span>`
                   : `👤 ${c.user_name || 'Usuário'}`;
@@ -764,11 +763,11 @@ document.addEventListener("DOMContentLoaded",()=>{
           // Garante que o perfil existe e é marcado como admin se for conta admin
           if(data.session?.user) {
               const userId = data.session.user.id;
-              const isAdminUsername = ADMIN_USERNAMES.includes(username.toLowerCase());
+              
               await window.supabaseGlobal.from('perfis').upsert({ 
                   id: userId, 
                   username: username,
-                  is_admin: isAdminUsername,
+                  // is_admin gerenciado apenas pelo banco,
                   criado_em: new Date().toISOString()
               }, { onConflict: 'id' });
           }
@@ -846,7 +845,7 @@ document.addEventListener("DOMContentLoaded",()=>{
       document.getElementById('perfil-panel-atividade')?.classList.add('active');
 
       const username = window.currentUser.username || 'Usuário';
-      const isAdmin = ADMIN_USERNAMES.includes(username.toLowerCase());
+      const isAdmin = window.currentUserIsAdmin;
       document.getElementById('perfil-nome').innerText = username;
       document.getElementById('perfil-badge').innerText = isAdmin ? '👑 Admin' : 'Membro';
 
@@ -1032,20 +1031,14 @@ document.addEventListener("DOMContentLoaded",()=>{
 
   // Verifica mensagens não lidas (só para admins)
   async function verificarMsgsAdmin(username) {
-    if (!window.supabaseGlobal || !ADMIN_USERNAMES.includes(username.toLowerCase())) return;
+    if (!window.supabaseGlobal || !window.currentUserIsAdmin) return;
     try {
       const { count } = await window.supabaseGlobal
         .from('mensagens_contato')
         .select('id', { count: 'exact', head: true })
         .eq('lida', false);
 
-      const item  = document.getElementById('admin-msg-item');
-      const badge = document.getElementById('nav-badge-msgs');
-      if (item) item.style.display = 'list-item';
-      if (badge) {
-        if (count > 0) { badge.style.display = 'inline-flex'; badge.textContent = count > 9 ? '9+' : count; }
-        else { badge.style.display = 'none'; }
-      }
+      // botão admin removido do nav
     } catch(e) {}
   }
 
@@ -1056,6 +1049,7 @@ document.addEventListener("DOMContentLoaded",()=>{
       }
       // Força limpeza local caso o evento não dispare
       window.currentUser = null;
+      window.currentUserIsAdmin = false;
       const menuItem = document.getElementById('auth-menu-item');
       if (menuItem) menuItem.innerHTML = '<a href="#" onclick="abrirModalLogin(); return false;">Entrar</a>';
       const hash = location.hash.replace('#','');
@@ -1081,16 +1075,20 @@ document.addEventListener("DOMContentLoaded",()=>{
 
           // Sincroniza perfil no banco (funciona para email e OAuth)
           if(window.supabaseGlobal) {
-              const isAdminUsername = ADMIN_USERNAMES.includes(username.toLowerCase());
+              
               window.supabaseGlobal.from('perfis').upsert({ 
                   id: session.user.id, username: username,
-                  is_admin: isAdminUsername, criado_em: new Date().toISOString()
+                  criado_em: new Date().toISOString()
               }, { onConflict: 'id' }).then(() => {});
           }
 
-          menuItem.innerHTML = `<a href="#" onclick="abrirPerfil(); return false;" style="color: var(--muted);">&#128100; ${username}</a>`;
-          verificarMsgsAdmin(username);
-          verificarRespostasNovasParaUsuario();
+          // Consulta is_admin no banco antes de liberar funcionalidades
+          verificarSeAdmin(session.user.id).then(isAdm => {
+              window.currentUserIsAdmin = isAdm;
+              menuItem.innerHTML = `<a href="#" onclick="abrirPerfil(); return false;" style="color: var(--muted);">&#128100; ${username}</a>`;
+              verificarMsgsAdmin(username);
+              verificarRespostasNovasParaUsuario();
+          });
       } else {
           window.currentUser = null;
           menuItem.innerHTML = `<a href="#" onclick="abrirModalLogin(); return false;">Entrar</a>`;

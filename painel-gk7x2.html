@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' https://cdn.jsdelivr.net https://*.supabase.co https://fonts.googleapis.com https://fonts.gstatic.com; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src * data:; connect-src https://*.supabase.co;">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<meta name="googlebot" content="noindex, nofollow">
 <title>Painel Admin - Guika Mods RJ</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -60,76 +63,7 @@ td { padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 
 .preview:not(:empty) { display: block; }
 .preview img { max-width: 100%; max-height: 200px; border-radius: 6px; }
 #login { max-width: 400px; margin: 10vh auto; text-align: center; padding: 2rem; }
-.header-admin { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; margin-bottom: 2rem; gap: 1rem; }
-/* --- MENSAGENS --- */
-.badge-count {
-  display: inline-flex; align-items: center; justify-content: center;
-  background: #ef4444; color: #fff; border-radius: 50%;
-  width: 20px; height: 20px; font-size: 0.72rem; font-weight: 700;
-  margin-left: 6px; vertical-align: middle; line-height: 1;
-  animation: pulse-badge 1.5s ease-in-out infinite;
-}
-@keyframes pulse-badge {
-  0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239,68,68,0.5); }
-  50% { transform: scale(1.15); box-shadow: 0 0 0 5px rgba(239,68,68,0); }
-}
-.msg-card {
-  background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);
-  border-radius: 10px; padding: 1.2rem 1.5rem; margin-bottom: 1rem;
-  transition: border-color 0.2s;
-}
-.msg-card.nao-lida { border-left: 3px solid #ef4444; background: rgba(239,68,68,0.04); }
-.msg-card.respondida { border-left: 3px solid #10b981; }
-.msg-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap; margin-bottom: 0.7rem; }
-.msg-meta { display: flex; flex-direction: column; gap: 0.15rem; }
-.msg-autor { font-weight: 700; color: #fff; font-size: 0.95rem; }
-.msg-assunto { color: #e4e4e7; font-size: 0.9rem; }
-.msg-data { color: var(--muted); font-size: 0.78rem; }
-.msg-email { color: #60a5fa; font-size: 0.8rem; }
-.msg-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; }
-.tag {
-  padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600;
-}
-.tag-nova { background: rgba(239,68,68,0.15); color: #f87171; }
-.tag-lida { background: rgba(255,255,255,0.07); color: var(--muted); }
-.tag-respondida { background: rgba(16,185,129,0.15); color: #34d399; }
-.msg-texto {
-  color: var(--muted); font-size: 0.9rem; line-height: 1.6;
-  margin: 0.5rem 0 1rem; white-space: pre-wrap;
-}
-.msg-resposta-box {
-  background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.2);
-  border-radius: 8px; padding: 0.8rem 1rem; margin: 0.5rem 0 1rem;
-}
-.msg-resposta-box .resp-label { font-size: 0.78rem; color: #34d399; font-weight: 700; margin-bottom: 0.4rem; }
-.msg-resposta-box p { margin: 0; color: var(--text); font-size: 0.9rem; }
-.msg-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
-.reply-area { margin-top: 1rem; display: none; }
-.reply-area textarea {
-  width: 100%; box-sizing: border-box; min-height: 80px;
-  background: rgba(0,0,0,0.3); border: var(--border);
-  border-radius: 8px; color: #fff; padding: 0.7rem; resize: vertical;
-  font-family: inherit; font-size: 0.9rem;
-}
-.reply-area textarea:focus { outline: none; border-color: rgba(255,255,255,0.3); }
-.reply-area-btns { display: flex; gap: 0.5rem; margin-top: 0.5rem; justify-content: flex-end; }
-.btn-responder { background: rgba(16,185,129,0.15); color: #34d399; border: 1px solid rgba(16,185,129,0.3); padding: 0.4rem 0.9rem; font-size: 0.85rem; }
-.btn-responder:hover { background: rgba(16,185,129,0.25); }
-.btn-marcar-lida { background: rgba(255,255,255,0.07); color: var(--muted); border: 1px solid rgba(255,255,255,0.12); padding: 0.4rem 0.9rem; font-size: 0.85rem; }
-.btn-marcar-lida:hover { background: rgba(255,255,255,0.12); color: #fff; }
-.btn-excluir-msg { background: rgba(239,68,68,0.1); color: #f87171; border: 1px solid rgba(239,68,68,0.2); padding: 0.4rem 0.9rem; font-size: 0.85rem; }
-.btn-excluir-msg:hover { background: rgba(239,68,68,0.2); }
-.btn-cancelar-reply { background: transparent; border: 1px solid rgba(255,255,255,0.1); color: var(--muted); padding: 0.35rem 0.8rem; font-size: 0.82rem; }
-.btn-enviar-reply { background: #10b981; color: #fff; border: none; padding: 0.35rem 0.8rem; font-size: 0.82rem; }
-.btn-enviar-reply:hover { background: #059669; }
-.msgs-filtros { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
-.filtro-btn {
-  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-  color: var(--muted); padding: 0.4rem 1rem; border-radius: 8px; cursor: pointer;
-  font-size: 0.85rem; transition: all 0.2s; font-family: inherit;
-}
-.filtro-btn:hover, .filtro-btn.active { background: rgba(255,255,255,0.12); color: #fff; border-color: rgba(255,255,255,0.25); }
-#msgs-vazio { text-align: center; padding: 3rem; color: var(--muted); display: none; }
+.header-admin { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
 </style>
 </head>
 <body>
@@ -145,20 +79,12 @@ td { padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 
 
 <div id="admin" class="admin-container" style="display:none;">
   
-  <div class="header-admin" style="display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:1rem;">
-    <!-- Esquerda: Voltar ao Site -->
-    <div style="display:flex; justify-content:flex-start;">
-      <a href="index.html" style="padding:0.5rem 1.2rem; border-radius:8px; background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.15); color:var(--muted); text-decoration:none; font-weight:600; font-size:0.9rem; transition:all 0.2s; white-space:nowrap;" onmouseover="this.style.background='rgba(255,255,255,0.13)'; this.style.color='#fff';" onmouseout="this.style.background='rgba(255,255,255,0.07)'; this.style.color='var(--muted)';">← Voltar ao Site</a>
-    </div>
-    <!-- Centro: Título -->
-    <div style="display:flex; flex-direction:column; align-items:center; gap:0.2rem;">
-      <h1 style="margin:0;">Painel Admin</h1>
+  <div class="header-admin">
+    <div style="display:flex; flex-direction:column; gap:0.2rem;">
+      <h1>Painel Admin</h1>
       <span id="adminEmailLabel" style="color:var(--muted); font-size:0.85rem; text-align:center;"></span>
     </div>
-    <!-- Direita: Sair -->
-    <div style="display:flex; justify-content:flex-end;">
-      <button id="btnSair" class="btn-cancel" style="width:auto; padding:0.5rem 1.5rem; border-color:var(--danger); color:var(--danger);">Sair</button>
-    </div>
+    <button id="btnSair" class="btn-cancel" style="width: auto; padding: 0.5rem 1.5rem; border-color: var(--danger); color: var(--danger);">Sair</button>
   </div>
 
   <div class="card">
@@ -230,26 +156,23 @@ td { padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 
   <div class="pagination" id="paginacaoControls" style="display:none;">
     <button class="btn-page" id="btnPrev">← Anterior</button><span id="pageInfo" style="color: var(--muted); font-size: 0.9rem;"></span><button class="btn-page" id="btnNext">Próximo →</button>
   </div>
-
-  <!-- ====== SEÇÃO DE MENSAGENS ====== -->
-  <h2 id="titulo-mensagens">
-    📬 Mensagens de Contato
-    <span class="badge-count" id="badge-nao-lidas" style="display:none;">0</span>
-  </h2>
-
-  <div class="msgs-filtros">
-    <button class="filtro-btn active" data-filtro="todas" onclick="filtrarMsgs('todas', this)">Todas</button>
-    <button class="filtro-btn" data-filtro="nao_lidas" onclick="filtrarMsgs('nao_lidas', this)">Não lidas</button>
-    <button class="filtro-btn" data-filtro="aguardando" onclick="filtrarMsgs('aguardando', this)">Aguardando resposta</button>
-    <button class="filtro-btn" data-filtro="respondidas" onclick="filtrarMsgs('respondidas', this)">Respondidas</button>
-  </div>
-
-  <div id="lista-mensagens"></div>
-  <div id="msgs-vazio">Nenhuma mensagem encontrada.</div>
-
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  // Bloqueia clique direito
+  document.addEventListener('contextmenu', e => e.preventDefault());
+  // Detecta DevTools aberto e redireciona
+  (function() {
+    const threshold = 160;
+    setInterval(() => {
+      if (window.outerWidth - window.innerWidth > threshold || window.outerHeight - window.innerHeight > threshold) {
+        document.body.innerHTML = '';
+        window.location.href = 'index.html';
+      }
+    }, 1000);
+  })();
+</script>
 <script>
   const _u = ["https://uczpom","dhzbarenmxysfc",".supabase.co"].join("");
   const _k = ["eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",".",
@@ -337,7 +260,6 @@ td { padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 
           const label = document.getElementById("adminEmailLabel");
           if(label) label.textContent = "Logado como: " + user.email;
           carregarMods();
-          carregarMensagens();
       } else {
           if (user) {
               // Logado mas não é admin — faz logout e mostra erro
@@ -481,140 +403,18 @@ td { padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 
   preencherDataHoje();
   checkUser();
 
-  // ============================================================
-  // SISTEMA DE MENSAGENS DE CONTATO
-  // ============================================================
-  let todasMensagens = [];
-  let filtroAtual = 'todas';
-
-  async function carregarMensagens() {
-    const { data, error } = await _supabase
-      .from('mensagens_contato')
-      .select('*')
-      .order('created_at', { ascending: false });
-
-    if (error) { console.error('Erro ao carregar mensagens:', error); return; }
-
-    todasMensagens = data || [];
-    atualizarBadge();
-    renderMensagens();
+  // Auto-logout após 30 minutos de inatividade
+  let inactivityTimer;
+  function resetTimer() {
+    clearTimeout(inactivityTimer);
+    inactivityTimer = setTimeout(async () => {
+      await _supabase.auth.signOut();
+      alert("Sessão encerrada por inatividade.");
+      location.reload();
+    }, 30 * 60 * 1000);
   }
-
-  function atualizarBadge() {
-    const naoLidas = todasMensagens.filter(m => !m.lida).length;
-    const badge = document.getElementById('badge-nao-lidas');
-    if (naoLidas > 0) {
-      badge.textContent = naoLidas > 99 ? '99+' : naoLidas;
-      badge.style.display = 'inline-flex';
-    } else {
-      badge.style.display = 'none';
-    }
-  }
-
-  window.filtrarMsgs = function(filtro, btn) {
-    filtroAtual = filtro;
-    document.querySelectorAll('.filtro-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    renderMensagens();
-  };
-
-  function renderMensagens() {
-    const container = document.getElementById('lista-mensagens');
-    const vazio = document.getElementById('msgs-vazio');
-
-    let lista = todasMensagens;
-    if (filtroAtual === 'nao_lidas')   lista = lista.filter(m => !m.lida);
-    if (filtroAtual === 'aguardando')  lista = lista.filter(m => m.lida && !m.resposta);
-    if (filtroAtual === 'respondidas') lista = lista.filter(m => !!m.resposta);
-
-    if (lista.length === 0) {
-      container.innerHTML = '';
-      vazio.style.display = 'block';
-      return;
-    }
-    vazio.style.display = 'none';
-
-    container.innerHTML = lista.map(msg => {
-      const data = new Date(msg.created_at).toLocaleString('pt-BR');
-      const tagHtml = msg.resposta
-        ? '<span class="tag tag-respondida">✅ Respondida</span>'
-        : msg.lida
-          ? '<span class="tag tag-lida">👁 Lida</span>'
-          : '<span class="tag tag-nova">🔴 Nova</span>';
-
-      const emailHtml = msg.email
-        ? `<span class="msg-email">📧 ${msg.email}</span>` : '';
-
-      const respostaHtml = msg.resposta ? `
-        <div class="msg-resposta-box">
-          <div class="resp-label">👑 Resposta do Admin</div>
-          <p>${msg.resposta.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</p>
-        </div>` : '';
-
-      return `
-      <div class="msg-card ${!msg.lida ? 'nao-lida' : ''} ${msg.resposta ? 'respondida' : ''}" id="msg-${msg.id}">
-        <div class="msg-header">
-          <div class="msg-meta">
-            <span class="msg-autor">👤 ${(msg.user_name||'Visitante').replace(/</g,'&lt;')}</span>
-            <span class="msg-assunto">📌 ${(msg.assunto||'Sem assunto').replace(/</g,'&lt;')}</span>
-            ${emailHtml}
-            <span class="msg-data">${data}</span>
-          </div>
-          <div class="msg-tags">${tagHtml}</div>
-        </div>
-        <div class="msg-texto">${(msg.mensagem||'').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>
-        ${respostaHtml}
-        <div class="msg-actions">
-          ${!msg.lida ? `<button class="btn-marcar-lida" onclick="marcarLida('${msg.id}')">✔ Marcar como lida</button>` : ''}
-          ${!msg.resposta ? `<button class="btn-responder" onclick="abrirResposta('${msg.id}')">💬 Responder</button>` : `<button class="btn-responder" onclick="abrirResposta('${msg.id}')">✏️ Editar resposta</button>`}
-          <button class="btn-excluir-msg" onclick="excluirMensagem('${msg.id}')">🗑 Excluir</button>
-        </div>
-        <div class="reply-area" id="reply-${msg.id}">
-          <textarea id="reply-text-${msg.id}" placeholder="Digite sua resposta...">${msg.resposta || ''}</textarea>
-          <div class="reply-area-btns">
-            <button class="btn-cancelar-reply" onclick="fecharResposta('${msg.id}')">Cancelar</button>
-            <button class="btn-enviar-reply" onclick="enviarResposta('${msg.id}')">Enviar Resposta</button>
-          </div>
-        </div>
-      </div>`;
-    }).join('');
-  }
-
-  window.abrirResposta = function(id) {
-    const area = document.getElementById('reply-' + id);
-    if (area) { area.style.display = 'block'; area.querySelector('textarea').focus(); }
-  };
-
-  window.fecharResposta = function(id) {
-    const area = document.getElementById('reply-' + id);
-    if (area) area.style.display = 'none';
-  };
-
-  window.marcarLida = async function(id) {
-    const { error } = await _supabase
-      .from('mensagens_contato').update({ lida: true }).eq('id', id);
-    if (!error) carregarMensagens();
-    else alert('Erro: ' + error.message);
-  };
-
-  window.enviarResposta = async function(id) {
-    const texto = document.getElementById('reply-text-' + id)?.value.trim();
-    if (!texto) { alert('Escreva uma resposta antes de enviar.'); return; }
-    const { error } = await _supabase
-      .from('mensagens_contato')
-      .update({ resposta: texto, lida: true })
-      .eq('id', id);
-    if (!error) { carregarMensagens(); }
-    else alert('Erro ao salvar resposta: ' + error.message);
-  };
-
-  window.excluirMensagem = async function(id) {
-    if (!confirm('Tem certeza que quer excluir esta mensagem?')) return;
-    const { error } = await _supabase
-      .from('mensagens_contato').delete().eq('id', id);
-    if (!error) carregarMensagens();
-    else alert('Erro ao excluir: ' + error.message);
-  };
+  ['mousemove','keydown','click','scroll'].forEach(e => document.addEventListener(e, resetTimer));
+  resetTimer();
 </script>
 </body>
 </html>
