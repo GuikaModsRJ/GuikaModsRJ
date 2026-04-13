@@ -4,62 +4,283 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Contato — Guika Mods RJ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
-    :root { --bg:#0e0e0e; --panel:#1a1a1a; --text:#e6e6e6; --muted:#aaa; --radius:10px; }
-    body { margin:0; font-family:system-ui,sans-serif; background:var(--bg); color:var(--text); line-height:1.6; }
-    header, footer { background:#121212; padding:1rem 0; box-shadow:0 2px 6px rgba(0,0,0,0.4); }
-    .container { max-width:900px; margin:0 auto; padding:1rem; }
-    form { background:var(--panel); padding:1.5rem; border-radius:var(--radius); margin-top:1rem; }
-    label { display:block; margin-top:1rem; }
-    input, textarea { width:100%; padding:0.5rem; border:none; border-radius:var(--radius); background:#2b2b2b; color:var(--text); margin-top:0.5rem; }
-    button { margin-top:1rem; background:#2b2b2b; color:#fff; padding:0.6rem 1.2rem; border:none; border-radius:var(--radius); cursor:pointer; font-weight:600; }
-    button:hover { background:#3a3a3a; }
-    .back { display:inline-block; margin-top:1rem; color:#aaa; text-decoration:none; }
-    .back:hover { color:#fff; }
+    :root {
+      --bg: #09090b; --panel: #18181b; --text: #e4e4e7;
+      --muted: #a1a1aa; --border: 1px solid rgba(255,255,255,0.1);
+      --radius: 12px; --shadow: 0 4px 6px -1px rgba(0,0,0,0.5);
+    }
+    @keyframes fadeInPage { from { opacity:0; } to { opacity:1; } }
+    body {
+      margin:0; font-family:'Inter',system-ui,sans-serif;
+      background:var(--bg);
+      background-image:radial-gradient(circle at 50% 0%, #1c1c1c 0%, var(--bg) 70%);
+      color:var(--text); line-height:1.6; min-height:100vh;
+      animation:fadeInPage 0.6s ease-out forwards;
+    }
+    header {
+      background:rgba(18,18,18,0.85); backdrop-filter:blur(12px);
+      -webkit-backdrop-filter:blur(12px); position:sticky; top:0; z-index:100;
+      border-bottom:var(--border); padding:1rem 0;
+    }
+    .container { max-width:680px; margin:0 auto; padding:0 1rem; }
+    .header-inner { display:flex; align-items:center; justify-content:space-between; }
+    .logo { color:var(--text); text-decoration:none; font-weight:700; font-size:1.3rem; }
+    nav a {
+      color:var(--muted); text-decoration:none; padding:0.5rem 0.9rem;
+      border-radius:var(--radius); transition:all 0.2s; font-weight:500; font-size:0.9rem;
+    }
+    nav a:hover { background:rgba(255,255,255,0.1); color:#fff; }
+    main { padding:3rem 0 5rem; }
+    h1 { font-size:1.8rem; color:#fff; margin:0 0 0.3rem; }
+    .subtitle { color:var(--muted); margin:0 0 2rem; font-size:0.95rem; }
+
+    .user-badge {
+      display:flex; align-items:center; gap:0.8rem;
+      background:rgba(255,255,255,0.04);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:10px; padding:0.8rem 1rem; margin-bottom:1.5rem;
+    }
+    .user-badge .avatar {
+      width:36px; height:36px; border-radius:50%;
+      background:linear-gradient(135deg,#667eea,#764ba2);
+      display:flex; align-items:center; justify-content:center;
+      font-size:1.1rem; flex-shrink:0;
+    }
+    .user-badge .info strong { color:#fff; display:block; font-size:0.95rem; }
+    .user-badge .info span { color:var(--muted); font-size:0.8rem; }
+
+    .login-prompt {
+      background:rgba(255,255,255,0.03);
+      border:1px solid rgba(255,255,255,0.07);
+      border-radius:var(--radius); padding:1.5rem 2rem;
+      text-align:center; margin-bottom:1.5rem;
+    }
+    .login-prompt p { color:var(--muted); margin:0 0 0.5rem; font-size:0.9rem; }
+    .login-prompt p:last-child { margin:0; }
+    .login-prompt strong { color:var(--text); }
+
+    .form-card {
+      background:var(--panel); border:var(--border);
+      border-radius:var(--radius); padding:2rem; box-shadow:var(--shadow);
+    }
+    .form-group { margin-bottom:1.2rem; }
+    label { display:block; font-size:0.85rem; color:var(--muted); margin-bottom:0.4rem; font-weight:500; }
+    input[type="text"], input[type="email"], textarea {
+      width:100%; box-sizing:border-box;
+      background:rgba(0,0,0,0.35); border:1px solid rgba(255,255,255,0.1);
+      border-radius:8px; color:#fff; padding:0.75rem 1rem;
+      font-family:inherit; font-size:0.95rem; transition:border-color 0.2s;
+    }
+    input[type="text"]:focus, input[type="email"]:focus, textarea:focus {
+      outline:none; border-color:rgba(255,255,255,0.3); background:rgba(0,0,0,0.5);
+    }
+    input[readonly] { opacity:0.7; cursor:not-allowed; }
+    textarea { resize:vertical; min-height:130px; }
+    .field-hint {
+      font-size:0.78rem; color:#10b981;
+      margin-top:0.3rem; display:none; align-items:center; gap:0.3rem;
+    }
+    .btn-submit {
+      width:100%; padding:0.85rem; background:#fff; color:#000;
+      border:none; border-radius:8px; font-weight:700; font-size:1rem;
+      cursor:pointer; transition:all 0.2s; margin-top:0.5rem; font-family:inherit;
+    }
+    .btn-submit:hover:not(:disabled) { background:#e4e4e7; transform:translateY(-1px); }
+    .btn-submit:disabled { opacity:0.5; cursor:not-allowed; transform:none; }
+    #form-feedback {
+      display:none; margin-top:1rem; padding:0.9rem 1.1rem;
+      border-radius:8px; font-size:0.9rem; font-weight:500;
+    }
+    #form-feedback.success {
+      background:rgba(16,185,129,0.12); border:1px solid rgba(16,185,129,0.3); color:#10b981;
+    }
+    #form-feedback.error {
+      background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.25); color:#ef4444;
+    }
+    .back-link {
+      display:inline-block; margin-top:1.5rem;
+      color:var(--muted); text-decoration:none; font-size:0.9rem; transition:color 0.2s;
+    }
+    .back-link:hover { color:#fff; }
+    footer {
+      background:#050505; border-top:var(--border);
+      padding:1.5rem 0; text-align:center; color:var(--muted); font-size:0.85rem;
+    }
   </style>
 </head>
 <body>
-  <header>
-    <div class="container">
-      <h1>Contato</h1>
+
+<header>
+  <div class="container header-inner">
+    <a href="index.html" class="logo">Guika Mods RJ</a>
+    <nav><a href="index.html">← Início</a></nav>
+  </div>
+</header>
+
+<main>
+  <div class="container">
+    <h1>Fale Conosco</h1>
+    <p class="subtitle">Dúvidas, sugestões ou problemas com mods? Manda ver!</p>
+
+    <!-- Badge usuário logado -->
+    <div id="user-badge-area" style="display:none;">
+      <div class="user-badge">
+        <div class="avatar">👤</div>
+        <div class="info">
+          <strong id="badge-username">—</strong>
+          <span>Logado — nome preenchido automaticamente</span>
+        </div>
+      </div>
     </div>
-  </header>
 
-  <main>
-    <div class="container">
-      <p>Use o formulário abaixo para entrar em contato conosco. Respondemos normalmente em até 24 horas.</p>
-
-      <form action="https://formsubmit.co/guikamodsrj@gmail.com" method="POST">
-        <!-- Nome -->
-        <label>Nome:
-          <input type="text" name="name" placeholder="Seu nome" required>
-        </label>
-
-        <!-- E-mail -->
-        <label>E-mail:
-          <input type="email" name="email" placeholder="seu@email.com" required>
-        </label>
-
-        <!-- Mensagem -->
-        <label>Mensagem:
-          <textarea name="message" rows="5" placeholder="Digite sua mensagem..." required></textarea>
-        </label>
-
-        <!-- Configurações extras -->
-        <input type="hidden" name="_captcha" value="false">
-        <input type="hidden" name="_next" value="obrigado.html">
-
-        <button type="submit">Enviar</button>
-      </form>
-
-      <a href="index.html" class="back">← Voltar ao site</a>
+    <!-- Prompt visitante -->
+    <div id="login-prompt-area" class="login-prompt" style="display:none;">
+      <p><strong>Você não está logado.</strong> Preencha seu nome manualmente ou <a href="index.html" style="color:#fff;">entre na sua conta</a> para preencher automaticamente.</p>
     </div>
-  </main>
 
-  <footer>
-    <div class="container">
-      <small>© 2025 Guika Mods RJ — Todos os direitos reservados.</small>
+    <div class="form-card">
+      <div class="form-group">
+        <label for="campo-nome">Nome</label>
+        <input type="text" id="campo-nome" placeholder="Seu nome ou usuário" required />
+        <p class="field-hint" id="nome-hint">✅ Preenchido com seu usuário logado</p>
+      </div>
+
+      <div class="form-group">
+        <label for="campo-email">E-mail <span style="font-weight:400;">(opcional, para receber resposta)</span></label>
+        <input type="email" id="campo-email" placeholder="seu@email.com" />
+      </div>
+
+      <div class="form-group">
+        <label for="campo-assunto">Assunto</label>
+        <input type="text" id="campo-assunto" placeholder="Ex: Problema com download, Sugestão de mod..." required />
+      </div>
+
+      <div class="form-group">
+        <label for="campo-mensagem">Mensagem</label>
+        <textarea id="campo-mensagem" placeholder="Descreva sua dúvida ou sugestão em detalhes..." required></textarea>
+      </div>
+
+      <button class="btn-submit" id="btn-enviar" type="button" onclick="enviarContato()">
+        Enviar Mensagem
+      </button>
+      <div id="form-feedback"></div>
     </div>
-  </footer>
+
+    <a href="index.html" class="back-link">← Voltar ao site</a>
+  </div>
+</main>
+
+<footer>
+  <div class="container">© 2025 Guika Mods RJ — Todos os direitos reservados.</div>
+</footer>
+
+<script>
+  const SUPABASE_URL = 'https://uczpomdhzbarenmxysfc.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVjenBvbWRoemJhcmVubXh5c2ZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI2NzA3OTIsImV4cCI6MjA4ODI0Njc5Mn0.oKwFayvnBPPxOjHGFcHLxG44eH3C_NTgDQMUqUKa7vo';
+  const _supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  let currentUser = null;
+
+  function extrairUsername(user) {
+    if (!user) return null;
+    let name = user.user_metadata?.username
+      || user.user_metadata?.preferred_username
+      || user.user_metadata?.full_name
+      || user.user_metadata?.name
+      || (user.email && !user.email.includes('@guikamods.internal') ? user.email.split('@')[0] : null)
+      || user.email?.replace('@guikamods.internal', '')
+      || 'Usuário';
+    if (name && name.includes(' ')) name = name.split(' ')[0];
+    return name;
+  }
+
+  async function inicializar() {
+    const { data: { session } } = await _supabase.auth.getSession();
+    const user = session?.user || null;
+
+    if (user) {
+      currentUser = user;
+      currentUser.username = extrairUsername(user);
+
+      // Preenche e trava campo nome
+      const campoNome = document.getElementById('campo-nome');
+      campoNome.value = currentUser.username;
+      campoNome.setAttribute('readonly', true);
+      document.getElementById('nome-hint').style.display = 'flex';
+
+      document.getElementById('badge-username').textContent = currentUser.username;
+      document.getElementById('user-badge-area').style.display = 'block';
+      document.getElementById('login-prompt-area').style.display = 'none';
+    } else {
+      document.getElementById('user-badge-area').style.display = 'none';
+      document.getElementById('login-prompt-area').style.display = 'block';
+    }
+  }
+
+  window.enviarContato = async function() {
+    const nome     = document.getElementById('campo-nome').value.trim();
+    const email    = document.getElementById('campo-email').value.trim();
+    const assunto  = document.getElementById('campo-assunto').value.trim();
+    const mensagem = document.getElementById('campo-mensagem').value.trim();
+    const feedback = document.getElementById('form-feedback');
+    const btn      = document.getElementById('btn-enviar');
+
+    feedback.style.display = 'none';
+    feedback.className = '';
+
+    if (!nome)     { mostrarErro('Por favor, preencha seu nome.'); return; }
+    if (!assunto)  { mostrarErro('Por favor, informe o assunto.'); return; }
+    if (!mensagem) { mostrarErro('Por favor, escreva sua mensagem.'); return; }
+
+    btn.disabled = true;
+    btn.textContent = 'Enviando...';
+
+    try {
+      const { error } = await _supabase.from('mensagens_contato').insert([{
+        user_id:   currentUser ? currentUser.id : null,
+        user_name: nome,
+        email:     email || null,
+        assunto:   assunto,
+        mensagem:  mensagem,
+        lida:      false,
+        resposta:  null
+      }]);
+
+      if (error) throw error;
+
+      feedback.className = 'success';
+      feedback.textContent = '✅ Mensagem enviada! Responderemos em breve.';
+      feedback.style.display = 'block';
+
+      // Limpa campos livres
+      if (!currentUser) document.getElementById('campo-nome').value = '';
+      document.getElementById('campo-email').value = '';
+      document.getElementById('campo-assunto').value = '';
+      document.getElementById('campo-mensagem').value = '';
+
+      btn.textContent = 'Enviado!';
+      setTimeout(() => { btn.disabled = false; btn.textContent = 'Enviar Mensagem'; }, 4000);
+
+    } catch (err) {
+      mostrarErro('Erro ao enviar: ' + err.message);
+      btn.disabled = false;
+      btn.textContent = 'Enviar Mensagem';
+    }
+  };
+
+  function mostrarErro(msg) {
+    const feedback = document.getElementById('form-feedback');
+    feedback.className = 'error';
+    feedback.textContent = '⚠️ ' + msg;
+    feedback.style.display = 'block';
+  }
+
+  inicializar();
+</script>
 </body>
 </html>
