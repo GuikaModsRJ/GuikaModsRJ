@@ -3,6 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta property="og:title" content="Contato — Guika Mods RJ"/>
+  <meta property="og:description" content="Fale conosco sobre mods, dúvidas e sugestões."/>
   <title>Contato — Guika Mods RJ</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -111,6 +113,20 @@
       background:#050505; border-top:var(--border);
       padding:1.5rem 0; text-align:center; color:var(--muted); font-size:0.85rem;
     }
+
+    /* --- HAMBÚRGUER MOBILE --- */
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 0.4rem; }
+    .hamburger span { display: block; width: 22px; height: 2px; background: var(--text); border-radius: 2px; transition: all 0.3s ease; }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    @media(max-width: 600px) {
+      .hamburger { display: flex; }
+      .header-inner { position: relative; }
+      nav { display: none; }
+      nav.open { display: block; position: absolute; top: 100%; left: 0; right: 0; background: #121212; border-top: 1px solid rgba(255,255,255,0.1); padding: 0.5rem 0; z-index: 200; }
+      nav a { display: block; padding: 0.8rem 1.2rem; border-radius: 0; }
+    }
   </style>
 </head>
 <body>
@@ -118,7 +134,10 @@
 <header>
   <div class="container header-inner">
     <a href="index.html" class="logo">Guika Mods RJ</a>
-    <nav><a href="index.html">← Início</a></nav>
+    <button class="hamburger" id="hamburger-btn" aria-label="Abrir menu">
+      <span></span><span></span><span></span>
+    </button>
+    <nav id="nav-contato"><a href="index.html">← Início</a></nav>
   </div>
 </header>
 
@@ -180,6 +199,17 @@
 </footer>
 
 <script>
+  // Hambúrguer mobile
+  (function() {
+    const btn = document.getElementById('hamburger-btn');
+    const nav = document.getElementById('nav-contato');
+    if (!btn || !nav) return;
+    btn.addEventListener('click', function() {
+      const open = nav.classList.toggle('open');
+      btn.classList.toggle('open', open);
+    });
+  })();
+
   const SUPABASE_URL = 'https://uczpomdhzbarenmxysfc.supabase.co';
   const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVjenBvbWRoemJhcmVubXh5c2ZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI2NzA3OTIsImV4cCI6MjA4ODI0Njc5Mn0.oKwFayvnBPPxOjHGFcHLxG44eH3C_NTgDQMUqUKa7vo';
   const _supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -222,6 +252,22 @@
     }
   }
 
+  // Rate limiting: máximo 3 envios por 10 minutos
+  function verificarRateLimit() {
+    const LIMITE = 3;
+    const JANELA_MS = 10 * 60 * 1000; // 10 minutos
+    const agora = Date.now();
+    let historico = JSON.parse(localStorage.getItem('contato_envios') || '[]');
+    historico = historico.filter(t => agora - t < JANELA_MS);
+    if (historico.length >= LIMITE) {
+      const proxTentativa = Math.ceil((historico[0] + JANELA_MS - agora) / 60000);
+      return `Muitas mensagens enviadas. Aguarde ${proxTentativa} minuto(s) antes de tentar novamente.`;
+    }
+    historico.push(agora);
+    localStorage.setItem('contato_envios', JSON.stringify(historico));
+    return null;
+  }
+
   window.enviarContato = async function() {
     const nome     = document.getElementById('campo-nome').value.trim();
     const email    = document.getElementById('campo-email').value.trim();
@@ -236,6 +282,10 @@
     if (!nome)     { mostrarErro('Por favor, preencha seu nome.'); return; }
     if (!assunto)  { mostrarErro('Por favor, informe o assunto.'); return; }
     if (!mensagem) { mostrarErro('Por favor, escreva sua mensagem.'); return; }
+
+    // Verificar rate limit antes de enviar
+    const rateLimitMsg = verificarRateLimit();
+    if (rateLimitMsg) { mostrarErro(rateLimitMsg); return; }
 
     btn.disabled = true;
     btn.textContent = 'Enviando...';

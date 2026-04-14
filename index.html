@@ -4,6 +4,11 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta name="description" content="Guika Mods RJ — Mods, tutoriais e conteúdo sobre GTA SA RJ."/>
+<!-- Open Graph -->
+<meta property="og:title" content="Guika Mods RJ — Blog de Mods GTA SA"/>
+<meta property="og:description" content="Mods, tutoriais e conteúdo sobre GTA San Andreas com tema Rio de Janeiro."/>
+<meta property="og:type" content="website"/>
+<meta name="twitter:card" content="summary_large_image"/>
 <title>Guika Mods RJ — Blog de Mods GTA SA</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,6 +18,13 @@
 /* --- CONFIGURAÇÃO VISUAL (PREMIUM) --- */
 :root { --bg: #09090b; --panel: #18181b; --panel-hover: #27272a; --text: #e4e4e7; --muted: #a1a1aa; --accent: #ffffff; --border: 1px solid rgba(255, 255, 255, 0.1); --radius: 12px; --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3); --glow: 0 0 15px rgba(255, 255, 255, 0.05); }
 @keyframes fadeInPage { 0% { opacity: 0; } 100% { opacity: 1; } }
+@keyframes shimmer { 0% { background-position: -600px 0; } 100% { background-position: 600px 0; } }
+/* --- SKELETON LOADING --- */
+.skeleton { background: linear-gradient(90deg, var(--panel) 25%, #27272a 50%, var(--panel) 75%); background-size: 1200px 100%; animation: shimmer 1.5s infinite; border-radius: var(--radius); }
+.skeleton-card { width: 63.75%; border-radius: var(--radius); overflow: hidden; border: var(--border); }
+.skeleton-img { height: 340px; width: 100%; }
+.skeleton-text { height: 18px; margin: 1.5rem 1.5rem 0.5rem; border-radius: 4px; }
+.skeleton-text-sm { height: 14px; margin: 0 1.5rem 1.5rem; width: 60%; border-radius: 4px; }
 html { overflow-y: scroll; scroll-behavior: smooth; }
 body { margin: 0; font-family: 'Inter', system-ui, sans-serif; background: var(--bg); background-image: radial-gradient(circle at 50% 0%, #1c1c1c 0%, var(--bg) 70%); color: var(--text); line-height: 1.6; overflow-x: hidden; width: 100%; animation: fadeInPage 0.6s ease-out forwards; }
 main { min-height: 100vh; }
@@ -194,6 +206,23 @@ aside .panel:first-of-type {margin-top:1.3rem;}
 .footer-bottom {display:flex; justify-content:center; align-items:center;}
 .footer-bottom small {color:var(--muted); font-size:0.8rem;}
 a {color: #ccc; transition: color 0.2s;} a:hover {color: #fff;}
+/* --- HAMBÚRGUER MOBILE --- */
+.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 0.4rem; z-index: 10; }
+.hamburger span { display: block; width: 22px; height: 2px; background: var(--text); border-radius: 2px; transition: all 0.3s ease; }
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+@media(max-width: 768px) {
+  .hamburger { display: flex; }
+  .search { display: none !important; }
+  nav ul { display: none; flex-direction: column; gap: 0; position: absolute; top: 100%; left: -1rem; right: -1rem; background: #121212; border-top: 1px solid rgba(255,255,255,0.1); border-bottom: 1px solid rgba(255,255,255,0.1); padding: 0.5rem 0; z-index: 200; }
+  nav ul.open { display: flex; }
+  nav ul li { width: 100%; }
+  nav a, nav span.interativo { display: block; padding: 0.8rem 1.2rem; border-radius: 0; }
+  .dropdown-content { position: static; box-shadow: none; border: none; background: rgba(255,255,255,0.04); border-radius: 0; padding: 0; display: block !important; }
+  .dropdown > a::after { display: none; }
+  .dropdown-content a, .dropdown-content span.interativo { padding-left: 2rem; }
+}
 @media(max-width: 768px) { .container.grid { display: block; } #cards, #titulo-section { left: 0; width: 100%; padding: 0 1rem; box-sizing: border-box;} .card { width: 100%; } .mod-detalhe-card { width: 100%; } .mod-detalhe { width: 100%; } aside { display: none; } .footer .list { flex-direction: column; gap: 0.5rem; left: 0; } .btn-dl { width: 140px; } .stats-container { flex-direction: column; gap: 10px; } }
 </style>
 </head>
@@ -201,8 +230,11 @@ a {color: #ccc; transition: color 0.2s;} a:hover {color: #fff;}
 <header class="header">
   <div class="container header-inner">
     <a aria-label="Página inicial" class="logo" href="index.html">Guika Mods RJ</a>
+    <button class="hamburger" id="hamburger-btn" aria-label="Abrir menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
     <nav aria-label="Principal" class="nav">
-      <ul>
+      <ul id="nav-menu">
         <li><a class="active" href="index.html">Início</a></li>
         <li class="dropdown"><a href="#mods">Menu dos Mods</a>
           <div class="dropdown-content">
@@ -231,7 +263,23 @@ a {color: #ccc; transition: color 0.2s;} a:hover {color: #fff;}
   <div class="container grid">
     <section aria-labelledby="titulo-section">
       <h2 id="titulo-section">Últimas Postagens</h2>
-      <div id="cards"></div>
+      <div id="cards">
+        <div class="skeleton-card" id="skeleton-1">
+          <div class="skeleton skeleton-img"></div>
+          <div class="skeleton skeleton-text"></div>
+          <div class="skeleton skeleton-text-sm"></div>
+        </div>
+        <div class="skeleton-card" id="skeleton-2">
+          <div class="skeleton skeleton-img"></div>
+          <div class="skeleton skeleton-text"></div>
+          <div class="skeleton skeleton-text-sm"></div>
+        </div>
+        <div class="skeleton-card" id="skeleton-3">
+          <div class="skeleton skeleton-img"></div>
+          <div class="skeleton skeleton-text"></div>
+          <div class="skeleton skeleton-text-sm"></div>
+        </div>
+      </div>
     </section>
     <aside>
       <div class="panel"><h3>Categorias</h3><ul class="list" id="lista-categorias">
@@ -342,6 +390,27 @@ a {color: #ccc; transition: color 0.2s;} a:hover {color: #fff;}
 </div>
 
 <script>
+// Hambúrguer mobile
+(function() {
+  const btn = document.getElementById('hamburger-btn');
+  const menu = document.getElementById('nav-menu');
+  if (!btn || !menu) return;
+  btn.addEventListener('click', function() {
+    const open = menu.classList.toggle('open');
+    btn.classList.toggle('open', open);
+    btn.setAttribute('aria-expanded', open);
+  });
+  menu.addEventListener('click', function(e) {
+    if (e.target.tagName === 'A' || e.target.classList.contains('interativo')) {
+      if (window.innerWidth <= 768) {
+        menu.classList.remove('open');
+        btn.classList.remove('open');
+        btn.setAttribute('aria-expanded', false);
+      }
+    }
+  });
+})();
+
 // Admin verificado via banco de dados (is_admin na tabela perfis)
 async function verificarSeAdmin(userId) {
     if (!userId || !window.supabaseGlobal) return false;
@@ -370,6 +439,13 @@ document.addEventListener("DOMContentLoaded",()=>{
   window.supabaseGlobal = null;
   window.currentUser = null;
 
+  function limparSkeletons() {
+    ['skeleton-1','skeleton-2','skeleton-3'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.remove();
+    });
+  }
+
   function fadeOutIn(callback){
     container.style.transition = 'opacity 0.2s ease'; container.style.opacity = '0';
     setTimeout(()=>{ callback(); window.scrollTo({top:0, behavior:'auto'}); setTimeout(() => { container.style.transition = 'opacity 0.6s ease-out'; container.style.opacity = '1'; }, 50); }, 200); 
@@ -383,6 +459,7 @@ document.addEventListener("DOMContentLoaded",()=>{
   }
 
   function renderMods(cat, query=""){
+    limparSkeletons();
     container.innerHTML=""; container.style.alignItems = "center"; container.style.left = "calc((25% + 2.5rem)/2)"; container.style.width = "100%";
     if(!LOADED && modsSalvos.length === 0){ container.innerHTML = "<p>Carregando mods…</p>"; return; }
     if(cat !== ultimaCategoriaCache || query !== ultimaBuscaCache) { paginaAtualGlobal = 1; ultimaCategoriaCache = cat; ultimaBuscaCache = query; }
@@ -458,6 +535,7 @@ document.addEventListener("DOMContentLoaded",()=>{
   };
 
   async function mostrarDetalhe(id){
+    limparSkeletons();
     const mod=modsSalvos.find(m=>m.id===id);
     if(!mod){inicializar();return;}
 
@@ -1201,7 +1279,7 @@ document.addEventListener("DOMContentLoaded",()=>{
       if(changed){ modsSalvos.splice(0, modsSalvos.length, ...list); localStorage.setItem("modsSalvos", JSON.stringify(modsSalvos)); } return changed;
     }
     function removeById(id){ const idx = modsSalvos.findIndex(m=>m.id===id); if(idx>-1){ modsSalvos.splice(idx,1); localStorage.setItem("modsSalvos", JSON.stringify(modsSalvos)); return true; } return false; }
-    function refreshUI(){ try{ inicializar(); renderMaisRecentes(); renderPopulares(); }catch(_){} }
+    function refreshUI(){ try{ limparSkeletons(); inicializar(); renderMaisRecentes(); renderPopulares(); }catch(_){} }
 
     async function fetchAllOnce(){
       try { const { data, error } = await supabase.from('mods').select('*'); if (data) { const arr = dedupe(normalizeMods(data)); if(replaceAll(arr)) refreshUI(); } LOADED = true; refreshUI(); } catch (err) { LOADED = true; refreshUI(); }
