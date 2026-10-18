@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta property="og:title" content="Contato — Guika Mods RJ"/>
+  <meta property="og:description" content="Fale conosco sobre mods, dúvidas e sugestões."/>
+  <title>Contato — Guika Mods RJ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config/supabase.js"></script>
+  <script src="js/utils/storage.js"></script>
+  <link rel="stylesheet" href="css/pages/contact.css">
+</head>
+<body>
+
+<header>
+  <div class="container header-inner">
+    <a href="index.html" class="logo">Guika Mods RJ</a>
+    <button class="hamburger" id="hamburger-btn" aria-label="Abrir menu">
+      <span></span><span></span><span></span>
+    </button>
+    <nav id="nav-contato"><a href="index.html">← Início</a></nav>
+  </div>
+</header>
+
+<main>
+  <div class="container">
+    <h1>Fale Conosco</h1>
+    <p class="subtitle">Dúvidas, sugestões ou problemas com mods? Manda ver!</p>
+
+    <!-- Badge usuário logado -->
+    <div id="user-badge-area" class="is-hidden">
+      <div class="user-badge">
+        <div class="avatar">👤</div>
+        <div class="info">
+          <strong id="badge-username">—</strong>
+          <span>Logado — nome preenchido automaticamente</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Prompt visitante -->
+    <div id="login-prompt-area" class="login-prompt is-hidden">
+      <p><strong>Você não está logado.</strong> Preencha seu nome manualmente ou <a href="index.html" class="login-link">entre na sua conta</a> para preencher automaticamente.</p>
+    </div>
+
+    <div class="form-card">
+      <div class="form-group">
+        <label for="campo-nome">Nome</label>
+        <input type="text" id="campo-nome" placeholder="Seu nome ou usuário" required />
+        <p class="field-hint" id="nome-hint">✅ Preenchido com seu usuário logado</p>
+      </div>
+
+      <div class="form-group">
+        <label for="campo-email">E-mail <span class="label-optional">(opcional, para receber resposta)</span></label>
+        <input type="email" id="campo-email" placeholder="seu@email.com" />
+      </div>
+
+      <div class="form-group">
+        <label for="campo-assunto">Assunto</label>
+        <input type="text" id="campo-assunto" placeholder="Ex: Problema com download, Sugestão de mod..." required />
+      </div>
+
+      <div class="form-group">
+        <label for="campo-mensagem">Mensagem</label>
+        <textarea id="campo-mensagem" placeholder="Descreva sua dúvida ou sugestão em detalhes..." required></textarea>
+      </div>
+
+      <button class="btn-submit" id="btn-enviar" type="button" data-action="enviarContato">
+        Enviar Mensagem
+      </button>
+      <div id="form-feedback"></div>
+    </div>
+
+    <a href="index.html" class="back-link">← Voltar ao site</a>
+  </div>
+</main>
+
+<footer>
+  <div class="container">© 2025 Guika Mods RJ — Todos os direitos reservados.</div>
+</footer>
+
+<script src="js/pages/contact.js"></script>
+<script src="js/modules/ui-events.js"></script>
+</body>
+</html>

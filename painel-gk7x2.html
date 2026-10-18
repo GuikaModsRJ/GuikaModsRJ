@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel Admin - Guika Mods RJ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/pages/admin.css">
+</head>
+<body>
+
+<div id="login" class="card">
+  <h2 style="margin-top:0; border:none;">🔐 Login Administrativo</h2>
+  <p style="color:var(--muted); margin-bottom:1.5rem;">Acesse para gerenciar a Guika Mods RJ.</p>
+  <input type="email" id="email" placeholder="Username" style="margin-bottom: 1rem;">
+  <input type="password" id="senha" placeholder="Sua Senha" style="margin-bottom: 1rem;">
+  <button id="btnEntrar" class="btn-login">Acessar Painel</button>
+  <p id="erro" style="color:var(--danger); display:none; margin-top:1rem; font-size:0.9rem;"></p>
+</div>
+
+<div id="admin" class="admin-container" style="display:none;">
+  <!-- Banner de segurança - só aparece para o admin logado -->
+  <div id="security-banner" style="display:none; background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); border-radius: 10px; padding: 1rem 1.2rem; margin-bottom: 1.5rem;">
+    <strong style="color: #f87171; font-size: 0.9rem;">⚠️ Lembrete de Segurança</strong>
+    <p style="color: #a1a1aa; font-size: 0.82rem; margin: 0.4rem 0 0;">Verifique se as <strong style="color:#e4e4e7;">Row Level Security (RLS) Policies</strong> estão ativas no Supabase para todas as tabelas (mods, comentarios, curtidas, mensagens_contato, perfis). Sem RLS, a chave anon exposta no HTML permite acesso irrestrito ao banco.</p>
+  </div>
+
+
+  
+  <div class="header-admin" style="display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:1rem;">
+    <!-- Esquerda: Voltar ao Site -->
+    <div style="display:flex; justify-content:flex-start;">
+      <a href="index.html" style="padding:0.5rem 1.2rem; border-radius:8px; background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.15); color:var(--muted); text-decoration:none; font-weight:600; font-size:0.9rem; transition:all 0.2s; white-space:nowrap;" onmouseover="this.style.background='rgba(255,255,255,0.13)'; this.style.color='#fff';" onmouseout="this.style.background='rgba(255,255,255,0.07)'; this.style.color='var(--muted)';">← Voltar ao Site</a>
+    </div>
+    <!-- Centro: Título -->
+    <div style="display:flex; flex-direction:column; align-items:center; gap:0.2rem;">
+      <h1 style="margin:0;">Painel Admin</h1>
+      <span id="adminEmailLabel" style="color:var(--muted); font-size:0.85rem; text-align:center;"></span>
+    </div>
+    <!-- Direita: Sair -->
+    <div style="display:flex; justify-content:flex-end;">
+      <button id="btnSair" class="btn-cancel" style="width:auto; padding:0.5rem 1.5rem; border-color:var(--danger); color:var(--danger);">Sair</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <form id="modForm">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div><label>Título do Mod</label><input type="text" id="titulo" placeholder="Ex: Honda XRE 300" required></div>
+          <div><label>Título Topo (Opcional)</label><input type="text" id="tituloTopo" placeholder="Ex: Detalhes do Mod"></div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div><label>URL da Imagem</label><input type="url" id="img" placeholder="https://..."></div>
+          <div><label>Ou Upload de Imagem (Direto pro Storage)</label><input type="file" id="imgUpload" accept="image/*" style="padding: 0.55rem 1rem;"></div>
+      </div>
+      <div id="imgPreview" class="preview"></div>
+      
+      <label>Links de Download</label>
+      <div class="download-grid">
+          <div><input type="url" id="downloadMediafire" placeholder="Link Mediafire (Azul)"></div>
+          <div><input type="url" id="downloadMega" placeholder="Link Mega (Vermelho)"></div>
+          <div><input type="url" id="downloadDrive" placeholder="Link Google Drive (Branco)"></div>
+      </div>
+
+      <label>Descrição</label>
+      <textarea id="descricao" placeholder="Descreva os detalhes do mod..." rows="5" required></textarea>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div><label>Data de Lançamento</label><input type="date" id="data" required></div>
+          <div>
+            <label>Categoria</label>
+            <select id="categoria" required>
+              <option value="">Selecione...</option>
+              <option value="motos">Motos</option>
+              <option value="mapas">Mods pro Mapa</option>
+              <option value="pecas">Peças Zmodler</option>
+              <option value="personagens">Mods de Personagem</option>
+              <option value="outros">Outros Mods</option>
+            </select>
+          </div>
+      </div>
+
+      <div class="checkbox-wrapper" onclick="document.getElementById('destaque').click()">
+          <input type="checkbox" id="destaque" onclick="event.stopPropagation()">
+          <label for="destaque">🔥 Marcar como POPULAR (Destaque na Home)</label>
+      </div>
+
+      <button type="submit" class="btn-submit">Adicionar Mod</button>
+    </form>
+  </div>
+
+  <h2>Gerenciar Mods Salvos</h2>
+  <div class="toolbar">
+    <div class="search-container"><span class="search-icon">🔍</span><input type="text" id="searchTable" placeholder="Pesquisar mod por nome..."></div>
+  </div>
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Título</th>
+          <th>Categoria</th>
+          <th>Data</th>
+          <th style="text-align: center;">👁️ Views</th>
+          <th style="text-align: center;">❤️ Likes</th>
+          <th style="text-align: right;">Ações</th>
+        </tr>
+      </thead>
+      <tbody id="listaMods"></tbody>
+    </table>
+  </div>
+  <div class="pagination" id="paginacaoControls" style="display:none;">
+    <button class="btn-page" id="btnPrev">← Anterior</button><span id="pageInfo" style="color: var(--muted); font-size: 0.9rem;"></span><button class="btn-page" id="btnNext">Próximo →</button>
+  </div>
+
+  <!-- ====== SEÇÃO DE MENSAGENS ====== -->
+  <h2 id="titulo-mensagens">
+    📬 Mensagens de Contato
+    <span class="badge-count" id="badge-nao-lidas" style="display:none;">0</span>
+  </h2>
+
+  <div class="msgs-filtros">
+    <button class="filtro-btn active" data-filtro="todas" onclick="filtrarMsgs('todas', this)">Todas</button>
+    <button class="filtro-btn" data-filtro="nao_lidas" onclick="filtrarMsgs('nao_lidas', this)">Não lidas</button>
+    <button class="filtro-btn" data-filtro="aguardando" onclick="filtrarMsgs('aguardando', this)">Aguardando resposta</button>
+    <button class="filtro-btn" data-filtro="respondidas" onclick="filtrarMsgs('respondidas', this)">Respondidas</button>
+  </div>
+
+  <div id="lista-mensagens"></div>
+  <div id="msgs-vazio">Nenhuma mensagem encontrada.</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/config/supabase.js"></script>
+<script src="js/utils/storage.js"></script>
+<script src="js/utils/sanitizers.js"></script>
+<script src="js/pages/admin.js"></script>
+</body>
+</html>
